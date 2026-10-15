@@ -151,7 +151,7 @@ export default function WholesaleBanner() {
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="e.g. Arjun Malhotra"
+                  placeholder="Enter your full name"
                   className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                 />
               </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -16,21 +16,34 @@ import {
   Lock,
   ArrowRight,
   ArrowLeft,
-  Zap,
+  MapPin,
+  User,
 } from 'lucide-react';
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cart, cartSubtotal, shippingFee, taxAmount, discountAmount, grandTotal, placeOrder, clearCart } = useStore();
+  const {
+    cart,
+    cartSubtotal,
+    shippingFee,
+    taxAmount,
+    discountAmount,
+    grandTotal,
+    placeOrder,
+    userProfile,
+    addresses,
+  } = useStore();
 
-  // Form Fields
-  const [name, setName] = useState('Arjun Malhotra');
-  const [email, setEmail] = useState('arjun.malhotra@retailbrands.in');
-  const [phone, setPhone] = useState('+91 98110 54321');
-  const [address, setAddress] = useState('B-42, Defence Colony, Flyover Road');
-  const [city, setCity] = useState('New Delhi');
-  const [state, setState] = useState('Delhi');
-  const [pincode, setPincode] = useState('110024');
+  const defaultAddr = addresses.find((a) => a.isDefault) || addresses[0];
+
+  // Form Fields initialized from real user profile or saved address if present
+  const [name, setName] = useState(userProfile.name || defaultAddr?.fullName || '');
+  const [email, setEmail] = useState(userProfile.email || '');
+  const [phone, setPhone] = useState(userProfile.phone || defaultAddr?.phone || '');
+  const [address, setAddress] = useState(defaultAddr?.street || '');
+  const [city, setCity] = useState(defaultAddr?.city || '');
+  const [state, setState] = useState(defaultAddr?.state || '');
+  const [pincode, setPincode] = useState(defaultAddr?.pincode || '');
 
   // Payment & Options
   const [paymentMethod, setPaymentMethod] = useState<Order['paymentMethod']>('UPI');
@@ -38,15 +51,32 @@ export default function CheckoutPage() {
   const [orderNotes, setOrderNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Quick Autofill Demo
-  const autofillDemo = () => {
-    setName('Arjun Malhotra');
-    setEmail('arjun.malhotra@retailbrands.in');
-    setPhone('+91 98110 54321');
-    setAddress('B-42, Defence Colony, Flyover Road');
-    setCity('New Delhi');
-    setState('Delhi');
-    setPincode('110024');
+  // Sync if profile or address loads from localStorage
+  useEffect(() => {
+    if (!name && (userProfile.name || defaultAddr?.fullName)) {
+      setName(userProfile.name || defaultAddr?.fullName || '');
+    }
+    if (!email && userProfile.email) {
+      setEmail(userProfile.email);
+    }
+    if (!phone && (userProfile.phone || defaultAddr?.phone)) {
+      setPhone(userProfile.phone || defaultAddr?.phone || '');
+    }
+    if (!address && defaultAddr?.street) {
+      setAddress(defaultAddr.street);
+      setCity(defaultAddr.city);
+      setState(defaultAddr.state);
+      setPincode(defaultAddr.pincode);
+    }
+  }, [userProfile, defaultAddr, name, email, phone, address]);
+
+  const applySavedAddress = (addr: (typeof addresses)[0]) => {
+    setName(addr.fullName);
+    setPhone(addr.phone);
+    setAddress(addr.street);
+    setCity(addr.city);
+    setState(addr.state);
+    setPincode(addr.pincode);
   };
 
   const handlePlaceOrder = (e: React.FormEvent) => {
@@ -100,14 +130,19 @@ export default function CheckoutPage() {
               EXPRESS RETAIL CHECKOUT
             </h1>
 
-            <button
-              type="button"
-              onClick={autofillDemo}
-              className="text-xs font-mono font-bold text-[#00ff87] bg-slate-900 hover:bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700 transition-all flex items-center gap-1.5 self-start shadow-neon-sm"
-            >
-              <Zap className="w-3.5 h-3.5 text-[#00ff87]" />
-              <span>1-CLICK AUTOFILL CLIENT</span>
-            </button>
+            {addresses.length > 0 && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-mono text-slate-400">Saved Address:</span>
+                <button
+                  type="button"
+                  onClick={() => applySavedAddress(addresses[0])}
+                  className="text-xs font-mono font-bold text-[#00ff87] bg-slate-900 hover:bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700 transition-all flex items-center gap-1.5 shadow-neon-sm"
+                >
+                  <MapPin className="w-3.5 h-3.5" />
+                  <span>USE SAVED ({addresses[0].type})</span>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -135,6 +170,7 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       required
+                      placeholder="e.g. Rahul Sharma"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -146,6 +182,7 @@ export default function CheckoutPage() {
                     <input
                       type="email"
                       required
+                      placeholder="e.g. rahul@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -157,6 +194,7 @@ export default function CheckoutPage() {
                     <input
                       type="tel"
                       required
+                      placeholder="+91 98765 43210"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -168,6 +206,7 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       required
+                      placeholder="e.g. Flat 301, Tower B, Palm Heights"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
                       className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -179,6 +218,7 @@ export default function CheckoutPage() {
                     <input
                       type="text"
                       required
+                      placeholder="e.g. New Delhi"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
                       className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -191,6 +231,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         required
+                        placeholder="e.g. Delhi"
                         value={state}
                         onChange={(e) => setState(e.target.value)}
                         className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"
@@ -201,6 +242,7 @@ export default function CheckoutPage() {
                       <input
                         type="text"
                         required
+                        placeholder="110025"
                         value={pincode}
                         onChange={(e) => setPincode(e.target.value)}
                         className="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white focus:outline-none focus:border-[#00ff87]"

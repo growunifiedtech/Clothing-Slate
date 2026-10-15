@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useStore, Order, Product, OrderStatus, BulkInquiry } from '@/lib/store';
@@ -68,15 +68,15 @@ export default function AdminDashboardView() {
   const [newCouponCode, setNewCouponCode] = useState('');
   const [newCouponPercent, setNewCouponPercent] = useState(15);
   const [couponsList, setCouponsList] = useState([
-    { code: 'NEON10', percent: 10, uses: 142 },
-    { code: 'SLATE20', percent: 20, uses: 89 },
-    { code: 'FIRSTDROP', percent: 15, uses: 45 },
+    { code: 'NEON10', percent: 10, uses: 0 },
+    { code: 'SLATE20', percent: 20, uses: 0 },
+    { code: 'FIRSTDROP', percent: 15, uses: 0 },
   ]);
 
-  // Analytics Metrics
-  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0) + 120800;
-  const totalOrdersCount = orders.length + 42;
-  const avgOrderValue = Math.round(totalRevenue / totalOrdersCount);
+  // Real Analytics Metrics directly calculated from genuine orders
+  const totalRevenue = orders.reduce((sum, o) => sum + o.total, 0);
+  const totalOrdersCount = orders.length;
+  const avgOrderValue = totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
   const pendingOrdersCount = orders.filter((o) => o.orderStatus === 'PENDING' || o.orderStatus === 'CONFIRMED').length;
 
   const filteredOrders = orders.filter((o) => {
@@ -92,6 +92,73 @@ export default function AdminDashboardView() {
     return productCategoryFilter === 'ALL' || p.category === productCategoryFilter;
   });
 
+  // Calculate real category sales distribution from actual orders
+  const categoryStats = useMemo(() => {
+    const categories = ['HOODIES', 'JACKETS', 'T-SHIRTS', 'TRACKSUITS', 'TRACKPANTS', 'SWEATERS', 'POLOS', 'BEANIES'];
+    const colors = ['#00ff87', '#00f0ff', '#faff00', '#38bdf8', '#fb923c', '#a855f7', '#ec4899', '#34d399'];
+
+    return categories.map((cat, idx) => {
+      let revenue = 0;
+      let count = 0;
+
+      orders.forEach((o) => {
+        o.items.forEach((item) => {
+          const prod = products.find((p) => p.id === item.productId || p.name === item.name);
+          if (prod && prod.category === cat) {
+            revenue += item.price * item.quantity;
+            count += item.quantity;
+          }
+        });
+      });
+
+      const catalogCount = products.filter((p) => p.category === cat).length;
+      const pct = totalRevenue > 0 ? Math.round((revenue / totalRevenue) * 100) : catalogCount * 12;
+
+      return {
+        name: cat,
+        revenue,
+        count: `${count} pcs sold`,
+        catalogCount: `${catalogCount} styles in catalog`,
+        pct: Math.min(100, Math.max(5, pct)),
+        color: colors[idx % colors.length],
+      };
+    });
+  }, [orders, products, totalRevenue]);
+
+  // Derive genuine unique clients dynamically from actual orders
+  const dynamicClients = useMemo(() => {
+    const map = new Map<string, {
+      name: string;
+      email: string;
+      phone: string;
+      city: string;
+      ordersCount: number;
+      lifetimeSpend: number;
+    }>();
+
+    orders.forEach((o) => {
+      const key = (o.customer.email || o.customer.phone || o.customer.name).toLowerCase();
+      if (!key) return;
+
+      const existing = map.get(key);
+      if (existing) {
+        existing.ordersCount += 1;
+        existing.lifetimeSpend += o.total;
+      } else {
+        map.set(key, {
+          name: o.customer.name,
+          email: o.customer.email,
+          phone: o.customer.phone,
+          city: o.customer.city,
+          ordersCount: 1,
+          lifetimeSpend: o.total,
+        });
+      }
+    });
+
+    return Array.from(map.values());
+  }, [orders]);
+
   const handleCreateProduct = (e: React.FormEvent) => {
     e.preventDefault();
     addProduct({
@@ -104,7 +171,7 @@ export default function AdminDashboardView() {
       compareAtPrice: Number(newProdComparePrice),
       stockCount: Number(newProdStock),
       rating: 5.0,
-      reviewsCount: 1,
+      reviewsCount: 0,
       description: newProdDescription,
       fabric: newProdFabric,
       colors: [
@@ -150,7 +217,7 @@ export default function AdminDashboardView() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-bold font-mono tracking-wider uppercase text-white">
-                  SLATE ADMIN CONSOLE
+                  SLATE APPARELS OPERATIONS CONSOLE
                 </h1>
                 <span className="w-2 h-2 rounded-full bg-[#00ff87] animate-ping" />
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[#00ff87]">
@@ -158,7 +225,7 @@ export default function AdminDashboardView() {
                 </span>
               </div>
               <p className="text-xs font-mono text-slate-400 mt-0.5">
-                New Delhi Facility • Orders, Inventory & Retail Control Desk
+                Plot No. 27, Zakir Nagar, Okhla, New Delhi - 110025 • GSTIN: 07AAACS1429K1Z5
               </p>
             </div>
           </div>
@@ -187,7 +254,7 @@ export default function AdminDashboardView() {
             { id: 'orders', label: `ORDERS (${orders.length})`, icon: Package },
             { id: 'products', label: `PRODUCTS & STOCK (${products.length})`, icon: Layers },
             { id: 'quotes', label: `INQUIRIES (${inquiries.length})`, icon: MessageSquare },
-            { id: 'customers', label: 'CUSTOMER DIRECTORY', icon: Users },
+            { id: 'customers', label: `CLIENT DIRECTORY (${dynamicClients.length})`, icon: Users },
             { id: 'settings', label: 'COUPONS & SETTINGS', icon: Settings },
           ].map((tab) => {
             const Icon = tab.icon;
@@ -212,11 +279,11 @@ export default function AdminDashboardView() {
         {/* TAB 1: OVERVIEW & ANALYTICS */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            {/* 4 KPI Cards */}
+            {/* 4 KPI Cards - Live Accurate Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
-                  <span className="text-[10px] font-mono font-bold uppercase">GROSS REVENUE</span>
+                  <span className="text-[10px] font-mono font-bold uppercase">SETTLED REVENUE</span>
                   <DollarSign className="w-4 h-4 text-[#00ff87]" />
                 </div>
                 <div className="text-3xl font-mono font-extrabold text-[#00ff87]">
@@ -224,7 +291,7 @@ export default function AdminDashboardView() {
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-mono text-[#00ff87] font-bold mt-2">
                   <TrendingUp className="w-3.5 h-3.5" />
-                  <span>+18.4% vs last cycle</span>
+                  <span>Real-time settled orders</span>
                 </div>
               </div>
 
@@ -250,13 +317,13 @@ export default function AdminDashboardView() {
                   {formatPrice(avgOrderValue)}
                 </div>
                 <span className="text-xs font-mono text-slate-400 mt-2 block">
-                  Retail single-piece & bundle orders
+                  Per customer transaction
                 </span>
               </div>
 
               <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
-                  <span className="text-[10px] font-mono font-bold uppercase">INQUIRIES</span>
+                  <span className="text-[10px] font-mono font-bold uppercase">ACTIVE INQUIRIES</span>
                   <Clock className="w-4 h-4 text-amber-400" />
                 </div>
                 <div className="text-3xl font-mono font-extrabold text-white">
@@ -271,35 +338,38 @@ export default function AdminDashboardView() {
               </div>
             </div>
 
-            {/* Visual Analytics Chart: Revenue by Category */}
+            {/* Visual Analytics Chart: Live Category Distribution */}
             <div className="p-6 sm:p-7 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
               <div className="flex justify-between items-center mb-6">
                 <div>
                   <h3 className="font-mono font-bold text-base uppercase text-white">
-                    SALES DISTRIBUTION BY CATEGORY
+                    CATEGORY ALLOCATION & SALES
                   </h3>
-                  <span className="text-xs font-mono text-slate-400">Live retail metrics</span>
+                  <span className="text-xs font-mono text-slate-400">
+                    {totalRevenue > 0
+                      ? 'Live sales volume calculated from placed orders'
+                      : 'Catalog distribution ready for retail drops'}
+                  </span>
                 </div>
                 <span className="text-xs font-mono font-bold text-[#00ff87] bg-[#00ff87]/20 border border-[#00ff87]/40 px-3 py-1 rounded-full">
-                  MONTHLY VOLUME
+                  LIVE STATUS
                 </span>
               </div>
 
               {/* Bar Visualization */}
               <div className="space-y-4 font-mono text-xs">
-                {[
-                  { name: 'HOODIES', revenue: 58900, count: '148 pcs', pct: 85, color: '#00ff87' },
-                  { name: 'JACKETS', revenue: 42100, count: '92 pcs', pct: 68, color: '#00f0ff' },
-                  { name: 'T-SHIRTS', revenue: 29800, count: '210 pcs', pct: 54, color: '#faff00' },
-                  { name: 'TRACKSUITS', revenue: 24500, count: '45 sets', pct: 44, color: '#38bdf8' },
-                  { name: 'TRACKPANTS', revenue: 16700, count: '85 pcs', pct: 32, color: '#fb923c' },
-                  { name: 'SWEATERS & BEANIES', revenue: 14200, count: '110 pcs', pct: 28, color: '#a855f7' },
-                ].map((row) => (
+                {categoryStats.map((row) => (
                   <div key={row.name} className="space-y-1.5">
                     <div className="flex justify-between text-slate-300">
                       <span className="font-bold text-white">{row.name}</span>
                       <span>
-                        {formatPrice(row.revenue)} • <strong className="text-white">{row.count}</strong>
+                        {row.revenue > 0 ? (
+                          <>
+                            <strong className="text-[#00ff87]">{formatPrice(row.revenue)}</strong> • {row.count}
+                          </>
+                        ) : (
+                          <span className="text-slate-400">{row.catalogCount}</span>
+                        )}
                       </span>
                     </div>
                     <div className="w-full h-2.5 bg-slate-900 rounded-full overflow-hidden border border-slate-800">
@@ -317,7 +387,7 @@ export default function AdminDashboardView() {
             <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-lg">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="font-mono font-bold text-base uppercase text-white">
-                  RECENT ORDERS
+                  RECENT ORDERS ({orders.length})
                 </h3>
                 <button
                   onClick={() => setActiveTab('orders')}
@@ -327,62 +397,70 @@ export default function AdminDashboardView() {
                 </button>
               </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs font-mono">
-                  <thead>
-                    <tr className="border-b border-slate-800 text-slate-400">
-                      <th className="pb-3 font-bold uppercase">ORDER ID</th>
-                      <th className="pb-3 font-bold uppercase">CUSTOMER</th>
-                      <th className="pb-3 font-bold uppercase">ITEMS</th>
-                      <th className="pb-3 font-bold uppercase">TOTAL</th>
-                      <th className="pb-3 font-bold uppercase">STATUS</th>
-                      <th className="pb-3 font-bold uppercase text-right">QUICK UPDATE</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {orders.slice(0, 5).map((ord) => (
-                      <tr key={ord.id} className="hover:bg-slate-900/60 transition-colors">
-                        <td className="py-3 font-bold text-white">#{ord.id}</td>
-                        <td className="py-3 text-slate-300">
-                          <span className="font-bold block text-white">{ord.customer.name}</span>
-                          <span className="text-[10px] text-slate-400">{ord.customer.city}</span>
-                        </td>
-                        <td className="py-3 text-slate-300">
-                          {ord.items.length} styles ({ord.items.reduce((s, i) => s + i.quantity, 0)} pcs)
-                        </td>
-                        <td className="py-3 font-bold text-[#00ff87]">{formatPrice(ord.total)}</td>
-                        <td className="py-3">
-                          <span
-                            className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                              ord.orderStatus === 'DELIVERED'
-                                ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
-                                : ord.orderStatus === 'SHIPPED'
-                                ? 'bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40'
-                                : 'bg-amber-950 text-amber-400 border border-amber-800'
-                            }`}
-                          >
-                            {ord.orderStatus}
-                          </span>
-                        </td>
-                        <td className="py-3 text-right">
-                          <select
-                            value={ord.orderStatus}
-                            onChange={(e) => updateOrderStatus(ord.id, e.target.value as OrderStatus)}
-                            className="text-xs p-1 rounded border border-slate-700 bg-slate-900 text-white font-mono cursor-pointer"
-                          >
-                            <option value="PENDING">PENDING</option>
-                            <option value="CONFIRMED">CONFIRMED</option>
-                            <option value="IN_PRODUCTION">IN PRODUCTION</option>
-                            <option value="SHIPPED">SHIPPED</option>
-                            <option value="DELIVERED">DELIVERED</option>
-                            <option value="CANCELLED">CANCELLED</option>
-                          </select>
-                        </td>
+              {orders.length === 0 ? (
+                <div className="py-12 text-center text-slate-500 font-mono text-xs space-y-2">
+                  <Package className="w-8 h-8 text-slate-600 mx-auto" />
+                  <p className="text-slate-400">No customer orders placed yet.</p>
+                  <p className="text-[11px] text-slate-500">Orders placed on the storefront will appear here live with instant status updates.</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs font-mono">
+                    <thead>
+                      <tr className="border-b border-slate-800 text-slate-400">
+                        <th className="pb-3 font-bold uppercase">ORDER ID</th>
+                        <th className="pb-3 font-bold uppercase">CUSTOMER</th>
+                        <th className="pb-3 font-bold uppercase">ITEMS</th>
+                        <th className="pb-3 font-bold uppercase">TOTAL</th>
+                        <th className="pb-3 font-bold uppercase">STATUS</th>
+                        <th className="pb-3 font-bold uppercase text-right">QUICK UPDATE</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="divide-y divide-slate-800/60">
+                      {orders.slice(0, 5).map((ord) => (
+                        <tr key={ord.id} className="hover:bg-slate-900/60 transition-colors">
+                          <td className="py-3 font-bold text-white">#{ord.id}</td>
+                          <td className="py-3 text-slate-300">
+                            <span className="font-bold block text-white">{ord.customer.name}</span>
+                            <span className="text-[10px] text-slate-400">{ord.customer.city}</span>
+                          </td>
+                          <td className="py-3 text-slate-300">
+                            {ord.items.length} styles ({ord.items.reduce((s, i) => s + i.quantity, 0)} pcs)
+                          </td>
+                          <td className="py-3 font-bold text-[#00ff87]">{formatPrice(ord.total)}</td>
+                          <td className="py-3">
+                            <span
+                              className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                                ord.orderStatus === 'DELIVERED'
+                                  ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
+                                  : ord.orderStatus === 'SHIPPED'
+                                  ? 'bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40'
+                                  : 'bg-amber-950 text-amber-400 border border-amber-800'
+                              }`}
+                            >
+                              {ord.orderStatus}
+                            </span>
+                          </td>
+                          <td className="py-3 text-right">
+                            <select
+                              value={ord.orderStatus}
+                              onChange={(e) => updateOrderStatus(ord.id, e.target.value as OrderStatus)}
+                              className="text-xs p-1 rounded border border-slate-700 bg-slate-900 text-white font-mono cursor-pointer"
+                            >
+                              <option value="PENDING">PENDING</option>
+                              <option value="CONFIRMED">CONFIRMED</option>
+                              <option value="IN_PRODUCTION">IN PRODUCTION</option>
+                              <option value="SHIPPED">SHIPPED</option>
+                              <option value="DELIVERED">DELIVERED</option>
+                              <option value="CANCELLED">CANCELLED</option>
+                            </select>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -421,71 +499,79 @@ export default function AdminDashboardView() {
             </div>
 
             {/* Orders Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs font-mono">
-                <thead>
-                  <tr className="border-b border-slate-800 text-slate-400">
-                    <th className="pb-3 font-bold uppercase">ORDER</th>
-                    <th className="pb-3 font-bold uppercase">DATE</th>
-                    <th className="pb-3 font-bold uppercase">CLIENT</th>
-                    <th className="pb-3 font-bold uppercase">PAYMENT</th>
-                    <th className="pb-3 font-bold uppercase">TOTAL</th>
-                    <th className="pb-3 font-bold uppercase">CURRENT STATUS</th>
-                    <th className="pb-3 font-bold uppercase text-right">ACTION</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60">
-                  {filteredOrders.map((ord) => (
-                    <tr key={ord.id} className="hover:bg-slate-900/60 transition-colors">
-                      <td className="py-4">
-                        <span className="font-extrabold text-white block">#{ord.id}</span>
-                        <span className="text-[10px] text-slate-400">{ord.trackingNumber}</span>
-                      </td>
-                      <td className="py-4 text-slate-400">{formatDate(ord.createdAt)}</td>
-                      <td className="py-4">
-                        <strong className="text-white block">{ord.customer.name}</strong>
-                        <span className="text-[10px] text-slate-400">{ord.customer.phone}</span>
-                      </td>
-                      <td className="py-4">
-                        <span className="font-bold text-white">{ord.paymentMethod}</span>
-                        <span className="text-[10px] text-[#00ff87] block">PAID</span>
-                      </td>
-                      <td className="py-4 font-mono font-extrabold text-[#00ff87]">
-                        {formatPrice(ord.total)}
-                      </td>
-                      <td className="py-4">
-                        <select
-                          value={ord.orderStatus}
-                          onChange={(e) => updateOrderStatus(ord.id, e.target.value as OrderStatus)}
-                          className={`text-xs font-mono font-bold p-1.5 rounded border ${
-                            ord.orderStatus === 'DELIVERED'
-                              ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
-                              : ord.orderStatus === 'SHIPPED'
-                              ? 'bg-[#00ff87]/20 text-[#00ff87] border-[#00ff87]'
-                              : 'bg-amber-950 text-amber-400 border-amber-800'
-                          }`}
-                        >
-                          <option value="PENDING">PENDING</option>
-                          <option value="CONFIRMED">CONFIRMED</option>
-                          <option value="IN_PRODUCTION">IN PRODUCTION</option>
-                          <option value="SHIPPED">SHIPPED</option>
-                          <option value="DELIVERED">DELIVERED</option>
-                          <option value="CANCELLED">CANCELLED</option>
-                        </select>
-                      </td>
-                      <td className="py-4 text-right">
-                        <button
-                          onClick={() => setSelectedOrder(ord)}
-                          className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:bg-[#00ff87] hover:text-[#06080e] text-white font-bold transition-colors"
-                        >
-                          VIEW INVOICE
-                        </button>
-                      </td>
+            {filteredOrders.length === 0 ? (
+              <div className="py-16 text-center text-slate-500 font-mono text-xs space-y-2">
+                <Package className="w-10 h-10 text-slate-600 mx-auto" />
+                <p className="text-slate-300 font-bold">No orders match the current filter.</p>
+                <p className="text-slate-500">Live orders placed on the storefront will appear here immediately.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400">
+                      <th className="pb-3 font-bold uppercase">ORDER</th>
+                      <th className="pb-3 font-bold uppercase">DATE</th>
+                      <th className="pb-3 font-bold uppercase">CLIENT</th>
+                      <th className="pb-3 font-bold uppercase">PAYMENT</th>
+                      <th className="pb-3 font-bold uppercase">TOTAL</th>
+                      <th className="pb-3 font-bold uppercase">CURRENT STATUS</th>
+                      <th className="pb-3 font-bold uppercase text-right">ACTION</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {filteredOrders.map((ord) => (
+                      <tr key={ord.id} className="hover:bg-slate-900/60 transition-colors">
+                        <td className="py-4">
+                          <span className="font-extrabold text-white block">#{ord.id}</span>
+                          <span className="text-[10px] text-slate-400">{ord.trackingNumber}</span>
+                        </td>
+                        <td className="py-4 text-slate-400">{formatDate(ord.createdAt)}</td>
+                        <td className="py-4">
+                          <strong className="text-white block">{ord.customer.name}</strong>
+                          <span className="text-[10px] text-slate-400">{ord.customer.phone}</span>
+                        </td>
+                        <td className="py-4">
+                          <span className="font-bold text-white">{ord.paymentMethod}</span>
+                          <span className="text-[10px] text-[#00ff87] block">{ord.paymentStatus}</span>
+                        </td>
+                        <td className="py-4 font-mono font-extrabold text-[#00ff87]">
+                          {formatPrice(ord.total)}
+                        </td>
+                        <td className="py-4">
+                          <select
+                            value={ord.orderStatus}
+                            onChange={(e) => updateOrderStatus(ord.id, e.target.value as OrderStatus)}
+                            className={`text-xs font-mono font-bold p-1.5 rounded border ${
+                              ord.orderStatus === 'DELIVERED'
+                                ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
+                                : ord.orderStatus === 'SHIPPED'
+                                ? 'bg-[#00ff87]/20 text-[#00ff87] border-[#00ff87]'
+                                : 'bg-amber-950 text-amber-400 border-amber-800'
+                            }`}
+                          >
+                            <option value="PENDING">PENDING</option>
+                            <option value="CONFIRMED">CONFIRMED</option>
+                            <option value="IN_PRODUCTION">IN PRODUCTION</option>
+                            <option value="SHIPPED">SHIPPED</option>
+                            <option value="DELIVERED">DELIVERED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                          </select>
+                        </td>
+                        <td className="py-4 text-right">
+                          <button
+                            onClick={() => setSelectedOrder(ord)}
+                            className="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 hover:bg-[#00ff87] hover:text-[#06080e] text-white font-bold transition-colors"
+                          >
+                            VIEW INVOICE
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
@@ -590,141 +676,153 @@ export default function AdminDashboardView() {
           </div>
         )}
 
-        {/* TAB 4: B2B INQUIRIES & QUOTES */}
+        {/* TAB 4: INQUIRIES & QUOTES */}
         {activeTab === 'quotes' && (
           <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-lg space-y-5">
             <div className="flex justify-between items-center">
               <div>
                 <h3 className="font-mono font-bold text-base uppercase text-white">
-                  RETAIL PERSONALIZATION & BESPOKE INQUIRIES
+                  RETAIL PERSONALIZATION & BESPOKE INQUIRIES ({inquiries.length})
                 </h3>
-                <span className="text-xs font-mono text-slate-400">Submitted by store visitors</span>
+                <span className="text-xs font-mono text-slate-400">Live inquiries submitted by customers</span>
               </div>
             </div>
 
-            <div className="space-y-4">
-              {inquiries.map((inq) => (
-                <div
-                  key={inq.id}
-                  className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 transition-all space-y-3"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <strong className="text-sm font-bold font-mono text-white">
-                          {inq.companyName}
-                        </strong>
-                        <span className="text-xs font-mono text-slate-400">({inq.contactName})</span>
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                            inq.status === 'QUOTE_ISSUED'
-                              ? 'bg-[#00ff87]/20 text-[#00ff87]'
-                              : 'bg-amber-950 text-amber-400 border border-amber-800'
-                          }`}
-                        >
-                          {inq.status}
+            {inquiries.length === 0 ? (
+              <div className="py-16 text-center text-slate-500 font-mono text-xs space-y-2">
+                <MessageSquare className="w-10 h-10 text-slate-600 mx-auto" />
+                <p className="text-slate-300 font-bold">No custom inquiries received yet.</p>
+                <p className="text-slate-500">Bespoke personalization requests submitted via the storefront will appear here.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {inquiries.map((inq) => (
+                  <div
+                    key={inq.id}
+                    className="p-5 rounded-2xl border border-slate-800 bg-slate-900/60 hover:bg-slate-900 transition-all space-y-3"
+                  >
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <strong className="text-sm font-bold font-mono text-white">
+                            {inq.companyName}
+                          </strong>
+                          <span className="text-xs font-mono text-slate-400">({inq.contactName})</span>
+                          <span
+                            className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
+                              inq.status === 'QUOTE_ISSUED'
+                                ? 'bg-[#00ff87]/20 text-[#00ff87]'
+                                : 'bg-amber-950 text-amber-400 border border-amber-800'
+                            }`}
+                          >
+                            {inq.status}
+                          </span>
+                        </div>
+                        <span className="text-xs font-mono text-slate-400">
+                          Email: {inq.email} • Phone: {inq.phone} • Submitted {formatDate(inq.createdAt)}
                         </span>
                       </div>
-                      <span className="text-xs font-mono text-slate-400">
-                        Email: {inq.email} • Phone: {inq.phone} • Submitted {formatDate(inq.createdAt)}
-                      </span>
+
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={inq.status}
+                          onChange={(e) => updateInquiryStatus(inq.id, e.target.value as any)}
+                          className="p-1.5 rounded border border-slate-700 bg-slate-900 text-white font-mono text-xs"
+                        >
+                          <option value="PENDING_REVIEW">PENDING REVIEW</option>
+                          <option value="QUOTE_ISSUED">QUOTE ISSUED</option>
+                          <option value="SAMPLING">SAMPLING</option>
+                          <option value="APPROVED">APPROVED</option>
+                          <option value="CLOSED">CLOSED</option>
+                        </select>
+
+                        <a
+                          href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(
+                            inq.contactName
+                          )}%2C%20Slate%20Apparels%20New%20Delhi%20is%20contacting%20you%20regarding%20inquiry%20${inq.id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold transition-all flex items-center gap-1.5 shadow-neon-sm"
+                        >
+                          <MessageSquare className="w-3.5 h-3.5" />
+                          <span>WHATSAPP CLIENT</span>
+                        </a>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      <select
-                        value={inq.status}
-                        onChange={(e) => updateInquiryStatus(inq.id, e.target.value as any)}
-                        className="p-1.5 rounded border border-slate-700 bg-slate-900 text-white font-mono text-xs"
-                      >
-                        <option value="PENDING_REVIEW">PENDING REVIEW</option>
-                        <option value="QUOTE_ISSUED">QUOTE ISSUED</option>
-                        <option value="SAMPLING">SAMPLING</option>
-                        <option value="APPROVED">APPROVED</option>
-                        <option value="CLOSED">CLOSED</option>
-                      </select>
-
-                      <a
-                        href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(
-                          inq.contactName
-                        )}%2C%20Slate%20Apparels%20New%20Delhi%20is%20contacting%20you%20regarding%20inquiry%20${inq.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold transition-all flex items-center gap-1.5 shadow-neon-sm"
-                      >
-                        <MessageSquare className="w-3.5 h-3.5" />
-                        <span>WHATSAPP CLIENT</span>
-                      </a>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono">
+                      <div>
+                        <span className="text-slate-400 block">PRODUCT:</span>
+                        <strong className="text-white">{inq.productInterested}</strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block">REQUESTED QUANTITY:</span>
+                        <strong className="text-white">{inq.estimatedQuantity} pieces</strong>
+                      </div>
+                      <div>
+                        <span className="text-slate-400 block">QUOTED REVENUE:</span>
+                        <strong className="text-[#00ff87]">
+                          {inq.quotedPrice ? formatPrice(inq.quotedPrice) : 'Pending Quote'}
+                        </strong>
+                      </div>
+                      <div className="sm:col-span-3 pt-1 border-t border-slate-800">
+                        <span className="text-slate-400">CUSTOM SPECS:</span> <span className="text-slate-300">{inq.customizationDetails}</span>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs font-mono">
-                    <div>
-                      <span className="text-slate-400 block">PRODUCT:</span>
-                      <strong className="text-white">{inq.productInterested}</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block">REQUESTED QUANTITY:</span>
-                      <strong className="text-white">{inq.estimatedQuantity} pieces</strong>
-                    </div>
-                    <div>
-                      <span className="text-slate-400 block">QUOTED REVENUE:</span>
-                      <strong className="text-[#00ff87]">
-                        {inq.quotedPrice ? formatPrice(inq.quotedPrice) : 'Pending Quote'}
-                      </strong>
-                    </div>
-                    <div className="sm:col-span-3 pt-1 border-t border-slate-800">
-                      <span className="text-slate-400">CUSTOM SPECS:</span> <span className="text-slate-300">{inq.customizationDetails}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
-        {/* TAB 5: CLIENT DIRECTORY */}
+        {/* TAB 5: CLIENT DIRECTORY - Derived from genuine customer orders */}
         {activeTab === 'customers' && (
           <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-lg space-y-5">
             <h3 className="font-mono font-bold text-base uppercase text-white">
-              REGISTERED CLIENTS & VIP BUYERS
+              VERIFIED CUSTOMER DIRECTORY ({dynamicClients.length})
             </h3>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs font-mono">
-                <thead>
-                  <tr className="border-b border-slate-800 text-slate-400">
-                    <th className="pb-3 font-bold uppercase">CLIENT NAME</th>
-                    <th className="pb-3 font-bold uppercase">COMPANY</th>
-                    <th className="pb-3 font-bold uppercase">CONTACT</th>
-                    <th className="pb-3 font-bold uppercase">ORDERS PLACED</th>
-                    <th className="pb-3 font-bold uppercase">LIFETIME SPEND</th>
-                    <th className="pb-3 font-bold uppercase">TIER</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/60">
-                  {[
-                    { name: 'Arjun Malhotra', company: 'NEOM Retail Partner LLP', email: 'arjun@retailbrands.in', phone: '+91 98110 54321', orders: 2, spent: 6796, tier: 'RETAIL VIP' },
-                    { name: 'Rohit Verma', company: 'Apex Streetwear Mumbai', email: 'rohit@apexstreet.in', phone: '+91 98200 44112', orders: 5, spent: 142500, tier: 'ENTERPRISE VIP' },
-                    { name: 'Priya Sundaram', company: 'Velocity Athletic Club', email: 'priya@velocityclub.com', phone: '+91 97110 88231', orders: 1, spent: 28900, tier: 'TIER 1 CLIENT' },
-                  ].map((cli, idx) => (
-                    <tr key={idx} className="hover:bg-slate-900/60 transition-colors">
-                      <td className="py-3 font-bold text-white">{cli.name}</td>
-                      <td className="py-3 text-slate-300">{cli.company}</td>
-                      <td className="py-3 text-slate-400">
-                        {cli.email}<br />{cli.phone}
-                      </td>
-                      <td className="py-3 font-bold text-white">{cli.orders} orders</td>
-                      <td className="py-3 font-bold text-[#00ff87]">{formatPrice(cli.spent)}</td>
-                      <td className="py-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/30">
-                          {cli.tier}
-                        </span>
-                      </td>
+            {dynamicClients.length === 0 ? (
+              <div className="py-16 text-center text-slate-500 font-mono text-xs space-y-2">
+                <Users className="w-10 h-10 text-slate-600 mx-auto" />
+                <p className="text-slate-300 font-bold">No registered customer orders yet.</p>
+                <p className="text-slate-500">Customer profiles, contact numbers, and lifetime spend will index here as orders are placed.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400">
+                      <th className="pb-3 font-bold uppercase">CUSTOMER NAME</th>
+                      <th className="pb-3 font-bold uppercase">CITY</th>
+                      <th className="pb-3 font-bold uppercase">CONTACT</th>
+                      <th className="pb-3 font-bold uppercase">ORDERS PLACED</th>
+                      <th className="pb-3 font-bold uppercase">LIFETIME SPEND</th>
+                      <th className="pb-3 font-bold uppercase">STATUS</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {dynamicClients.map((cli, idx) => (
+                      <tr key={idx} className="hover:bg-slate-900/60 transition-colors">
+                        <td className="py-3 font-bold text-white">{cli.name}</td>
+                        <td className="py-3 text-slate-300">{cli.city || 'India'}</td>
+                        <td className="py-3 text-slate-400">
+                          {cli.email}<br />{cli.phone}
+                        </td>
+                        <td className="py-3 font-bold text-white">{cli.ordersCount} orders</td>
+                        <td className="py-3 font-bold text-[#00ff87]">{formatPrice(cli.lifetimeSpend)}</td>
+                        <td className="py-3">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/30">
+                            VERIFIED BUYER
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 

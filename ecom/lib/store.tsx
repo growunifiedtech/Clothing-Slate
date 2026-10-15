@@ -98,6 +98,14 @@ export interface BulkInquiry {
   quotedPrice?: number;
 }
 
+export interface UserProfile {
+  name: string;
+  email: string;
+  phone: string;
+  gstin?: string;
+  companyName?: string;
+}
+
 interface StoreContextType {
   // Products
   products: Product[];
@@ -151,164 +159,19 @@ interface StoreContextType {
   submitInquiry: (inquiry: Omit<BulkInquiry, 'id' | 'createdAt' | 'status'>) => void;
   updateInquiryStatus: (id: string, status: BulkInquiry['status'], quotedPrice?: number) => void;
 
+  // User Profile
+  userProfile: UserProfile;
+  updateUserProfile: (profile: Partial<UserProfile>) => void;
+
   // Global Toast
   toastMessage: string | null;
   showToast: (msg: string) => void;
 }
 
 const DEFAULT_COUPONS: Coupon[] = [
-  { code: 'NEON10', discountPercent: 10, description: '10% OFF on all orders' },
-  { code: 'SLATE20', discountPercent: 20, description: '20% OFF on orders above ₹2,500' },
-  { code: 'FIRSTDROP', discountPercent: 15, description: '15% OFF for new brand launches' },
-];
-
-const INITIAL_ADDRESSES: Address[] = [
-  {
-    id: 'addr-1',
-    fullName: 'Arjun Malhotra',
-    phone: '+91 98110 54321',
-    street: 'B-42, Defence Colony, Flyover Road',
-    city: 'New Delhi',
-    state: 'Delhi',
-    pincode: '110024',
-    isDefault: true,
-    type: 'OFFICE',
-  },
-  {
-    id: 'addr-2',
-    fullName: 'Arjun Malhotra',
-    phone: '+91 98110 54321',
-    street: 'House 18, Block C, Vasant Vihar',
-    city: 'New Delhi',
-    state: 'Delhi',
-    pincode: '110057',
-    isDefault: false,
-    type: 'HOME',
-  },
-];
-
-const INITIAL_ORDERS: Order[] = [
-  {
-    id: 'SLT-89240',
-    createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-    customer: {
-      name: 'Arjun Malhotra',
-      email: 'arjun.malhotra@retailbrands.in',
-      phone: '+91 98110 54321',
-      address: 'B-42, Defence Colony, Flyover Road',
-      city: 'New Delhi',
-      state: 'Delhi',
-      pincode: '110024',
-    },
-    items: [
-      {
-        productId: 'oversized-hoodies',
-        name: 'Oversized Hoodies',
-        image: '/images/products/oversized-hoodies-2.jpg',
-        size: 'L',
-        color: 'Rich Plum',
-        quantity: 1,
-        price: 1499,
-      },
-      {
-        productId: 'balloon-fit-trackpants',
-        name: 'Balloon Fit Trackpants',
-        image: '/images/products/balloon-fit-trackpants-2.jpg',
-        size: 'M',
-        color: 'Pitch Black',
-        quantity: 1,
-        price: 999,
-      },
-    ],
-    subtotal: 2498,
-    discount: 250,
-    tax: 112,
-    shipping: 0,
-    total: 2360,
-    paymentMethod: 'UPI',
-    paymentStatus: 'PAID',
-    orderStatus: 'SHIPPED',
-    trackingNumber: 'DEL-EXP-99201548',
-    carrier: 'BlueDart Express Air',
-    timeline: [
-      { status: 'PENDING', title: 'Order Placed & Verified', time: '2 days ago, 10:15 AM', completed: true },
-      { status: 'CONFIRMED', title: 'Payment Confirmed via UPI', time: '2 days ago, 10:16 AM', completed: true },
-      { status: 'IN_PRODUCTION', title: 'Quality Audited & Packaged at Okhla Hub', time: 'Yesterday, 03:30 PM', completed: true },
-      { status: 'SHIPPED', title: 'Handed to BlueDart Express Air', time: 'Today, 08:45 AM', completed: true },
-      { status: 'DELIVERED', title: 'Out for Delivery to Client Address', time: 'Estimated Tomorrow', completed: false },
-    ],
-  },
-  {
-    id: 'SLT-78104',
-    createdAt: new Date(Date.now() - 86400000 * 5).toISOString(),
-    customer: {
-      name: 'Arjun Malhotra',
-      email: 'arjun.malhotra@retailbrands.in',
-      phone: '+91 98110 54321',
-      address: 'B-42, Defence Colony, Flyover Road',
-      city: 'New Delhi',
-      state: 'Delhi',
-      pincode: '110024',
-    },
-    items: [
-      {
-        productId: 'oversized-t-shirt-drop-shoulder',
-        name: 'Oversized T-Shirt (Drop Shoulder)',
-        image: '/images/products/oversized-t-shirt-drop-shoulder-1.jpg',
-        size: 'XL',
-        color: 'Sage Olive',
-        quantity: 2,
-        price: 699,
-      },
-    ],
-    subtotal: 1398,
-    discount: 140,
-    tax: 63,
-    shipping: 0,
-    total: 1321,
-    paymentMethod: 'CARD',
-    paymentStatus: 'PAID',
-    orderStatus: 'DELIVERED',
-    trackingNumber: 'DTDC-AIR-4412098',
-    carrier: 'DTDC Express',
-    timeline: [
-      { status: 'PENDING', title: 'Order Placed', time: '5 days ago', completed: true },
-      { status: 'CONFIRMED', title: 'Order Confirmed', time: '5 days ago', completed: true },
-      { status: 'IN_PRODUCTION', title: 'Packed & Dispatched', time: '4 days ago', completed: true },
-      { status: 'SHIPPED', title: 'In Transit', time: '3 days ago', completed: true },
-      { status: 'DELIVERED', title: 'Delivered & Signed', time: '2 days ago', completed: true },
-    ],
-  },
-];
-
-const INITIAL_INQUIRIES: BulkInquiry[] = [
-  {
-    id: 'INQ-1049',
-    createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-    companyName: 'Apex Streetwear Mumbai',
-    contactName: 'Rohit Verma',
-    email: 'rohit@apexstreet.in',
-    phone: '+91 98200 44112',
-    productInterested: 'Oversized Heavyweight T-Shirts & Pullover Hoodies',
-    estimatedQuantity: 250,
-    targetDate: '15 Nov 2026',
-    customizationDetails: 'Custom 50-denier woven neck labels + high-density screen printing on back.',
-    status: 'QUOTE_ISSUED',
-    quotedPrice: 162500,
-  },
-  {
-    id: 'INQ-1052',
-    createdAt: new Date(Date.now() - 86400000 * 1).toISOString(),
-    companyName: 'Velocity Athletic Club',
-    contactName: 'Priya Sundaram',
-    email: 'priya@velocityclub.com',
-    phone: '+91 97110 88231',
-    productInterested: 'OmniHeat Thermal Reflective Tracksuit Sets',
-    estimatedQuantity: 100,
-    targetDate: '30 Nov 2026',
-    customizationDetails: 'Embroidered crest on left chest and reflective 3M stripes on calves.',
-    status: 'PENDING_REVIEW',
-  },
+  { code: 'NEON10', discountPercent: 10, description: '10% OFF on all retail orders' },
+  { code: 'SLATE20', discountPercent: 20, description: '20% OFF on retail orders above ₹2,500' },
+  { code: 'FIRSTDROP', discountPercent: 15, description: '15% OFF on your first purchase' },
 ];
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -317,14 +180,21 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [products, setProducts] = useState<Product[]>(ECOM_PRODUCTS);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [wishlist, setWishlist] = useState<string[]>(['oversized-hoodies', 'puffer-jackets']);
-  const [orders, setOrders] = useState<Order[]>(INITIAL_ORDERS);
-  const [addresses, setAddresses] = useState<Address[]>(INITIAL_ADDRESSES);
-  const [inquiries, setInquiries] = useState<BulkInquiry[]>(INITIAL_INQUIRIES);
+  const [wishlist, setWishlist] = useState<string[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [inquiries, setInquiries] = useState<BulkInquiry[]>([]);
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    name: '',
+    email: '',
+    phone: '',
+    gstin: '',
+    companyName: '',
+  });
   const [appliedCoupon, setAppliedCoupon] = useState<Coupon | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Initialize from LocalStorage safely on mount
+  // Initialize from LocalStorage safely on mount and purge any legacy mock data
   useEffect(() => {
     try {
       const savedCart = localStorage.getItem('slate_cart');
@@ -334,7 +204,41 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       if (savedWishlist) setWishlist(JSON.parse(savedWishlist));
 
       const savedOrders = localStorage.getItem('slate_orders');
-      if (savedOrders) setOrders(JSON.parse(savedOrders));
+      if (savedOrders) {
+        const parsedOrders: Order[] = JSON.parse(savedOrders);
+        // Purge dummy/mock orders from earlier development versions
+        const cleaned = parsedOrders.filter(
+          (o) => o.id !== 'SLT-89240' && o.id !== 'SLT-78104' && o.customer?.name !== 'Arjun Malhotra'
+        );
+        setOrders(cleaned);
+        localStorage.setItem('slate_orders', JSON.stringify(cleaned));
+      }
+
+      const savedAddresses = localStorage.getItem('slate_addresses');
+      if (savedAddresses) {
+        const parsedAddresses: Address[] = JSON.parse(savedAddresses);
+        const cleaned = parsedAddresses.filter((a) => a.fullName !== 'Arjun Malhotra');
+        setAddresses(cleaned);
+        localStorage.setItem('slate_addresses', JSON.stringify(cleaned));
+      }
+
+      const savedInquiries = localStorage.getItem('slate_inquiries');
+      if (savedInquiries) {
+        const parsedInquiries: BulkInquiry[] = JSON.parse(savedInquiries);
+        const cleaned = parsedInquiries.filter(
+          (i) => i.id !== 'INQ-1049' && i.id !== 'INQ-1052' && i.companyName !== 'Apex Streetwear Mumbai'
+        );
+        setInquiries(cleaned);
+        localStorage.setItem('slate_inquiries', JSON.stringify(cleaned));
+      }
+
+      const savedProfile = localStorage.getItem('slate_user_profile');
+      if (savedProfile) {
+        const parsedProfile: UserProfile = JSON.parse(savedProfile);
+        if (parsedProfile.name !== 'Arjun Malhotra') {
+          setUserProfile(parsedProfile);
+        }
+      }
 
       const savedProducts = localStorage.getItem('slate_products');
       if (savedProducts) setProducts(JSON.parse(savedProducts));
@@ -361,6 +265,24 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       localStorage.setItem('slate_orders', JSON.stringify(orders));
     } catch (e) {}
   }, [orders]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('slate_addresses', JSON.stringify(addresses));
+    } catch (e) {}
+  }, [addresses]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('slate_inquiries', JSON.stringify(inquiries));
+    } catch (e) {}
+  }, [inquiries]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('slate_user_profile', JSON.stringify(userProfile));
+    } catch (e) {}
+  }, [userProfile]);
 
   useEffect(() => {
     try {
@@ -415,13 +337,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       ];
     });
 
-    showToast(`Added ${quantity}x ${product.name} (${size}) to Cart`);
+    showToast(`Added ${quantity}x ${product.name} (${size}) to Bag`);
     setIsCartOpen(true);
   };
 
   const removeFromCart = (cartItemId: string) => {
     setCart((prev) => prev.filter((item) => item.id !== cartItemId));
-    showToast('Item removed from cart');
+    showToast('Item removed from bag');
   };
 
   const updateCartQuantity = (cartItemId: string, delta: number) => {
@@ -482,7 +404,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     customer: Order['customer'];
     paymentMethod: Order['paymentMethod'];
     notes?: string;
-  }): Order => {
+  }) => {
     const newOrderId = generateOrderId();
     const now = new Date();
 
@@ -509,7 +431,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       paymentMethod: orderData.paymentMethod,
       paymentStatus: orderData.paymentMethod === 'COD' ? 'PENDING' : 'PAID',
       orderStatus: 'CONFIRMED',
-      trackingNumber: `EXP-${Math.floor(10000000 + Math.random() * 90000000)}`,
+      trackingNumber: `BD-AIR-${Math.floor(10000000 + Math.random() * 90000000)}`,
       carrier: 'BlueDart Express Air',
       notes: orderData.notes,
       timeline: [
@@ -521,25 +443,25 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         },
         {
           status: 'CONFIRMED',
-          title: 'Payment & Details Confirmed',
+          title: 'Payment & Order Details Verified',
           time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
           completed: true,
         },
         {
           status: 'IN_PRODUCTION',
-          title: 'Staging in Production Floor',
-          time: 'Upcoming within 24h',
+          title: 'Quality Check & Packaged at Okhla Hub',
+          time: 'Within 24 Hours',
           completed: false,
         },
         {
           status: 'SHIPPED',
-          title: 'Courier Pickup & Air Freight',
+          title: 'Dispatched via BlueDart Express Air',
           time: 'Upcoming',
           completed: false,
         },
         {
           status: 'DELIVERED',
-          title: 'Delivery to Address',
+          title: 'Delivered to Destination',
           time: 'Estimated 2-3 Business Days',
           completed: false,
         },
@@ -547,9 +469,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     };
 
     setOrders((prev) => [newOrder, ...prev]);
+
+    // Automatically update user profile with genuine customer details if not yet configured
+    setUserProfile((prev) => ({
+      ...prev,
+      name: prev.name || orderData.customer.name,
+      email: prev.email || orderData.customer.email,
+      phone: prev.phone || orderData.customer.phone,
+    }));
+
     clearCart();
     setAppliedCoupon(null);
-    showToast(`Order ${newOrderId} placed successfully!`);
+    showToast(`Order #${newOrderId} placed successfully!`);
 
     return newOrder;
   };
@@ -573,7 +504,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         return ord;
       })
     );
-    showToast(`Order ${orderId} status updated to ${newStatus}`);
+    showToast(`Order ${orderId} updated to ${newStatus}`);
   };
 
   const getOrderById = (orderId: string) => orders.find((o) => o.id === orderId);
@@ -589,7 +520,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     } else {
       setAddresses((prev) => [...prev, newAddr]);
     }
-    showToast('Shipping address saved');
+    showToast('Delivery address saved');
   };
 
   const updateAddress = (id: string, updated: Partial<Address>) => {
@@ -609,7 +540,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const deleteAddress = (id: string) => {
     setAddresses((prev) => prev.filter((a) => a.id !== id));
-    showToast('Address deleted');
+    showToast('Address removed');
   };
 
   const setDefaultAddress = (id: string) => {
@@ -619,7 +550,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         isDefault: a.id === id,
       }))
     );
-    showToast('Default shipping address updated');
+    showToast('Default delivery address updated');
   };
 
   // Products CRUD for Admin
@@ -656,7 +587,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       status: 'PENDING_REVIEW',
     };
     setInquiries((prev) => [newInquiry, ...prev]);
-    showToast('Bulk inquiry submitted. Production team will respond within 4 hours.');
+    showToast('Inquiry submitted to Slate Concierge Desk.');
   };
 
   const updateInquiryStatus = (id: string, status: BulkInquiry['status'], quotedPrice?: number) => {
@@ -668,6 +599,15 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       )
     );
     showToast(`Inquiry ${id} updated to ${status}`);
+  };
+
+  // User Profile
+  const updateUserProfile = (profile: Partial<UserProfile>) => {
+    setUserProfile((prev) => {
+      const updated = { ...prev, ...profile };
+      return updated;
+    });
+    showToast('Profile updated successfully');
   };
 
   return (
@@ -709,6 +649,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         inquiries,
         submitInquiry,
         updateInquiryStatus,
+        userProfile,
+        updateUserProfile,
         toastMessage,
         showToast,
       }}
