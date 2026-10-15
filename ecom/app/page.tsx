@@ -10,7 +10,7 @@ import ProductCard from '@/components/store/ProductCard';
 import ProductQuickViewModal from '@/components/store/ProductQuickViewModal';
 import WholesaleBanner from '@/components/store/WholesaleBanner';
 import ReviewsSection from '@/components/store/ReviewsSection';
-import { ArrowRight, Sparkles, Zap, Flame } from 'lucide-react';
+import { ArrowRight, Flame } from 'lucide-react';
 
 export default function HomePage() {
   const { products } = useStore();
@@ -27,7 +27,7 @@ export default function HomePage() {
     .slice(0, 8);
 
   return (
-    <div className="select-none">
+    <div className="select-none bg-[#06080e] text-slate-100 min-h-screen">
       {/* 1. Hero Banner */}
       <HeroBanner />
 
@@ -35,16 +35,19 @@ export default function HomePage() {
       <FeaturedCategories />
 
       {/* 3. Featured Products Drop Showcase */}
-      <section className="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-24 bg-[#06080e] border-b border-slate-800 relative overflow-hidden">
+        {/* Glow accent */}
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-[#00ff87]/5 rounded-full blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Header & Tab Selector */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-slate-200 gap-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-slate-800 gap-6">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white text-[10px] font-mono font-bold tracking-widest text-slate-700 uppercase border border-slate-200 shadow-sm mb-2">
-                <Flame className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-[10px] font-mono font-bold tracking-widest text-[#00ff87] uppercase border border-slate-700 shadow-neon-sm mb-2">
+                <Flame className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
                 TRENDING AUTUMN/WINTER RELEASES
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-950 uppercase font-sans tracking-tight">
+              <h2 className="text-2xl sm:text-4xl font-extrabold text-white uppercase font-sans tracking-tight">
                 FEATURED PRODUCTION DROPS
               </h2>
             </div>
@@ -57,8 +60,8 @@ export default function HomePage() {
                   onClick={() => setActiveCategoryTab(cat)}
                   className={`px-3.5 py-1.5 rounded-full transition-all flex-shrink-0 ${
                     activeCategoryTab === cat
-                      ? 'bg-[#0b0f19] text-white shadow-sm'
-                      : 'bg-white text-slate-600 hover:text-slate-950 border border-slate-200'
+                      ? 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold'
+                      : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-700'
                   }`}
                 >
                   {cat}
@@ -67,7 +70,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Product Cards Grid (4 across) */}
+          {/* Product Cards Grid (4 across, perfectly aligned with aspect-[4/5] photos) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {displayedProducts.map((prod) => (
               <ProductCard
@@ -82,7 +85,7 @@ export default function HomePage() {
           <div className="mt-12 text-center">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-lifted"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon"
             >
               <span>VIEW FULL 18 STYLES CATALOG</span>
               <ArrowRight className="w-4 h-4" />
@@ -91,10 +94,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. B2B Wholesale Banner */}
+      {/* 4. Retail Club & Custom Personalization Banner */}
       <WholesaleBanner />
 
-      {/* 5. Verified Client Reviews */}
+      {/* 5. Verified Retail Customer Reviews */}
       <ReviewsSection />
 
       {/* Quick View Modal */}

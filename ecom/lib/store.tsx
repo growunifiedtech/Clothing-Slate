@@ -203,28 +203,28 @@ const INITIAL_ORDERS: Order[] = [
     items: [
       {
         productId: 'oversized-hoodies',
-        name: 'Heavy Fleece Oversized Pullover Hoodie',
-        image: '/images/products/oversized-hoodies-1.jpg',
+        name: 'Oversized Hoodies',
+        image: '/images/products/oversized-hoodies-2.jpg',
         size: 'L',
-        color: 'Jet Black',
-        quantity: 2,
+        color: 'Rich Plum',
+        quantity: 1,
         price: 1499,
       },
       {
         productId: 'balloon-fit-trackpants',
-        name: 'Architectural Balloon Fit Wide Trackpants',
-        image: '/images/products/balloon-fit-trackpants-1.jpg',
+        name: 'Balloon Fit Trackpants',
+        image: '/images/products/balloon-fit-trackpants-2.jpg',
         size: 'M',
         color: 'Pitch Black',
         quantity: 1,
         price: 999,
       },
     ],
-    subtotal: 3997,
-    discount: 399,
-    tax: 179,
+    subtotal: 2498,
+    discount: 250,
+    tax: 112,
     shipping: 0,
-    total: 3777,
+    total: 2360,
     paymentMethod: 'UPI',
     paymentStatus: 'PAID',
     orderStatus: 'SHIPPED',
@@ -233,7 +233,7 @@ const INITIAL_ORDERS: Order[] = [
     timeline: [
       { status: 'PENDING', title: 'Order Placed & Verified', time: '2 days ago, 10:15 AM', completed: true },
       { status: 'CONFIRMED', title: 'Payment Confirmed via UPI', time: '2 days ago, 10:16 AM', completed: true },
-      { status: 'IN_PRODUCTION', title: 'Quality Audited & Packaged at Okhla Floor', time: 'Yesterday, 03:30 PM', completed: true },
+      { status: 'IN_PRODUCTION', title: 'Quality Audited & Packaged at Okhla Hub', time: 'Yesterday, 03:30 PM', completed: true },
       { status: 'SHIPPED', title: 'Handed to BlueDart Express Air', time: 'Today, 08:45 AM', completed: true },
       { status: 'DELIVERED', title: 'Out for Delivery to Client Address', time: 'Estimated Tomorrow', completed: false },
     ],
@@ -253,19 +253,19 @@ const INITIAL_ORDERS: Order[] = [
     items: [
       {
         productId: 'oversized-t-shirt-drop-shoulder',
-        name: 'Oversized Heavyweight T-Shirt (Drop Shoulder)',
+        name: 'Oversized T-Shirt (Drop Shoulder)',
         image: '/images/products/oversized-t-shirt-drop-shoulder-1.jpg',
         size: 'XL',
         color: 'Sage Olive',
-        quantity: 4,
-        price: 799,
+        quantity: 2,
+        price: 699,
       },
     ],
-    subtotal: 3196,
-    discount: 320,
-    tax: 143,
+    subtotal: 1398,
+    discount: 140,
+    tax: 63,
     shipping: 0,
-    total: 3019,
+    total: 1321,
     paymentMethod: 'CARD',
     paymentStatus: 'PAID',
     orderStatus: 'DELIVERED',
@@ -383,8 +383,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     ? Math.round((cartSubtotal * appliedCoupon.discountPercent) / 100)
     : 0;
 
-  // Free shipping over ₹1,999, else ₹149
-  const shippingFee = cartSubtotal > 1999 || cartSubtotal === 0 ? 0 : 149;
+  // Free retail express delivery over ₹999, else ₹99 standard shipping
+  const shippingFee = cartSubtotal >= 999 || cartSubtotal === 0 ? 0 : 99;
   const taxAmount = Math.round((cartSubtotal - discountAmount) * 0.05); // 5% Apparel GST
   const grandTotal = Math.max(0, cartSubtotal - discountAmount + shippingFee + taxAmount);
 

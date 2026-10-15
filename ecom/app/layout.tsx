@@ -8,8 +8,8 @@ import CartDrawer from '@/components/store/CartDrawer';
 import ToastContainer from '@/components/ui/ToastContainer';
 
 export const metadata: Metadata = {
-  title: 'SLATE APPARELS | E-Commerce & B2B Production Store',
-  description: 'High-density combed cotton silhouettes, heavy fleece hoodies, selvedge denim jackets, and luxury activewear. B2B volume pricing and direct-to-consumer dispatch.',
+  title: 'SLATE APPARELS | Luxury Retail Streetwear Store & Online Drops',
+  description: 'Pure cotton heavyweight fleece hoodies, drop shoulder t-shirts, selvedge denim jackets, and tailored joggers. Direct retail purchasing with free express home delivery across India.',
   icons: {
     icon: '/favicon.ico',
   },
@@ -21,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans">
+    <html lang="en" className="dark">
+      <body className="min-h-screen flex flex-col bg-[#06080e] text-slate-100 font-sans antialiased selection:bg-[#00ff87] selection:text-[#06080e]">
         <StoreProvider>
           <AnnouncementBar />
           <Navbar />

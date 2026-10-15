@@ -1,15 +1,10 @@
 export interface ProductSpecification {
   gsm?: string;
-  composition: string;
-  fit: string;
+  composition?: string;
+  fit?: string;
+  customization?: string[];
   weave?: string;
   washCare?: string;
-}
-
-export interface BulkTier {
-  minQty: number;
-  discountPercentage: number;
-  pricePerUnit: number;
 }
 
 export interface Product {
@@ -20,8 +15,8 @@ export interface Product {
   subcategory: string;
   season: 'Winter' | 'Summer' | 'All Season';
   badge?: 'BESTSELLER' | 'NEW DROP' | 'HOT SELLER' | 'HEAVYWEIGHT' | 'LIMITED' | 'ORGANIC';
-  price: number; // in INR ₹
-  compareAtPrice: number; // Strikethrough price
+  price: number; // in INR ₹ for retail selling
+  compareAtPrice: number; // Retail MSRP strikethrough
   stockCount: number;
   rating: number;
   reviewsCount: number;
@@ -31,7 +26,6 @@ export interface Product {
   sizes: string[];
   images: string[];
   featured?: boolean;
-  bulkTiers: BulkTier[];
   specifications: ProductSpecification;
   sku: string;
 }
@@ -41,23 +35,23 @@ export const ECOM_PRODUCTS: Product[] = [
   {
     id: 'oversized-t-shirt-drop-shoulder',
     slug: 'oversized-t-shirt-drop-shoulder',
-    name: 'Oversized Heavyweight T-Shirt (Drop Shoulder)',
+    name: 'Oversized T-Shirt (Drop Shoulder)',
     category: 'T-SHIRTS',
-    subcategory: 'Streetwear Knits',
+    subcategory: 'T-Shirts',
     season: 'All Season',
     badge: 'BESTSELLER',
-    price: 799,
-    compareAtPrice: 1499,
-    stockCount: 142,
+    price: 699,
+    compareAtPrice: 1199,
+    stockCount: 140,
     rating: 4.9,
     reviewsCount: 84,
-    description: 'Heavy-density combed cotton with an exaggerated drop-shoulder drape, wide 1.25" ribbed collar, and relaxed streetwear fit engineered for high-end fashion and durability.',
-    fabric: '240 GSM 100% Super Combed Cotton Single Jersey',
+    description: 'Heavy-density combed cotton with an exaggerated drop-shoulder drape, wide ribbed collar, and relaxed streetwear fit engineered for high-end brand labeling.',
+    fabric: '220–260 GSM 100% Super Combed Cotton Single Jersey',
     colors: [
       { name: 'Sage Olive', hex: '#63705d' },
       { name: 'Pitch Black', hex: '#111317' },
       { name: 'Slate Graphite', hex: '#2d3748' },
-      { name: 'Chalk White', hex: '#f7fafc' },
+      { name: 'Chalk Off-White', hex: '#f7fafc' },
       { name: 'Muted Mocha', hex: '#786c5e' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
@@ -67,38 +61,33 @@ export const ECOM_PRODUCTS: Product[] = [
     ],
     featured: true,
     sku: 'SLT-TS-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 679 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 559 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 479 }
-    ],
     specifications: {
-      gsm: '240 GSM Heavy Knit',
-      composition: '100% Super Combed Cotton Single Jersey',
+      gsm: '240 GSM Super Combed Cotton',
+      composition: '100% Cotton / Lycra Rib Neck',
       fit: 'Relaxed Drop Shoulder / Boxy Cut',
-      weave: 'Combed Compact 24s Count',
-      washCare: 'Machine wash cold 30°C, do not tumble dry, warm iron inside-out.'
+      washCare: 'Machine wash cold 30°C, inside-out, do not tumble dry.'
     }
   },
   {
     id: 'biowash-t-shirt',
     slug: 'biowash-t-shirt',
-    name: 'Premium Enzymatic Biowash T-Shirt',
+    name: 'Biowash T-Shirt',
     category: 'T-SHIRTS',
-    subcategory: 'Essentials',
+    subcategory: 'T-Shirts',
     season: 'Summer',
     badge: 'HOT SELLER',
-    price: 649,
-    compareAtPrice: 1199,
-    stockCount: 220,
+    price: 599,
+    compareAtPrice: 999,
+    stockCount: 210,
     rating: 4.8,
     reviewsCount: 112,
     description: 'Ultra-soft enzymatic biowash fabric eliminates surface fuzz for an ultra-smooth hand-feel and vibrant color retention across commercial wash cycles.',
-    fabric: '200 GSM 100% Combed Compact Cotton with Biowash Finish',
+    fabric: '180–210 GSM 100% Combed Compact Cotton with Biowash Finish',
     colors: [
       { name: 'Jet Black', hex: '#0f1115' },
       { name: 'Pure White', hex: '#ffffff' },
       { name: 'Slate Smoke', hex: '#718096' },
+      { name: 'Charcoal Melange', hex: '#374151' },
       { name: 'Forest Green', hex: '#1b4332' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
@@ -109,16 +98,10 @@ export const ECOM_PRODUCTS: Product[] = [
     ],
     featured: false,
     sku: 'SLT-TS-02',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 549 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 449 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 389 }
-    ],
     specifications: {
-      gsm: '200 GSM Biowash',
-      composition: '100% Cotton with Bio-Polishing Finish',
-      fit: 'Modern Regular Fit',
-      weave: 'Ring-spun Jersey',
+      gsm: '190 GSM Enzymatic Biowashed Cotton',
+      composition: '100% Compact Combed Cotton',
+      fit: 'Contemporary Crew Neck Regular Fit',
       washCare: 'Gentle cycle wash, flat dry in shade, color safe.'
     }
   },
@@ -127,25 +110,26 @@ export const ECOM_PRODUCTS: Product[] = [
   {
     id: 'polo-tshirt',
     slug: 'polo-tshirt',
-    name: 'Classic Pique Knit Polo Shirt',
+    name: 'Polo Tshirt',
     category: 'POLOS',
-    subcategory: 'Smart Casuals',
+    subcategory: 'Polos',
     season: 'All Season',
     badge: 'ORGANIC',
     price: 899,
-    compareAtPrice: 1599,
-    stockCount: 88,
+    compareAtPrice: 1499,
+    stockCount: 95,
     rating: 4.7,
     reviewsCount: 56,
-    description: 'Textured honeycomb pique cotton knit with reinforced rib collar, mother-of-pearl style 2-button placket, and subtle split side vents for flexible movement.',
-    fabric: '230–250 GSM 100% Combed Pique Honeycomb Cotton',
+    description: 'Refined pique polo crafted with durable flat-knit ribbed collar and cuffs, reinforced two-button placket, and side-slit vents for corporate and premium retail brands.',
+    fabric: '220–260 GSM Honeycomb Cotton Pique Knit',
     colors: [
-      { name: 'Navy Blue', hex: '#0f2027' },
-      { name: 'Wine Plum', hex: '#4a154b' },
-      { name: 'Charcoal Slate', hex: '#374151' },
-      { name: 'Snow White', hex: '#f8fafc' }
+      { name: 'Deep Teal', hex: '#0e7490' },
+      { name: 'Black Obsidian', hex: '#0f172a' },
+      { name: 'Heather Slate', hex: '#64748b' },
+      { name: 'Chalk White', hex: '#f8fafc' },
+      { name: 'Royal Navy', hex: '#1e3a8a' }
     ],
-    sizes: ['S', 'M', 'L', 'XL', '2XL'],
+    sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
     images: [
       '/images/products/polo-tshirt-1.jpg',
       '/images/products/polo-tshirt-2.jpg',
@@ -153,81 +137,36 @@ export const ECOM_PRODUCTS: Product[] = [
     ],
     featured: true,
     sku: 'SLT-PL-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 764 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 629 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 539 }
-    ],
     specifications: {
-      gsm: '240 GSM Honeycomb Pique',
-      composition: '100% Long Staple Combed Cotton',
-      fit: 'Tailored Smart Fit',
-      weave: 'Honey-Comb Knit',
+      gsm: '240 GSM Combed Pique',
+      composition: '100% Combed Cotton Pique',
+      fit: 'Smart Athletic / Regular Fit',
       washCare: 'Cold wash with like colors, reshape collar while damp.'
     }
   },
 
   // 3. HOODIES
   {
-    id: 'oversized-hoodies',
-    slug: 'oversized-hoodies',
-    name: 'Heavy Fleece Oversized Pullover Hoodie',
-    category: 'HOODIES',
-    subcategory: 'Heavy Winterwear',
-    season: 'Winter',
-    badge: 'HEAVYWEIGHT',
-    price: 1499,
-    compareAtPrice: 2499,
-    stockCount: 95,
-    rating: 5.0,
-    reviewsCount: 148,
-    description: 'Ultra-heavy 380 GSM brushed fleece with double-lined structured hood, seamless kangaroo pouch, matching heavy-drawstrings, and snug spandex-blend cuffs.',
-    fabric: '380 GSM 100% Cotton Faced Heavy Brushed Fleece',
-    colors: [
-      { name: 'Jet Black', hex: '#0a0d14' },
-      { name: 'Sage Olive', hex: '#52614e' },
-      { name: 'Dusty Lavender', hex: '#877c9c' },
-      { name: 'Heather Gray', hex: '#94a3b8' }
-    ],
-    sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    images: [
-      '/images/products/oversized-hoodies-1.jpg',
-      '/images/products/oversized-hoodies-2.jpg'
-    ],
-    featured: true,
-    sku: 'SLT-HD-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1274 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1049 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 899 }
-    ],
-    specifications: {
-      gsm: '380 GSM Heavy French Terry / Brushed Fleece',
-      composition: '80% Combed Cotton, 20% Polyester fleece back',
-      fit: 'Oversized Boxy Dropped Shoulder',
-      weave: '3-Thread Fleece Knit',
-      washCare: 'Cold gentle cycle, inside-out, tumble dry low heat.'
-    }
-  },
-  {
     id: 'hoodies-regular-fit',
     slug: 'hoodies-regular-fit',
-    name: 'Signature Everyday Regular Fit Hoodie',
+    name: 'Hoodies (Regular Fit)',
     category: 'HOODIES',
-    subcategory: 'Essential Streetwear',
+    subcategory: 'Hoodies',
     season: 'Winter',
     badge: 'BESTSELLER',
     price: 1299,
-    compareAtPrice: 2199,
-    stockCount: 130,
+    compareAtPrice: 1999,
+    stockCount: 120,
     rating: 4.8,
     reviewsCount: 92,
-    description: 'Clean architectural silhouette with high-density fleece interior, anti-pill exterior finish, and custom metal aglets. The staple hoodie for private label collections.',
-    fabric: '320 GSM 100% Cotton Faced Cotton-Poly Brushed Fleece',
+    description: 'Classic regular-fit hoodie tailored with double-needle construction, matching metal aglet drawcords, kangaroo pouch, and pre-shrunk anti-pilling fleece.',
+    fabric: '320–360 GSM Cotton-Poly Brushed Fleece / French Terry',
     colors: [
-      { name: 'Charcoal Black', hex: '#1a1f2c' },
-      { name: 'Forest Green', hex: '#1e3a2f' },
-      { name: 'Navy Midnight', hex: '#0a192f' }
+      { name: 'Dusty Lavender', hex: '#877c9c' },
+      { name: 'Pitch Black', hex: '#111317' },
+      { name: 'Slate Gray', hex: '#475569' },
+      { name: 'Navy Blue', hex: '#1e3a8a' },
+      { name: 'Off-White', hex: '#f1f5f9' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
@@ -235,348 +174,339 @@ export const ECOM_PRODUCTS: Product[] = [
       '/images/products/hoodies-regular-fit-2.jpg',
       '/images/products/hoodies-regular-fit-3.jpg'
     ],
-    featured: false,
-    sku: 'SLT-HD-02',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1104 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 909 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 779 }
-    ],
+    featured: true,
+    sku: 'SLT-HD-01',
     specifications: {
-      gsm: '320 GSM Brushed Fleece',
-      composition: '85% Cotton, 15% Poly',
-      fit: 'Classic Athletic Fit',
-      weave: 'Compact Double-Faced Terry',
-      washCare: 'Machine wash cold with mild detergent.'
+      gsm: '340 GSM Heavy Fleece',
+      composition: '80% Combed Cotton / 20% Polyester',
+      fit: 'Classic Tailored Regular Fit',
+      washCare: 'Machine wash cold with mild detergent, line dry.'
     }
   },
   {
-    id: 'polar-fleece-hoodies',
-    slug: 'polar-fleece-hoodies',
-    name: 'Thermal Polar Fleece Tech Hoodie',
+    id: 'oversized-hoodies',
+    slug: 'oversized-hoodies',
+    name: 'Oversized Hoodies',
     category: 'HOODIES',
-    subcategory: 'Outdoor Active',
+    subcategory: 'Hoodies',
     season: 'Winter',
-    badge: 'NEW DROP',
-    price: 1399,
-    compareAtPrice: 2399,
-    stockCount: 65,
-    rating: 4.9,
-    reviewsCount: 38,
-    description: 'Ultra-insulating anti-pilling micro polar fleece engineered for extreme thermal retention, lightweight breathability, and quick drying during winter mobility.',
-    fabric: '280 GSM Double-Sided Anti-Pill Polar Fleece',
+    badge: 'HEAVYWEIGHT',
+    price: 1499,
+    compareAtPrice: 2299,
+    stockCount: 85,
+    rating: 5.0,
+    reviewsCount: 148,
+    description: 'Heavyweight drop-shoulder streetwear hoodie with seamless double-layered hood, wide architectural sleeves, and clean kangaroo front pocket.',
+    fabric: '380–450 GSM Heavy French Terry / Diagonal Loopback Fleece',
     colors: [
-      { name: 'Steel Teal', hex: '#164e63' },
-      { name: 'Cobalt Blue', hex: '#1d4ed8' },
-      { name: 'Graphite Stone', hex: '#334155' }
+      { name: 'Rich Plum', hex: '#4a154b' },
+      { name: 'Jet Black', hex: '#0a0d14' },
+      { name: 'Slate Graphite', hex: '#334155' },
+      { name: 'Washed Vintage Charcoal', hex: '#1e293b' },
+      { name: 'Chalk White', hex: '#f8fafc' }
     ],
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
     images: [
-      '/images/products/polar-fleece-hoodies-1.jpg',
-      '/images/products/polar-fleece-hoodies-2.jpg',
-      '/images/products/polar-fleece-hoodies-3.jpg'
+      '/images/products/oversized-hoodies-2.jpg',
+      '/images/products/oversized-hoodies-1.jpg'
     ],
-    featured: false,
-    sku: 'SLT-HD-03',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1189 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 979 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 839 }
-    ],
+    featured: true,
+    sku: 'SLT-HD-02',
     specifications: {
-      gsm: '280 GSM Micro Polar Fleece',
-      composition: '100% Hydrophobic Performance Poly',
-      fit: 'Articulated Athletic Fit',
-      weave: 'Micro-Looped Thermal Knit',
-      washCare: 'Machine wash cold on gentle, hang dry.'
+      gsm: '420 GSM Heavy Terry',
+      composition: '100% Combed Cotton French Terry',
+      fit: 'Exaggerated Drop Shoulder Boxy Cut',
+      washCare: 'Cold gentle cycle, inside-out, tumble dry low heat.'
     }
   },
   {
     id: 'sherpa-fleece-hoodies',
     slug: 'sherpa-fleece-hoodies',
-    name: 'Luxury Sherpa Lambswool Bonded Hoodie',
+    name: 'Sherpa Fleece Hoodies',
     category: 'HOODIES',
-    subcategory: 'Sub-Zero Luxury',
+    subcategory: 'Hoodies',
     season: 'Winter',
     badge: 'LIMITED',
     price: 1799,
-    compareAtPrice: 2999,
-    stockCount: 48,
+    compareAtPrice: 2799,
+    stockCount: 45,
     rating: 5.0,
     reviewsCount: 62,
-    description: 'High-loft bonded teddy sherpa with deep thermal fleece lining. Provides superior warmth against sub-zero conditions with premium heavy metal zipper detailing.',
-    fabric: '400+ GSM Bonded Faux Sherpa Fleece with Suede Finish Trim',
+    description: 'Dense teddy-sherpa fleece engineered for extreme cold insulation with plush interior, reinforced kangaroo pocket, and heavy-duty drawcords.',
+    fabric: '380–420 GSM Double-Face High-Pile Sherpa Lambswool Fleece',
     colors: [
-      { name: 'Chalk Cream', hex: '#fef3c7' },
-      { name: 'Caramel Camel', hex: '#b45309' },
-      { name: 'Midnight Charcoal', hex: '#1e293b' }
+      { name: 'Warm Camel', hex: '#b45309' },
+      { name: 'Off-White Ecru', hex: '#fef3c7' },
+      { name: 'Deep Charcoal', hex: '#1f2937' },
+      { name: 'Slate Black', hex: '#0f172a' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/sherpa-fleece-hoodies-1.jpg',
-      '/images/products/sherpa-fleece-hoodies-2.jpg'
+      '/images/products/sherpa-fleece-hoodies-2.jpg',
+      '/images/products/sherpa-fleece-hoodies-1.jpg'
     ],
     featured: true,
-    sku: 'SLT-HD-04',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1529 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1259 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1079 }
-    ],
+    sku: 'SLT-HD-03',
     specifications: {
-      gsm: '420 GSM Bonded High-Loft Sherpa',
-      composition: '100% Poly Faux Shearling with Cotton Twill Accents',
-      fit: 'Boxy Heavyweight Winter Fit',
-      weave: 'Bonded Double-Sided Sherpa',
+      gsm: '400 GSM Double-Sided Sherpa',
+      composition: '100% Thermal Poly Sherpa Fleece',
+      fit: 'Cozy Oversized Silhouette',
       washCare: 'Professional dry clean or cold delicate cycle.'
+    }
+  },
+  {
+    id: 'polar-fleece-hoodies',
+    slug: 'polar-fleece-hoodies',
+    name: 'Polar Fleece Hoodies',
+    category: 'HOODIES',
+    subcategory: 'Hoodies',
+    season: 'Winter',
+    badge: 'NEW DROP',
+    price: 1399,
+    compareAtPrice: 2199,
+    stockCount: 60,
+    rating: 4.9,
+    reviewsCount: 38,
+    description: 'Breathable, hydrophobic polar fleece with an ultra-lightweight warm profile, elastic binding on hem and cuffs, and wind-blocking collar hood.',
+    fabric: '280–320 GSM Anti-Pilling Micro Polar Fleece',
+    colors: [
+      { name: 'Carbon Slate', hex: '#334155' },
+      { name: 'Pitch Black', hex: '#0f172a' },
+      { name: 'Bone Off-White', hex: '#f1f5f9' },
+      { name: 'Muted Forest', hex: '#14532d' }
+    ],
+    sizes: ['S', 'M', 'L', 'XL', '2XL'],
+    images: [
+      '/images/products/polar-fleece-hoodies-3.jpg',
+      '/images/products/polar-fleece-hoodies-1.jpg',
+      '/images/products/polar-fleece-hoodies-2.jpg'
+    ],
+    featured: false,
+    sku: 'SLT-HD-04',
+    specifications: {
+      gsm: '300 GSM Anti-Pilling Micro Fleece',
+      composition: '100% Thermal Polyester',
+      fit: 'Comfort Regular Fit',
+      washCare: 'Machine wash cold on gentle, hang dry.'
     }
   },
 
   // 4. JACKETS
   {
-    id: 'puffer-jackets',
-    slug: 'puffer-jackets',
-    name: 'Waterproof Thermal Down-Alternative Puffer',
-    category: 'JACKETS',
-    subcategory: 'Technical Outerwear',
-    season: 'Winter',
-    badge: 'BESTSELLER',
-    price: 1999,
-    compareAtPrice: 3499,
-    stockCount: 72,
-    rating: 4.9,
-    reviewsCount: 110,
-    description: 'Ripstop matte taslan shell with waterproof DWR coating, 250 GSM micro-poly blowdown insulation, storm flap YKK zippers, and interior stash pockets.',
-    fabric: 'Waterproof Matte Micro-Taslan Nylon Shell with Down-Feel Synthetic Fill',
-    colors: [
-      { name: 'Obsidian Black', hex: '#0f172a' },
-      { name: 'Arctic Silver', hex: '#cbd5e1' },
-      { name: 'Matte Olive', hex: '#3f4e3c' }
-    ],
-    sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    images: [
-      '/images/products/puffer-jackets-1.jpg',
-      '/images/products/puffer-jackets-2.jpg',
-      '/images/products/puffer-jackets-3.jpg'
-    ],
-    featured: true,
-    sku: 'SLT-JK-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1699 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1399 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1199 }
-    ],
-    specifications: {
-      gsm: '250 GSM Baffle Fill / 110 GSM Shell',
-      composition: '100% Micro-Ripstop Nylon Shell, Polyfill Core',
-      fit: 'Relaxed Technical Silhouette',
-      weave: 'Micro-Ripstop 70D',
-      washCare: 'Wipe clean or gentle machine wash cold, air dry.'
-    }
-  },
-  {
     id: 'varsity-jackets',
     slug: 'varsity-jackets',
-    name: 'Heritage Wool Blend Varsity Bomber Jacket',
+    name: 'Varsity Jackets',
     category: 'JACKETS',
-    subcategory: 'Vintage Streetwear',
+    subcategory: 'Jackets',
     season: 'Winter',
     badge: 'HOT SELLER',
     price: 1899,
-    compareAtPrice: 3199,
-    stockCount: 54,
+    compareAtPrice: 2999,
+    stockCount: 50,
     rating: 4.8,
     reviewsCount: 76,
-    description: 'Classic heavy melton wool-blend body with vegan leather contrast sleeves, custom striped yarn-dyed ribbing, embossed metal snap buttons, and quilted diamond lining.',
-    fabric: 'Heavy Melton Wool Blend Body with Matte PU Vegan Leather Sleeves',
+    description: 'Heavyweight heritage varsity silhouette featuring striped ribbed collar and waistband, internal diamond-quilted thermal lining, and heavy-gauge snap buttons.',
+    fabric: 'Melton Wool Body with Contrast Vegan / PU Leather Sleeves',
     colors: [
-      { name: 'Black & Bone White', hex: '#111827' },
-      { name: 'Dark Spruce & Chalk', hex: '#143828' },
-      { name: 'Navy & Cream', hex: '#1e3a8a' }
+      { name: 'Forest Green / Chalk', hex: '#143828' },
+      { name: 'Monochrome Black / Chalk', hex: '#111827' },
+      { name: 'Slate Charcoal / Black', hex: '#1f2937' },
+      { name: 'Navy / Off-White', hex: '#1e3a8a' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/varsity-jackets-1.jpg',
-      '/images/products/varsity-jackets-2.jpg'
+      '/images/products/varsity-jackets-2.jpg',
+      '/images/products/varsity-jackets-1.jpg'
     ],
     featured: true,
-    sku: 'SLT-JK-02',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1614 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1329 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1139 }
-    ],
+    sku: 'SLT-JK-01',
     specifications: {
-      gsm: '450 GSM Melton Wool Body',
-      composition: '60% Wool, 40% Poly Body / Premium PU Sleeves',
-      fit: 'Retro Boxy Bomber Cut',
-      weave: 'Felted Wool Weave with Diamond Quilt Inside',
+      gsm: '500+ GSM Melton Wool Body',
+      composition: 'Wool Blend Body / Matte PU Sleeves / Polyfill Quilted Interior',
+      fit: 'Boxy Retro Bomber Fit',
       washCare: 'Specialist Dry Clean Only.'
     }
   },
   {
-    id: 'denim-jackets',
-    slug: 'denim-jackets',
-    name: 'Washed Selvedge Trucker Denim Jacket',
+    id: 'puffer-jackets',
+    slug: 'puffer-jackets',
+    name: 'Puffer Jackets',
     category: 'JACKETS',
-    subcategory: 'Timeless Heavy Denim',
-    season: 'All Season',
-    badge: 'ORGANIC',
-    price: 1699,
-    compareAtPrice: 2899,
-    stockCount: 68,
+    subcategory: 'Jackets',
+    season: 'Winter',
+    badge: 'BESTSELLER',
+    price: 1999,
+    compareAtPrice: 3299,
+    stockCount: 65,
     rating: 4.9,
-    reviewsCount: 88,
-    description: '13.5 oz heavy ring-spun raw cotton denim featuring authentic stonewash and tinting treatment, dual chest pockets, custom branded antique brass hardware, and welt pockets.',
-    fabric: '13.5 oz 100% Rigid Ring-Spun Cotton Denim',
+    reviewsCount: 110,
+    description: 'Ultralight yet high-loft thermal down jacket with horizontal baffle quilting, storm flap interior zipper, adjustable cinch waist, and storm cuffs.',
+    fabric: 'Water-Repellent DWR Ripstop Nylon with Micro-Thermal Down Fill',
     colors: [
-      { name: 'Vintage Stonewash', hex: '#3b82f6' },
-      { name: 'Washed Black', hex: '#374151' },
-      { name: 'Raw Indigo', hex: '#1e3a5f' }
+      { name: 'Slate Gray', hex: '#475569' },
+      { name: 'Matte Obsidian', hex: '#0f172a' },
+      { name: 'Carbon Graphite', hex: '#1e293b' },
+      { name: 'Snow White', hex: '#f8fafc' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/denim-jackets-1.jpg',
-      '/images/products/denim-jackets-2.jpg',
-      '/images/products/denim-jackets-3.jpg',
-      '/images/products/denim-jackets-4.jpg'
+      '/images/products/puffer-jackets-3.jpg',
+      '/images/products/puffer-jackets-1.jpg',
+      '/images/products/puffer-jackets-2.jpg'
     ],
-    featured: false,
-    sku: 'SLT-JK-03',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1444 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1189 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1019 }
-    ],
+    featured: true,
+    sku: 'SLT-JK-02',
     specifications: {
-      gsm: '13.5 oz / 460 GSM Heavy Rigid Denim',
-      composition: '100% Cotton Ring Spun Twill',
-      fit: 'Standard Western Trucker Fit',
-      weave: '3x1 Right Hand Twill',
-      washCare: 'Wash inside-out cold, hang dry to preserve indigo tint.'
+      gsm: 'Lightweight 380T Nylon Shell + 300g Thermal Down-Alternative Filling',
+      composition: '100% DWR Nylon Shell / 100% Polyfill',
+      fit: 'Modern Boxy Puffer Profile',
+      washCare: 'Wipe clean or gentle machine wash cold, air dry.'
     }
   },
   {
     id: 'polar-fleece-jackets',
     slug: 'polar-fleece-jackets',
-    name: 'Full-Zip Technical Polar Fleece Jacket',
+    name: 'Polar Fleece Jackets',
     category: 'JACKETS',
-    subcategory: 'Adventure Tech',
+    subcategory: 'Jackets',
     season: 'Winter',
+    badge: 'NEW DROP',
     price: 1299,
-    compareAtPrice: 2199,
-    stockCount: 85,
+    compareAtPrice: 1999,
+    stockCount: 75,
     rating: 4.7,
     reviewsCount: 42,
-    description: 'Full-zip stand collar jacket with nylon contrast chest pocket, dual zippered hand warmers, elastic storm binding on cuffs, and lightweight breathability.',
-    fabric: '280 GSM Anti-Pill Micro-Fleece with Taslan Accents',
+    description: 'Full-zip outdoor fleece jacket featuring stand-up wind collar, nylon-reinforced chest utility pocket, and stretch-bound cuffs for thermal retention.',
+    fabric: '300–340 GSM High-Density Anti-Pill Micro Polar Fleece',
     colors: [
-      { name: 'Olive Green & Black', hex: '#365314' },
-      { name: 'Charcoal Black', hex: '#1f2937' },
-      { name: 'Deep Royal', hex: '#1e40af' }
+      { name: 'Onyx Black', hex: '#0f172a' },
+      { name: 'Slate Gray', hex: '#475569' },
+      { name: 'Olive Drab', hex: '#3f4e3c' },
+      { name: 'Ivory Off-White', hex: '#f8fafc' }
     ],
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/polar-fleece-jackets-1.jpg',
       '/images/products/polar-fleece-jackets-2.jpg',
+      '/images/products/polar-fleece-jackets-1.jpg',
       '/images/products/polar-fleece-jackets-3.jpg'
     ],
     featured: false,
-    sku: 'SLT-JK-04',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1104 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 909 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 779 }
-    ],
+    sku: 'SLT-JK-03',
     specifications: {
-      gsm: '280 GSM Polar Fleece',
-      composition: '100% Recycled Poly Microfleece',
-      fit: 'Layering Athletic Cut',
-      weave: 'Thermal Knit Looped Face',
-      washCare: 'Quick wash cold, air dry quickly.'
+      gsm: '320 GSM High-Density Polar Fleece',
+      composition: '100% Recycled Thermal Polyester',
+      fit: 'Active Outdoor Regular Fit',
+      washCare: 'Quick wash cold, air dry.'
+    }
+  },
+  {
+    id: 'denim-jackets',
+    slug: 'denim-jackets',
+    name: 'Denim Jackets',
+    category: 'JACKETS',
+    subcategory: 'Jackets',
+    season: 'All Season',
+    badge: 'ORGANIC',
+    price: 1699,
+    compareAtPrice: 2699,
+    stockCount: 60,
+    rating: 4.9,
+    reviewsCount: 88,
+    description: 'Classic trucker silhouette built from heavyweight ring-spun cotton denim with shank button closure, twin chest flap pockets, and adjustable waist tabs.',
+    fabric: '13.5–14.5 oz 100% Rigid / Comfort Stretch Indigo Cotton Denim',
+    colors: [
+      { name: 'Enzyme Washed Gray', hex: '#64748b' },
+      { name: 'Vintage Slate Indigo', hex: '#1e3a5f' },
+      { name: 'Washed Black', hex: '#1f2937' },
+      { name: 'Raw Dark Indigo', hex: '#0f172a' }
+    ],
+    sizes: ['S', 'M', 'L', 'XL', '2XL'],
+    images: [
+      '/images/products/denim-jackets-4.jpg',
+      '/images/products/denim-jackets-1.jpg',
+      '/images/products/denim-jackets-2.jpg',
+      '/images/products/denim-jackets-3.jpg'
+    ],
+    featured: true,
+    sku: 'SLT-JK-04',
+    specifications: {
+      gsm: '14.0 oz Heavyweight Denim',
+      composition: '100% Ring-Spun Cotton / Vintage Enzyme Wash',
+      fit: 'Classic Trucker Cut / Tailored Drop',
+      washCare: 'Wash inside-out cold, hang dry to preserve tint.'
     }
   },
 
   // 5. TRACKSUITS
   {
-    id: 'omniheat-tracksuits',
-    slug: 'omniheat-tracksuits',
-    name: 'OmniHeat Thermal Reflective Tracksuit Set',
-    category: 'TRACKSUITS',
-    subcategory: 'Performance 2-Piece Set',
-    season: 'Winter',
-    badge: 'NEW DROP',
-    price: 1899,
-    compareAtPrice: 3299,
-    stockCount: 45,
-    rating: 5.0,
-    reviewsCount: 79,
-    description: 'Advanced 2-piece set featuring metallic thermal reflective dot lining, moisture-wicking bonded poly shell, zippered ankles, and raglan active sleeves.',
-    fabric: 'OmniHeat Thermal Reflective Lining with High-Stretch Poly Shell',
-    colors: [
-      { name: 'Jet Black', hex: '#0f172a' },
-      { name: 'Gunmetal Gray', hex: '#475569' },
-      { name: 'Navy Cobalt', hex: '#1e3a8a' }
-    ],
-    sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    images: [
-      '/images/products/omniheat-tracksuits-1.jpg',
-      '/images/products/omniheat-tracksuits-2.jpg',
-      '/images/products/omniheat-tracksuits-3.jpg'
-    ],
-    featured: true,
-    sku: 'SLT-TSU-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1614 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1329 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1139 }
-    ],
-    specifications: {
-      gsm: '300 GSM Bonded Thermal Set',
-      composition: '92% Polyester, 8% Spandex with Aluminum Heat Matrix',
-      fit: 'Engineered Tapered Athletic Fit',
-      weave: 'Interlock 4-Way Stretch',
-      washCare: 'Gentle cycle, cold water, line dry only.'
-    }
-  },
-  {
     id: 'fleece-tracksuits',
     slug: 'fleece-tracksuits',
-    name: 'Cozy Heavy Fleece 2-Piece Loungewear Tracksuit',
+    name: 'Fleece Tracksuits',
     category: 'TRACKSUITS',
-    subcategory: 'Street Loungewear',
+    subcategory: 'Tracksuits',
     season: 'Winter',
     badge: 'BESTSELLER',
     price: 1699,
-    compareAtPrice: 2899,
-    stockCount: 80,
+    compareAtPrice: 2699,
+    stockCount: 70,
     rating: 4.8,
     reviewsCount: 64,
-    description: 'Coordinated crew/hoodie and jogger combo crafted from brushed 320 GSM terry fleece. Deep front pockets, elastic waistband with chunky cotton cord.',
-    fabric: '320 GSM 100% Cotton Faced Cotton-Poly Fleece Set',
+    description: 'Complete 2-piece fleece co-ord set featuring a pullover hoodie paired with tapered elastic-cuff joggers with deep welt pockets.',
+    fabric: '340–380 GSM Brushed Interior Heavy Fleece',
     colors: [
-      { name: 'Heather Gray', hex: '#94a3b8' },
-      { name: 'Deep Black', hex: '#18181b' },
-      { name: 'Muted Olive', hex: '#3f4e3c' }
+      { name: 'Deep Navy', hex: '#0f2027' },
+      { name: 'Monochrome Slate', hex: '#475569' },
+      { name: 'Jet Black', hex: '#111317' },
+      { name: 'Chalk Heather', hex: '#e2e8f0' },
+      { name: 'Smoky Olive', hex: '#3f4e3c' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/fleece-tracksuits-1.jpg',
-      '/images/products/fleece-tracksuits-2.jpg'
+      '/images/products/fleece-tracksuits-2.jpg',
+      '/images/products/fleece-tracksuits-1.jpg'
     ],
-    featured: false,
-    sku: 'SLT-TSU-02',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1444 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1189 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 1019 }
-    ],
+    featured: true,
+    sku: 'SLT-TS-01',
     specifications: {
-      gsm: '320 GSM Fleece Combo',
-      composition: '80% Combed Cotton, 20% Polyester',
-      fit: 'Relaxed Street Fit',
-      weave: 'Diagonal Looped Fleece',
+      gsm: '360 GSM Cotton-Poly Blend',
+      composition: '80% Combed Cotton / 20% Polyester Heavy Fleece',
+      fit: 'Athletic Relaxed Co-ord Fit',
       washCare: 'Machine wash 30°C with similar dark colors.'
+    }
+  },
+  {
+    id: 'omniheat-tracksuits',
+    slug: 'omniheat-tracksuits',
+    name: 'Omniheat Tracksuits',
+    category: 'TRACKSUITS',
+    subcategory: 'Tracksuits',
+    season: 'Winter',
+    badge: 'NEW DROP',
+    price: 1899,
+    compareAtPrice: 2999,
+    stockCount: 40,
+    rating: 5.0,
+    reviewsCount: 79,
+    description: 'High-performance winter sportswear engineered with silver thermal-reflective interior lining to retain body heat in freezing conditions.',
+    fabric: 'Waterproof DWR Softshell Exterior with Thermal Heat-Reflective Dot Lining',
+    colors: [
+      { name: 'Obsidian Black', hex: '#0a0d14' },
+      { name: 'Carbon Gray', hex: '#374151' },
+      { name: 'Slate Graphite', hex: '#475569' }
+    ],
+    sizes: ['S', 'M', 'L', 'XL', '2XL'],
+    images: [
+      '/images/products/omniheat-tracksuits-2.jpg',
+      '/images/products/omniheat-tracksuits-1.jpg',
+      '/images/products/omniheat-tracksuits-3.jpg'
+    ],
+    featured: true,
+    sku: 'SLT-TS-02',
+    specifications: {
+      gsm: '320 GSM Bonded Softshell with Metallic Omni-Dot Lining',
+      composition: '92% Polyester / 8% Spandex with DWR Coating',
+      fit: 'Athletic Kinetic Fit',
+      washCare: 'Gentle cycle, cold water, line dry only.'
     }
   },
 
@@ -584,61 +514,92 @@ export const ECOM_PRODUCTS: Product[] = [
   {
     id: 'balloon-fit-trackpants',
     slug: 'balloon-fit-trackpants',
-    name: 'Architectural Balloon Fit Wide Trackpants',
+    name: 'Balloon Fit Trackpants',
     category: 'TRACKPANTS',
-    subcategory: 'High Streetwear',
+    subcategory: 'Trackpants',
     season: 'All Season',
     badge: 'NEW DROP',
     price: 999,
-    compareAtPrice: 1799,
+    compareAtPrice: 1599,
     stockCount: 110,
     rating: 4.9,
     reviewsCount: 52,
-    description: 'Exaggerated voluminous curved thigh with dramatic darting, tapered ankle cuffs, extra-thick waistband, and deep slant pockets for high-fashion silhouette.',
-    fabric: '280 GSM Cotton-Poly Interlock Fleece with Anti-Knee Bagging',
+    description: 'Voluminous curved outer seam tailored into a structured balloon silhouette, tapering gracefully at the ankle with deep slash pockets and thick drawcord waistband.',
+    fabric: '280–320 GSM Structured Loopback Terry / Heavy Cotton Twill',
     colors: [
-      { name: 'Pitch Black', hex: '#111827' },
-      { name: 'Dover Gray', hex: '#64748b' },
+      { name: 'Pitch Black', hex: '#111317' },
+      { name: 'Slate Smoke', hex: '#64748b' },
+      { name: 'Off-White Ivory', hex: '#f8fafc' },
       { name: 'Washed Olive', hex: '#4d5d4b' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
-      '/images/products/balloon-fit-trackpants-1.jpg',
-      '/images/products/balloon-fit-trackpants-2.jpg'
+      '/images/products/balloon-fit-trackpants-2.jpg',
+      '/images/products/balloon-fit-trackpants-1.jpg'
     ],
     featured: true,
     sku: 'SLT-TP-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 849 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 699 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 599 }
-    ],
     specifications: {
-      gsm: '280 GSM Structured Interlock',
-      composition: '75% Cotton, 25% Polyester',
-      fit: 'Oversized Balloon Curved Silhouette',
-      weave: 'Heavy Density French Terry',
+      gsm: '320 GSM Structured Cotton Terry',
+      composition: '100% Combed Cotton',
+      fit: 'Exaggerated Balloon / Wide Barrel Leg Fit',
       washCare: 'Cold wash, inside-out, tumble dry gentle.'
+    }
+  },
+  {
+    id: 'trackpants-regular-fit',
+    slug: 'trackpants-regular-fit',
+    name: 'Trackpants (Regular Fit)',
+    category: 'TRACKPANTS',
+    subcategory: 'Trackpants',
+    season: 'All Season',
+    price: 799,
+    compareAtPrice: 1299,
+    stockCount: 150,
+    rating: 4.6,
+    reviewsCount: 71,
+    description: 'Straight-leg regular fit track pants with interior brushed comfort, durable elasticated waistband with eyelets, and zippered side pockets.',
+    fabric: '260–300 GSM Cotton-Poly Interlock / French Terry',
+    colors: [
+      { name: 'Jet Black', hex: '#000000' },
+      { name: 'Slate Melange', hex: '#475569' },
+      { name: 'Deep Navy', hex: '#1e3a8a' },
+      { name: 'Charcoal', hex: '#374151' }
+    ],
+    sizes: ['S', 'M', 'L', 'XL', '2XL', '3XL'],
+    images: [
+      '/images/products/trackpants-regular-fit-1.jpg',
+      '/images/products/trackpants-regular-fit-2.jpg',
+      '/images/products/trackpants-regular-fit-3.jpg'
+    ],
+    featured: false,
+    sku: 'SLT-TP-02',
+    specifications: {
+      gsm: '280 GSM Cotton Blend Interlock',
+      composition: '70% Cotton / 30% Polyester',
+      fit: 'Classic Straight-Leg Regular Fit',
+      washCare: 'Machine wash warm, tumble dry normal.'
     }
   },
   {
     id: 'fleece-trackpants-jogger-fit',
     slug: 'fleece-trackpants-jogger-fit',
-    name: 'Tapered Heavy Fleece Cargo Joggers',
+    name: 'Fleece Trackpants (Jogger Fit)',
     category: 'TRACKPANTS',
-    subcategory: 'Utility Active',
+    subcategory: 'Trackpants',
     season: 'Winter',
     price: 899,
-    compareAtPrice: 1599,
-    stockCount: 135,
+    compareAtPrice: 1399,
+    stockCount: 130,
     rating: 4.8,
     reviewsCount: 95,
-    description: 'Slim-tapered ankle fit with ergonomic 3D knee articulation, heavy ribbed cuffs, concealed zipper pocket, and durable anti-shrink fabric.',
-    fabric: '300 GSM Brushed Fleece with Lycra Ribbing',
+    description: 'Tapered streetwear jogger cut with 2x2 ribbed ankle cuffs, heavy flat drawcords, reinforced seat stitching, and deep slant pockets.',
+    fabric: '320–360 GSM Brushed Fleece with Elastane Ribbed Cuffs',
     colors: [
-      { name: 'Obsidian Black', hex: '#0f172a' },
-      { name: 'Charcoal Melange', hex: '#374151' },
-      { name: 'Sand Khaki', hex: '#a8a29e' }
+      { name: 'Carbon Black', hex: '#0f172a' },
+      { name: 'Slate Heather', hex: '#64748b' },
+      { name: 'Smoky Chalk', hex: '#e2e8f0' },
+      { name: 'Navy', hex: '#1e3a8a' }
     ],
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
@@ -647,58 +608,12 @@ export const ECOM_PRODUCTS: Product[] = [
       '/images/products/fleece-trackpants-jogger-fit-3.jpg'
     ],
     featured: false,
-    sku: 'SLT-TP-02',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 764 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 629 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 539 }
-    ],
-    specifications: {
-      gsm: '300 GSM Brushed Soft Cotton Fleece',
-      composition: '80% Cotton, 20% Polyester',
-      fit: 'Slim Tapered Jogger',
-      weave: 'Heavy Interlock Knit',
-      washCare: 'Cold wash, do not bleach.'
-    }
-  },
-  {
-    id: 'trackpants-regular-fit',
-    slug: 'trackpants-regular-fit',
-    name: 'Straight Leg Everyday Essential Trackpants',
-    category: 'TRACKPANTS',
-    subcategory: 'Gym & Lifestyle',
-    season: 'All Season',
-    price: 799,
-    compareAtPrice: 1399,
-    stockCount: 160,
-    rating: 4.6,
-    reviewsCount: 71,
-    description: 'Classic straight-leg cut with open hem, clean flat-front drawstring, deep side pockets, and durable double-stitched seams designed for everyday comfort.',
-    fabric: '260 GSM Cotton Single Jersey Interlock',
-    colors: [
-      { name: 'Black', hex: '#000000' },
-      { name: 'Navy', hex: '#1e3a8a' },
-      { name: 'Heather Gray', hex: '#9ca3af' }
-    ],
-    sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    images: [
-      '/images/products/trackpants-regular-fit-1.jpg',
-      '/images/products/trackpants-regular-fit-2.jpg',
-      '/images/products/trackpants-regular-fit-3.jpg'
-    ],
-    featured: false,
     sku: 'SLT-TP-03',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 679 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 559 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 479 }
-    ],
     specifications: {
-      gsm: '260 GSM Cotton Blend',
-      composition: '70% Cotton, 30% Poly',
-      fit: 'Clean Straight Open Hem',
-      weave: 'Smooth Interlock Knit',
-      washCare: 'Machine wash warm, tumble dry normal.'
+      gsm: '340 GSM Heavy Brushed Fleece',
+      composition: '80% Combed Cotton / 20% Polyester',
+      fit: 'Tapered Slim-to-Relaxed Jogger Fit',
+      washCare: 'Cold wash, do not bleach.'
     }
   },
 
@@ -706,40 +621,35 @@ export const ECOM_PRODUCTS: Product[] = [
   {
     id: 'sweaters',
     slug: 'sweaters',
-    name: 'Heavy Jacquard Checkerboard Knit Sweater',
+    name: 'Sweaters',
     category: 'SWEATERS',
-    subcategory: 'Luxury Knits',
+    subcategory: 'Knitwear',
     season: 'Winter',
     badge: 'HOT SELLER',
     price: 1599,
-    compareAtPrice: 2799,
-    stockCount: 55,
+    compareAtPrice: 2499,
+    stockCount: 50,
     rating: 4.9,
     reviewsCount: 83,
-    description: '7-gauge dense computerized jacquard knit featuring bold geometric checkerboard pattern, chunky 2x2 rib crewneck, reinforced drop-shoulders, and no-itch premium yarn.',
-    fabric: '7-Gauge Heavy Premium Non-Itch Acrylic-Wool Blend',
+    description: 'Artisanal checkerboard knit crewneck sweater with ribbed collar, hem, and cuffs. Superior elasticity, soft drape, and zero irritation against skin.',
+    fabric: 'Fine-Gauge Combed Cotton-Cashmere Blend / Acrylic Knit',
     colors: [
-      { name: 'Forest Green & Chalk', hex: '#1e392a' },
-      { name: 'Pitch Black & Gray', hex: '#18181b' },
-      { name: 'Cobalt & White', hex: '#1d4ed8' }
+      { name: 'Forest Green / Ivory Checker', hex: '#1e392a' },
+      { name: 'Slate Charcoal', hex: '#374151' },
+      { name: 'Obsidian Black', hex: '#090d16' },
+      { name: 'Midnight Navy', hex: '#1e3a8a' }
     ],
-    sizes: ['S', 'M', 'L', 'XL'],
+    sizes: ['S', 'M', 'L', 'XL', '2XL'],
     images: [
       '/images/products/sweaters-1.jpg',
       '/images/products/sweaters-2.jpg'
     ],
     featured: true,
     sku: 'SLT-SW-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 1359 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 1119 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 959 }
-    ],
     specifications: {
-      gsm: '480 GSM Heavy Flat Knit',
-      composition: '70% Soft Non-Itch Acrylic, 30% Merino Wool Blend',
-      fit: 'Relaxed Drop-Shoulder Chunky Fit',
-      weave: '7-Gauge Multi-Color Jacquard',
+      gsm: '7-Gauge / 12-Gauge Precision Knit',
+      composition: 'Cotton-Acrylic Knit Blend',
+      fit: 'Relaxed Tailored Knit Silhouette',
       washCare: 'Hand wash cold or dry clean, dry flat in shade.'
     }
   },
@@ -748,43 +658,37 @@ export const ECOM_PRODUCTS: Product[] = [
   {
     id: 'beanies',
     slug: 'beanies',
-    name: 'Ribbed Fisherman Cuffed Beanie',
+    name: 'Beanies',
     category: 'BEANIES',
-    subcategory: 'Headwear Accessories',
+    subcategory: 'Headwear',
     season: 'Winter',
     badge: 'BESTSELLER',
-    price: 399,
-    compareAtPrice: 799,
-    stockCount: 280,
+    price: 599,
+    compareAtPrice: 899,
+    stockCount: 260,
     rating: 4.9,
     reviewsCount: 164,
-    description: 'Heavy 100% fine acrylic 4-panel ribbed knit beanie with foldable deep cuff, snug stretch recovery, and custom woven label application surface.',
-    fabric: '100% Fine Acrylic 4-Dart Ribbed Knit',
+    description: 'Double-cuffed and skull-cap ribbed and buffalo fleece beanies engineered with four-point crown closure and ultra-soft thermal stretch retention.',
+    fabric: 'Heavy Ribbed Acrylic / Buffalo Fleece Knit',
     colors: [
-      { name: 'Onyx Black', hex: '#09090b' },
-      { name: 'Dusty Pink', hex: '#db2777' },
-      { name: 'Desert Khaki', hex: '#d97706' },
-      { name: 'Cobalt Blue', hex: '#2563eb' }
+      { name: 'Navy Plaid', hex: '#1e3a8a' },
+      { name: 'Deep Green', hex: '#14532d' },
+      { name: 'Slate Melange', hex: '#64748b' },
+      { name: 'Off-White Cream', hex: '#fef3c7' }
     ],
-    sizes: ['One Size Fits All'],
+    sizes: ['One Size (Universal Stretch Fit)'],
     images: [
-      '/images/products/beanies-1.jpg',
+      '/images/products/beanies-4.jpg',
       '/images/products/beanies-2.jpg',
       '/images/products/beanies-3.jpg',
-      '/images/products/beanies-4.jpg'
+      '/images/products/beanies-1.jpg'
     ],
     featured: true,
     sku: 'SLT-BN-01',
-    bulkTiers: [
-      { minQty: 5, discountPercentage: 15, pricePerUnit: 339 },
-      { minQty: 20, discountPercentage: 30, pricePerUnit: 279 },
-      { minQty: 50, discountPercentage: 40, pricePerUnit: 239 }
-    ],
     specifications: {
-      gsm: '110g Dense Ribbed Knit',
-      composition: '100% High-Grade Anti-Pill Acrylic',
-      fit: 'Adjustable Foldover Fisherman Fit',
-      weave: '4-Panel Ribbed Architecture',
+      gsm: 'Heavyweight Rib / Fleece Knit',
+      composition: '100% Soft-Touch Stretch Thermal Poly',
+      fit: 'Fold-Over Cuff / Snug Beanie Fit',
       washCare: 'Hand wash cold, reshape and dry flat.'
     }
   }

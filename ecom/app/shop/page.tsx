@@ -6,7 +6,7 @@ import { useStore } from '@/lib/store';
 import { Product, CATEGORIES_LIST } from '@/lib/products-data';
 import ProductCard from '@/components/store/ProductCard';
 import ProductQuickViewModal from '@/components/store/ProductQuickViewModal';
-import { Filter, ArrowUpDown, RefreshCw, X, Sparkles } from 'lucide-react';
+import { Filter, ArrowUpDown, RefreshCw, X, Sparkles, Truck, ShieldCheck } from 'lucide-react';
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -52,32 +52,32 @@ function ShopContent() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen py-8 sm:py-12 select-none">
+    <div className="bg-[#06080e] min-h-screen py-8 sm:py-12 select-none text-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumb & Header */}
-        <div className="mb-8 pb-4 border-b border-slate-200">
+        <div className="mb-8 pb-4 border-b border-slate-800">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase block">
-                SLATE APPARELS // PRODUCTION INVENTORY
+              <span className="text-[10px] font-mono tracking-widest text-[#00ff87] uppercase block mb-1">
+                SLATE APPARELS // RETAIL PRODUCTION DROPS
               </span>
-              <h1 className="text-3xl sm:text-5xl font-extrabold text-slate-950 uppercase font-sans tracking-tight">
-                {selectedCategory === 'ALL' ? 'COMPLETE CATALOG' : `${selectedCategory} COLLECTION`}
+              <h1 className="text-3xl sm:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
+                {selectedCategory === 'ALL' ? 'COMPLETE RETAIL CATALOG' : `${selectedCategory} COLLECTION`}
               </h1>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-xs font-mono font-bold text-slate-600 bg-white border border-slate-200 px-3 py-1.5 rounded-full shadow-sm">
+              <span className="text-xs font-mono font-bold text-slate-300 bg-slate-900 border border-slate-700 px-3 py-1.5 rounded-full shadow-neon-sm">
                 Showing {filteredProducts.length} of {products.length} Drops
               </span>
 
               {/* Mobile Filter Toggle */}
               <button
                 onClick={() => setMobileFilterOpen(!mobileFilterOpen)}
-                className="lg:hidden px-3.5 py-1.5 rounded-full bg-[#0b0f19] text-white text-xs font-mono font-bold flex items-center gap-1.5"
+                className="lg:hidden px-3.5 py-1.5 rounded-full bg-[#00ff87] text-[#06080e] text-xs font-mono font-extrabold flex items-center gap-1.5 shadow-neon-sm"
               >
-                <Filter className="w-3.5 h-3.5 text-[#05f26c]" />
+                <Filter className="w-3.5 h-3.5" />
                 <span>FILTERS</span>
               </button>
             </div>
@@ -89,15 +89,15 @@ function ShopContent() {
           
           {/* Desktop Filter Sidebar */}
           <div className="hidden lg:block lg:col-span-3 space-y-6">
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-soft space-y-6">
-              <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                <span className="font-mono font-bold text-xs uppercase text-slate-900 flex items-center gap-1.5">
-                  <Filter className="w-4 h-4 text-[#05f26c]" />
+            <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-xl space-y-6">
+              <div className="flex justify-between items-center pb-3 border-b border-slate-800">
+                <span className="font-mono font-bold text-xs uppercase text-white flex items-center gap-1.5">
+                  <Filter className="w-4 h-4 text-[#00ff87]" />
                   FILTERS
                 </span>
                 <button
                   onClick={resetFilters}
-                  className="text-[10px] font-mono text-slate-500 hover:text-slate-900 underline uppercase"
+                  className="text-[10px] font-mono text-slate-400 hover:text-[#00ff87] underline uppercase transition-colors"
                 >
                   RESET
                 </button>
@@ -105,7 +105,7 @@ function ShopContent() {
 
               {/* Category Filter */}
               <div>
-                <h4 className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider mb-2.5">
+                <h4 className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">
                   CATEGORIES
                 </h4>
                 <div className="space-y-1 text-xs font-mono">
@@ -119,14 +119,14 @@ function ShopContent() {
                       <button
                         key={cat}
                         onClick={() => setSelectedCategory(cat)}
-                        className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg transition-colors ${
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-lg transition-all ${
                           isSelected
-                            ? 'bg-slate-900 text-white font-bold'
-                            : 'text-slate-600 hover:bg-slate-100'
+                            ? 'bg-[#00ff87] text-[#06080e] font-extrabold shadow-neon-sm'
+                            : 'text-slate-300 hover:bg-slate-900 hover:text-white'
                         }`}
                       >
                         <span>{cat}</span>
-                        <span className={`text-[10px] ${isSelected ? 'text-slate-300' : 'text-slate-400'}`}>
+                        <span className={`text-[10px] ${isSelected ? 'text-[#06080e]/80' : 'text-slate-500'}`}>
                           {count}
                         </span>
                       </button>
@@ -136,8 +136,8 @@ function ShopContent() {
               </div>
 
               {/* Season Filter */}
-              <div className="pt-4 border-t border-slate-100">
-                <h4 className="font-mono text-xs font-bold text-slate-900 uppercase tracking-wider mb-2.5">
+              <div className="pt-4 border-t border-slate-800">
+                <h4 className="font-mono text-xs font-bold text-slate-300 uppercase tracking-wider mb-2.5">
                   SEASON DROP
                 </h4>
                 <div className="flex flex-wrap gap-1.5 text-xs font-mono">
@@ -145,10 +145,10 @@ function ShopContent() {
                     <button
                       key={sea}
                       onClick={() => setSelectedSeason(sea)}
-                      className={`px-3 py-1 rounded-lg border text-xs transition-colors ${
+                      className={`px-3 py-1.5 rounded-lg border text-xs transition-colors ${
                         selectedSeason === sea
-                          ? 'bg-slate-900 text-white border-slate-900 font-bold'
-                          : 'bg-slate-50 text-slate-600 border-slate-200 hover:border-slate-300'
+                          ? 'bg-[#00ff87] text-[#06080e] border-[#00ff87] font-bold shadow-neon-sm'
+                          : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-600'
                       }`}
                     >
                       {sea}
@@ -157,16 +157,16 @@ function ShopContent() {
                 </div>
               </div>
 
-              {/* B2B Wholesale Notice */}
-              <div className="pt-4 border-t border-slate-100 p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs font-mono text-slate-600 space-y-1.5">
-                <span className="font-bold text-slate-900 text-[11px] block uppercase">
-                  ⚡ BULK TIER PRICING READY
+              {/* Retail Promise Box */}
+              <div className="pt-4 border-t border-slate-800 p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-xs font-mono text-slate-300 space-y-2">
+                <span className="font-bold text-[#00ff87] text-[11px] block uppercase flex items-center gap-1">
+                  <Truck className="w-3.5 h-3.5" />
+                  RETAIL DELIVERY PERKS
                 </span>
-                <p className="text-[11px] text-slate-500 font-sans">
-                  Discounts automatically apply in bag:
-                  <br />• 5+ units: 15% OFF
-                  <br />• 20+ units: 30% OFF
-                  <br />• 50+ units: 40% OFF
+                <p className="text-[11px] text-slate-400 font-sans leading-relaxed">
+                  • Single-piece purchase directly from factory
+                  <br />• Free delivery on orders over ₹999
+                  <br />• 7-day hassle-free size exchange
                 </p>
               </div>
             </div>
@@ -176,17 +176,17 @@ function ShopContent() {
           <div className="lg:col-span-9 space-y-6">
             
             {/* Top Sort & Search Toolbar */}
-            <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-soft flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="bg-[#0b0f19] rounded-2xl p-4 border border-slate-800 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
               {/* Category Pills (Quick scroll) */}
               <div className="flex gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 text-xs font-mono font-bold uppercase">
                 {CATEGORIES_LIST.slice(0, 5).map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-3 py-1 rounded-lg transition-colors flex-shrink-0 ${
+                    className={`px-3 py-1.5 rounded-lg transition-colors flex-shrink-0 ${
                       selectedCategory === cat
-                        ? 'bg-[#0b0f19] text-white'
-                        : 'bg-slate-100 text-slate-600 hover:text-slate-900'
+                        ? 'bg-[#00ff87] text-[#06080e]'
+                        : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
                     }`}
                   >
                     {cat}
@@ -196,14 +196,14 @@ function ShopContent() {
 
               {/* Sort Selector */}
               <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-                <span className="text-xs font-mono text-slate-500 flex items-center gap-1">
+                <span className="text-xs font-mono text-slate-400 flex items-center gap-1">
                   <ArrowUpDown className="w-3.5 h-3.5" />
                   SORT:
                 </span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as any)}
-                  className="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-slate-800 focus:outline-none focus:border-slate-800 cursor-pointer"
+                  className="bg-slate-900 border border-slate-700 rounded-xl px-3 py-1.5 text-xs font-mono font-bold text-white focus:outline-none focus:border-[#00ff87] cursor-pointer"
                 >
                   <option value="featured">FEATURED DROPS</option>
                   <option value="price-asc">PRICE: LOW TO HIGH</option>
@@ -215,17 +215,17 @@ function ShopContent() {
 
             {/* Products Grid */}
             {filteredProducts.length === 0 ? (
-              <div className="bg-white rounded-2xl p-16 text-center border border-slate-200">
-                <RefreshCw className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                <h3 className="font-mono font-bold text-base uppercase text-slate-900">
+              <div className="bg-[#0b0f19] rounded-2xl p-16 text-center border border-slate-800">
+                <RefreshCw className="w-10 h-10 text-slate-600 mx-auto mb-3" />
+                <h3 className="font-mono font-bold text-base uppercase text-white">
                   No products matched your criteria
                 </h3>
-                <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
                   Try resetting the category filter or searching for another keyword.
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="mt-4 px-6 py-2.5 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase transition-all shadow-md"
+                  className="mt-4 px-6 py-2.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-bold uppercase transition-all shadow-neon"
                 >
                   SHOW ALL PRODUCTS
                 </button>
@@ -256,7 +256,7 @@ function ShopContent() {
 
 export default function ShopPage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center font-mono text-xs">Loading Catalog...</div>}>
+    <Suspense fallback={<div className="p-12 text-center font-mono text-xs text-slate-400">Loading Catalog...</div>}>
       <ShopContent />
     </Suspense>
   );

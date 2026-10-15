@@ -75,6 +75,7 @@ export default function UserDashboardView() {
       type: newAddrType,
     });
     setShowAddAddressModal(false);
+    showToast('Delivery address saved successfully');
     setNewAddrName('');
     setNewAddrPhone('');
     setNewAddrStreet('');
@@ -90,26 +91,26 @@ export default function UserDashboardView() {
   const activeShipments = orders.filter((o) => o.orderStatus === 'SHIPPED' || o.orderStatus === 'IN_PRODUCTION').length;
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 py-8 sm:py-12 select-none">
+    <div className="min-h-screen bg-[#06080e] text-slate-100 py-8 sm:py-12 select-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top Breadcrumb & User Identity Bar */}
-        <div className="bg-white rounded-2xl p-6 border border-slate-200/90 shadow-soft mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-[#0b0f19] text-white flex items-center justify-center font-mono font-bold text-xl shadow-md border-2 border-[#05f26c]">
+            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-[#00ff87] flex items-center justify-center font-mono font-bold text-xl shadow-neon-sm border-2 border-[#00ff87]">
               AM
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold font-sans text-slate-950 uppercase">
+                <h1 className="text-xl sm:text-2xl font-bold font-sans text-white uppercase">
                   Arjun Malhotra
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#05f26c]/20 text-[#047857] border border-[#05f26c]/40">
-                  TIER 2 WHOLESALE PARTNER
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40">
+                  RETAIL VIP MEMBER
                 </span>
               </div>
-              <p className="text-xs font-mono text-slate-500 mt-0.5">
-                NEOM Retail Partner • arjun.malhotra@retailbrands.in • +91 98110 54321
+              <p className="text-xs font-mono text-slate-400 mt-0.5">
+                Slate Verified Customer • arjun.malhotra@retailbrands.in • +91 98110 54321
               </p>
             </div>
           </div>
@@ -117,13 +118,13 @@ export default function UserDashboardView() {
           <div className="flex items-center gap-2">
             <Link
               href="/shop"
-              className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-mono font-semibold transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-mono font-semibold transition-colors"
             >
               BROWSE CATALOG
             </Link>
             <Link
               href="/admin"
-              className="px-4 py-2 rounded-xl bg-[#05f26c] text-[#0b0f19] hover:bg-[#00e575] text-xs font-mono font-bold transition-all shadow-neon-sm flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] text-xs font-mono font-extrabold transition-all shadow-neon flex items-center gap-1.5"
             >
               <Zap className="w-3.5 h-3.5" />
               <span>ADMIN CONSOLE</span>
@@ -135,14 +136,14 @@ export default function UserDashboardView() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Left Navigation Sidebar */}
-          <div className="lg:col-span-3 space-y-2">
-            <div className="bg-white rounded-2xl p-3 border border-slate-200/90 shadow-soft space-y-1">
+          <div className="lg:col-span-3 space-y-4">
+            <div className="bg-[#0b0f19] rounded-2xl p-3 border border-slate-800 shadow-xl space-y-1">
               {[
                 { id: 'overview', label: 'OVERVIEW', icon: User },
                 { id: 'orders', label: `MY ORDERS (${orders.length})`, icon: Package },
                 { id: 'addresses', label: `SAVED ADDRESSES (${addresses.length})`, icon: MapPin },
                 { id: 'wishlist', label: `WISHLIST (${wishlist.length})`, icon: Heart },
-                { id: 'quotes', label: `CUSTOM QUOTES (${inquiries.length})`, icon: Clock },
+                { id: 'quotes', label: `CUSTOM INQUIRIES (${inquiries.length})`, icon: Clock },
                 { id: 'settings', label: 'ACCOUNT SETTINGS', icon: Settings },
               ].map((tab) => {
                 const Icon = tab.icon;
@@ -153,36 +154,36 @@ export default function UserDashboardView() {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-mono font-bold uppercase transition-all ${
                       isActive
-                        ? 'bg-[#0b0f19] text-white shadow-md'
-                        : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+                        ? 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold'
+                        : 'text-slate-300 hover:bg-slate-900 hover:text-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#05f26c]' : 'text-slate-400'}`} />
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#06080e]' : 'text-slate-500'}`} />
                       <span>{tab.label}</span>
                     </div>
-                    <ChevronRight className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 ${isActive ? 'text-[#06080e]' : 'text-slate-500'}`} />
                   </button>
                 );
               })}
             </div>
 
             {/* Support Widget Box */}
-            <div className="p-5 rounded-2xl bg-[#0b0f19] text-white border border-slate-200 shadow-soft space-y-3">
-              <span className="text-[10px] font-mono tracking-widest text-[#05f26c] uppercase block font-bold">
-                DIRECT MANUFACTURING CONTACT
+            <div className="p-5 rounded-2xl bg-gradient-to-b from-[#0b0f19] to-[#0d1320] text-white border border-slate-800 shadow-xl space-y-3">
+              <span className="text-[10px] font-mono tracking-widest text-[#00ff87] uppercase block font-bold">
+                RETAIL HELPDESK
               </span>
               <h4 className="text-xs font-mono font-bold uppercase text-white">
-                DEDICATED ACCOUNT DESK
+                CUSTOMER CONCIERGE
               </h4>
               <p className="text-[11px] text-slate-300 font-light leading-relaxed">
-                Connect with our production managers in New Delhi for custom dye-lots, bulk line allocation, and shipping manifests.
+                Connect with our New Delhi team for order modifications, address changes, or custom personalizations.
               </p>
               <a
                 href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20am%20Arjun%20Malhotra%20inquiring%20about%20my%20orders."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-lg bg-[#05f26c] text-[#0b0f19] hover:bg-[#00e575] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-sm"
+                className="w-full py-2.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>WHATSAPP SUPPORT</span>
@@ -198,53 +199,53 @@ export default function UserDashboardView() {
               <div className="space-y-6">
                 {/* 4 KPI Metric Cards */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-soft">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       TOTAL ORDERS
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-slate-900">
+                    <div className="text-2xl font-mono font-extrabold text-white">
                       {orders.length}
                     </div>
-                    <span className="text-[10px] font-mono text-[#047857] font-semibold mt-1 block">
+                    <span className="text-[10px] font-mono text-[#00ff87] font-semibold mt-1 block">
                       All time verified
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-soft">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       LIFETIME SPEND
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-slate-900">
+                    <div className="text-2xl font-mono font-extrabold text-white">
                       {formatPrice(totalSpent)}
                     </div>
-                    <span className="text-[10px] font-mono text-[#047857] font-semibold mt-1 block">
-                      Wholesale Tier 2
+                    <span className="text-[10px] font-mono text-[#00ff87] font-semibold mt-1 block">
+                      VIP Retail Tier
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-soft">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       ACTIVE SHIPMENTS
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-[#047857] flex items-center gap-1.5">
+                    <div className="text-2xl font-mono font-extrabold text-[#00ff87] flex items-center gap-1.5">
                       <span>{activeShipments}</span>
-                      <Truck className="w-4 h-4 text-[#047857]" />
+                      <Truck className="w-4 h-4 text-[#00ff87]" />
                     </div>
-                    <span className="text-[10px] font-mono text-slate-500 mt-1 block">
+                    <span className="text-[10px] font-mono text-slate-400 mt-1 block">
                       BlueDart Express
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-soft">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       SAVED IN WISHLIST
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-slate-900">
+                    <div className="text-2xl font-mono font-extrabold text-white">
                       {wishlist.length}
                     </div>
                     <button
                       onClick={() => setActiveTab('wishlist')}
-                      className="text-[10px] font-mono text-[#047857] font-bold hover:underline mt-1 block"
+                      className="text-[10px] font-mono text-[#00ff87] font-bold hover:underline mt-1 block"
                     >
                       View Items →
                     </button>
@@ -253,31 +254,31 @@ export default function UserDashboardView() {
 
                 {/* Latest Active Order Banner with Stepper */}
                 {orders.length > 0 && (
-                  <div className="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/90 shadow-soft">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-200 gap-3">
+                  <div className="bg-[#0b0f19] rounded-2xl p-6 sm:p-7 border border-slate-800 shadow-xl">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-mono text-base font-extrabold text-slate-900">
+                          <span className="font-mono text-base font-extrabold text-white">
                             LATEST SHIPMENT: #{orders[0].id}
                           </span>
                           <span
                             className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                               orders[0].orderStatus === 'DELIVERED'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : 'bg-[#05f26c]/20 text-[#047857]'
+                                ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800'
+                                : 'bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40'
                             }`}
                           >
                             {orders[0].orderStatus}
                           </span>
                         </div>
-                        <span className="text-xs font-mono text-slate-500">
+                        <span className="text-xs font-mono text-slate-400">
                           Placed on {formatDate(orders[0].createdAt)} • Courier: {orders[0].carrier} ({orders[0].trackingNumber})
                         </span>
                       </div>
 
                       <button
                         onClick={() => setSelectedOrder(orders[0])}
-                        className="px-4 py-2 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] text-xs font-mono font-bold transition-all"
+                        className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-[#00ff87] hover:text-[#06080e] text-white text-xs font-mono font-bold transition-all border border-slate-700"
                       >
                         VIEW INVOICE & RECEIPT
                       </button>
@@ -287,7 +288,7 @@ export default function UserDashboardView() {
                     <div className="py-6">
                       <div className="relative flex items-center justify-between max-w-2xl mx-auto">
                         {/* Connecting Line */}
-                        <div className="absolute top-1/2 left-0 right-0 h-1 bg-slate-200 -translate-y-1/2 z-0" />
+                        <div className="absolute top-1/2 left-0 right-0 h-1 bg-slate-800 -translate-y-1/2 z-0" />
 
                         {orders[0].timeline.map((step, idx) => {
                           const isDone = step.completed;
@@ -296,13 +297,13 @@ export default function UserDashboardView() {
                               <div
                                 className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all ${
                                   isDone
-                                    ? 'bg-[#05f26c] text-[#0b0f19] shadow-neon-sm ring-4 ring-white'
-                                    : 'bg-slate-200 text-slate-500 ring-4 ring-white'
+                                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon ring-4 ring-[#0b0f19]'
+                                    : 'bg-slate-800 text-slate-500 ring-4 ring-[#0b0f19]'
                                 }`}
                               >
                                 {isDone ? '✓' : idx + 1}
                               </div>
-                              <span className="text-[10px] font-mono font-bold text-slate-900 mt-2 max-w-[80px] leading-tight">
+                              <span className="text-[10px] font-mono font-bold text-white mt-2 max-w-[80px] leading-tight">
                                 {step.status}
                               </span>
                               <span className="text-[9px] font-mono text-slate-400 mt-0.5 max-w-[90px] truncate">
@@ -314,14 +315,14 @@ export default function UserDashboardView() {
                       </div>
                     </div>
 
-                    {/* Order Line Items Previews */}
-                    <div className="pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {/* Order Line Items Previews: Well formatted aspect */}
+                    <div className="pt-4 border-t border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {orders[0].items.map((item, idx) => (
                         <div
                           key={idx}
-                          className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200"
+                          className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800"
                         >
-                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-slate-200 flex-shrink-0">
+                          <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-slate-950 flex-shrink-0 border border-slate-800">
                             <Image
                               src={item.image}
                               alt={item.name}
@@ -331,13 +332,13 @@ export default function UserDashboardView() {
                             />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h5 className="text-xs font-bold text-slate-900 truncate">
+                            <h5 className="text-xs font-bold text-white truncate">
                               {item.name}
                             </h5>
-                            <span className="text-[10px] font-mono text-slate-500">
+                            <span className="text-[10px] font-mono text-slate-400">
                               Qty: {item.quantity} • Size: {item.size} • {item.color}
                             </span>
-                            <div className="text-xs font-mono font-bold text-slate-900 mt-0.5">
+                            <div className="text-xs font-mono font-bold text-[#00ff87] mt-0.5">
                               {formatPrice(item.price * item.quantity)}
                             </div>
                           </div>
@@ -353,66 +354,66 @@ export default function UserDashboardView() {
             {activeTab === 'orders' && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-mono font-bold text-base uppercase text-slate-900">
+                  <h3 className="font-mono font-bold text-base uppercase text-white">
                     ORDER HISTORY ({orders.length})
                   </h3>
                   <Link
                     href="/shop"
-                    className="text-xs font-mono font-bold text-[#047857] hover:underline uppercase"
+                    className="text-xs font-mono font-bold text-[#00ff87] hover:underline uppercase"
                   >
-                    + NEW REORDER
+                    + NEW ORDER
                   </Link>
                 </div>
 
                 {orders.length === 0 ? (
-                  <div className="p-12 text-center bg-white rounded-2xl border border-slate-200">
-                    <Package className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                    <h4 className="font-bold font-mono text-slate-800 text-sm">No orders yet</h4>
-                    <p className="text-xs text-slate-500 mt-1">Place your first order from our catalog.</p>
+                  <div className="p-12 text-center bg-[#0b0f19] rounded-2xl border border-slate-800">
+                    <Package className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+                    <h4 className="font-bold font-mono text-slate-300 text-sm">No orders yet</h4>
+                    <p className="text-xs text-slate-500 mt-1">Place your first order from our retail catalog.</p>
                   </div>
                 ) : (
                   orders.map((ord) => (
                     <div
                       key={ord.id}
-                      className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/90 shadow-soft space-y-4 hover:border-slate-400 transition-all"
+                      className="bg-[#0b0f19] rounded-2xl p-5 sm:p-6 border border-slate-800 shadow-lg space-y-4 hover:border-slate-700 transition-all"
                     >
                       {/* Header */}
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono text-base font-extrabold text-slate-900">
+                            <span className="font-mono text-base font-extrabold text-white">
                               ORDER #{ord.id}
                             </span>
                             <span
                               className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                                 ord.orderStatus === 'DELIVERED'
-                                  ? 'bg-emerald-100 text-emerald-800'
+                                  ? 'bg-emerald-950 text-emerald-400 border border-emerald-800'
                                   : ord.orderStatus === 'SHIPPED'
-                                  ? 'bg-[#05f26c]/20 text-[#047857]'
-                                  : 'bg-amber-100 text-amber-800'
+                                  ? 'bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40'
+                                  : 'bg-amber-950 text-amber-400 border border-amber-800'
                               }`}
                             >
                               {ord.orderStatus}
                             </span>
                           </div>
-                          <span className="text-xs font-mono text-slate-500">
+                          <span className="text-xs font-mono text-slate-400">
                             Placed on {formatDateTime(ord.createdAt)} • Paid via {ord.paymentMethod}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-3">
                           <div className="text-right">
-                            <div className="text-base font-mono font-extrabold text-slate-950">
+                            <div className="text-base font-mono font-extrabold text-[#00ff87]">
                               {formatPrice(ord.total)}
                             </div>
-                            <span className="text-[10px] font-mono text-slate-500">
-                              {ord.items.length} unique style{ord.items.length > 1 ? 's' : ''}
+                            <span className="text-[10px] font-mono text-slate-400">
+                              {ord.items.length} style{ord.items.length > 1 ? 's' : ''}
                             </span>
                           </div>
 
                           <button
                             onClick={() => setSelectedOrder(ord)}
-                            className="px-3.5 py-2 rounded-xl bg-slate-900 text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
+                            className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white hover:bg-[#00ff87] hover:text-[#06080e] font-mono text-xs font-bold transition-all shadow-sm flex items-center gap-1.5"
                           >
                             <FileText className="w-3.5 h-3.5" />
                             <span>INVOICE</span>
@@ -425,9 +426,9 @@ export default function UserDashboardView() {
                         {ord.items.map((it, idx) => (
                           <div
                             key={idx}
-                            className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200"
+                            className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-900 border border-slate-800"
                           >
-                            <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-slate-200 flex-shrink-0">
+                            <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-slate-950 flex-shrink-0 border border-slate-800">
                               <Image
                                 src={it.image}
                                 alt={it.name}
@@ -437,13 +438,13 @@ export default function UserDashboardView() {
                               />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <h5 className="text-xs font-bold text-slate-900 truncate">
+                              <h5 className="text-xs font-bold text-white truncate">
                                 {it.name}
                               </h5>
-                              <span className="text-[10px] font-mono text-slate-500 block">
+                              <span className="text-[10px] font-mono text-slate-400 block">
                                 {it.quantity}x • {it.size} • {it.color}
                               </span>
-                              <span className="text-xs font-mono font-bold text-slate-900">
+                              <span className="text-xs font-mono font-bold text-[#00ff87]">
                                 {formatPrice(it.price * it.quantity)}
                               </span>
                             </div>
@@ -452,14 +453,14 @@ export default function UserDashboardView() {
                       </div>
 
                       {/* Footer Tracking Info */}
-                      <div className="pt-3 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs font-mono text-slate-600 gap-2">
+                      <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-start sm:items-center justify-between text-xs font-mono text-slate-300 gap-2">
                         <div className="flex items-center gap-2">
-                          <Truck className="w-4 h-4 text-[#047857]" />
+                          <Truck className="w-4 h-4 text-[#00ff87]" />
                           <span>
-                            Tracking: <strong>{ord.trackingNumber}</strong> ({ord.carrier})
+                            Tracking: <strong className="text-white">{ord.trackingNumber}</strong> ({ord.carrier})
                           </span>
                         </div>
-                        <span className="text-slate-500">
+                        <span className="text-slate-400">
                           Destination: {ord.customer.city}, {ord.customer.state} ({ord.customer.pincode})
                         </span>
                       </div>
@@ -473,12 +474,12 @@ export default function UserDashboardView() {
             {activeTab === 'addresses' && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-mono font-bold text-base uppercase text-slate-900">
+                  <h3 className="font-mono font-bold text-base uppercase text-white">
                     SAVED DELIVERY ADDRESSES ({addresses.length})
                   </h3>
                   <button
                     onClick={() => setShowAddAddressModal(true)}
-                    className="px-4 py-2 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase transition-all shadow-sm flex items-center gap-1.5"
+                    className="px-4 py-2 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase transition-all shadow-neon flex items-center gap-1.5"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>ADD NEW ADDRESS</span>
@@ -491,48 +492,48 @@ export default function UserDashboardView() {
                       key={addr.id}
                       className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
                         addr.isDefault
-                          ? 'bg-white border-[#05f26c] ring-2 ring-[#05f26c]/30 shadow-soft'
-                          : 'bg-white border-slate-200'
+                          ? 'bg-[#0b0f19] border-[#00ff87] ring-1 ring-[#00ff87]/40 shadow-neon-sm'
+                          : 'bg-[#0b0f19] border-slate-800'
                       }`}
                     >
                       <div>
                         <div className="flex items-center justify-between mb-2">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-100 text-slate-700">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-slate-900 border border-slate-700 text-slate-300">
                             {addr.type}
                           </span>
                           {addr.isDefault && (
-                            <span className="text-[10px] font-mono font-bold text-[#047857] flex items-center gap-1">
+                            <span className="text-[10px] font-mono font-bold text-[#00ff87] flex items-center gap-1">
                               <CheckCircle2 className="w-3 h-3" />
                               DEFAULT
                             </span>
                           )}
                         </div>
 
-                        <h4 className="font-bold text-sm text-slate-900">{addr.fullName}</h4>
-                        <p className="text-xs text-slate-600 font-sans mt-1 leading-relaxed">
+                        <h4 className="font-bold text-sm text-white">{addr.fullName}</h4>
+                        <p className="text-xs text-slate-300 font-sans mt-1 leading-relaxed">
                           {addr.street}<br />
                           {addr.city}, {addr.state} - {addr.pincode}
                         </p>
-                        <p className="text-xs font-mono text-slate-500 mt-2">
+                        <p className="text-xs font-mono text-slate-400 mt-2">
                           Phone: {addr.phone}
                         </p>
                       </div>
 
-                      <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs font-mono">
+                      <div className="pt-4 mt-4 border-t border-slate-800 flex items-center justify-between text-xs font-mono">
                         {!addr.isDefault ? (
                           <button
                             onClick={() => setDefaultAddress(addr.id)}
-                            className="text-slate-700 hover:text-slate-950 font-bold underline"
+                            className="text-slate-400 hover:text-[#00ff87] font-bold underline"
                           >
                             Set as Default
                           </button>
                         ) : (
-                          <span className="text-[#047857] font-bold">Primary Dispatch</span>
+                          <span className="text-[#00ff87] font-bold">Primary Delivery</span>
                         )}
 
                         <button
                           onClick={() => deleteAddress(addr.id)}
-                          className="text-slate-400 hover:text-red-600 transition-colors"
+                          className="text-slate-500 hover:text-red-400 transition-colors"
                           title="Delete"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -547,14 +548,14 @@ export default function UserDashboardView() {
             {/* TAB 4: WISHLIST */}
             {activeTab === 'wishlist' && (
               <div className="space-y-4">
-                <h3 className="font-mono font-bold text-base uppercase text-slate-900 mb-2">
+                <h3 className="font-mono font-bold text-base uppercase text-white mb-2">
                   SAVED ITEMS ({wishlistProducts.length})
                 </h3>
 
                 {wishlistProducts.length === 0 ? (
-                  <div className="p-12 text-center bg-white rounded-2xl border border-slate-200">
-                    <Heart className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-                    <h4 className="font-bold font-mono text-slate-800 text-sm">Your wishlist is empty</h4>
+                  <div className="p-12 text-center bg-[#0b0f19] rounded-2xl border border-slate-800">
+                    <Heart className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+                    <h4 className="font-bold font-mono text-slate-300 text-sm">Your wishlist is empty</h4>
                     <p className="text-xs text-slate-500 mt-1">Tap the heart on any product card to save it here.</p>
                   </div>
                 ) : (
@@ -562,9 +563,9 @@ export default function UserDashboardView() {
                     {wishlistProducts.map((prod) => (
                       <div
                         key={prod.id}
-                        className="p-4 rounded-2xl bg-white border border-slate-200 shadow-soft flex flex-col justify-between"
+                        className="p-4 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg flex flex-col justify-between"
                       >
-                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-slate-100 mb-3">
+                        <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-slate-950 mb-3 border border-slate-800">
                           <Image
                             src={prod.images[0]}
                             alt={prod.name}
@@ -575,21 +576,21 @@ export default function UserDashboardView() {
                         </div>
 
                         <div>
-                          <span className="text-[10px] font-mono text-slate-500 uppercase">
+                          <span className="text-[10px] font-mono text-[#00ff87] uppercase font-bold">
                             {prod.category}
                           </span>
-                          <h4 className="font-bold text-xs text-slate-900 line-clamp-1 mt-0.5">
+                          <h4 className="font-bold text-xs text-white line-clamp-1 mt-0.5">
                             {prod.name}
                           </h4>
-                          <div className="text-sm font-mono font-bold text-slate-900 mt-1">
+                          <div className="text-sm font-mono font-bold text-white mt-1">
                             {formatPrice(prod.price)}
                           </div>
                         </div>
 
-                        <div className="pt-3 mt-3 border-t border-slate-100 flex gap-2">
+                        <div className="pt-3 mt-3 border-t border-slate-800 flex gap-2">
                           <button
                             onClick={() => addToCart(prod, prod.sizes[0], prod.colors[0].name, 1)}
-                            className="flex-1 py-2 rounded-lg bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-[11px] font-bold transition-all flex items-center justify-center gap-1.5"
+                            className="flex-1 py-2 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-neon-sm"
                           >
                             <ShoppingBag className="w-3.5 h-3.5" />
                             <span>MOVE TO BAG</span>
@@ -606,16 +607,16 @@ export default function UserDashboardView() {
             {activeTab === 'quotes' && (
               <div className="space-y-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h3 className="font-mono font-bold text-base uppercase text-slate-900">
-                    CUSTOM B2B SAMPLE QUOTES ({inquiries.length})
+                  <h3 className="font-mono font-bold text-base uppercase text-white">
+                    PERSONALIZATION & CUSTOM INQUIRIES ({inquiries.length})
                   </h3>
                   <a
                     href="https://wa.me/919599084873"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono font-bold text-[#047857] hover:underline uppercase"
+                    className="text-xs font-mono font-bold text-[#00ff87] hover:underline uppercase"
                   >
-                    + NEW FACTORY INQUIRY
+                    + NEW INQUIRY
                   </a>
                 </div>
 
@@ -623,25 +624,25 @@ export default function UserDashboardView() {
                   {inquiries.map((inq) => (
                     <div
                       key={inq.id}
-                      className="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-soft space-y-3"
+                      className="p-5 rounded-2xl border border-slate-800 bg-[#0b0f19] shadow-lg space-y-3"
                     >
                       <div className="flex items-center justify-between">
                         <div>
                           <div className="flex items-center gap-2">
-                            <span className="font-mono font-bold text-sm text-slate-900">
+                            <span className="font-mono font-bold text-sm text-white">
                               INQUIRY #{inq.id}
                             </span>
                             <span
                               className={`px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold ${
                                 inq.status === 'QUOTE_ISSUED'
-                                  ? 'bg-[#05f26c]/20 text-[#047857]'
-                                  : 'bg-amber-100 text-amber-800'
+                                  ? 'bg-[#00ff87]/20 text-[#00ff87]'
+                                  : 'bg-amber-950 text-amber-400 border border-amber-800'
                               }`}
                             >
                               {inq.status}
                             </span>
                           </div>
-                          <span className="text-xs font-mono text-slate-500">
+                          <span className="text-xs font-mono text-slate-400">
                             Submitted on {formatDate(inq.createdAt)} • Contact: {inq.contactName}
                           </span>
                         </div>
@@ -649,14 +650,14 @@ export default function UserDashboardView() {
                         {inq.quotedPrice && (
                           <div className="text-right">
                             <span className="text-[10px] font-mono text-slate-400 uppercase block">QUOTED TOTAL</span>
-                            <span className="text-base font-mono font-extrabold text-[#047857]">
+                            <span className="text-base font-mono font-extrabold text-[#00ff87]">
                               {formatPrice(inq.quotedPrice)}
                             </span>
                           </div>
                         )}
                       </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono bg-slate-50 p-3 rounded-xl border border-slate-100">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono bg-slate-900 p-3 rounded-xl border border-slate-800">
                         <div>
                           <span className="text-slate-400">PRODUCT:</span> {inq.productInterested}
                         </div>
@@ -669,14 +670,14 @@ export default function UserDashboardView() {
                       </div>
 
                       <div className="flex justify-between items-center pt-2">
-                        <span className="text-[11px] font-mono text-slate-500">
+                        <span className="text-[11px] font-mono text-slate-400">
                           Production Desk Status: Verified by New Delhi Okhla Unit
                         </span>
                         <a
                           href={`https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20following%20up%20on%20my%20inquiry%20${inq.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="px-3 py-1.5 rounded-lg bg-slate-900 text-white hover:bg-[#05f26c] hover:text-[#0b0f19] text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+                          className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white hover:bg-[#00ff87] hover:text-[#06080e] text-xs font-mono font-bold transition-all flex items-center gap-1.5"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
                           <span>DISCUSS ON WHATSAPP</span>
@@ -690,53 +691,53 @@ export default function UserDashboardView() {
 
             {/* TAB 6: ACCOUNT SETTINGS */}
             {activeTab === 'settings' && (
-              <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-soft space-y-6">
-                <h3 className="font-mono font-bold text-base uppercase text-slate-900 border-b border-slate-200 pb-3">
-                  PROFILE & TAX CREDENTIALS
+              <div className="bg-[#0b0f19] rounded-2xl p-6 sm:p-8 border border-slate-800 shadow-xl space-y-6">
+                <h3 className="font-mono font-bold text-base uppercase text-white border-b border-slate-800 pb-3">
+                  PROFILE & CONTACT DETAILS
                 </h3>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-mono">
                   <div>
-                    <label className="block text-slate-500 uppercase mb-1">Company / Trading Entity</label>
+                    <label className="block text-slate-400 uppercase mb-1">Customer Name</label>
                     <input
                       type="text"
-                      defaultValue="NEOM Retail Partner LLP"
-                      className="w-full p-2.5 border border-slate-200 rounded-lg font-mono"
+                      defaultValue="Arjun Malhotra"
+                      className="w-full p-2.5 bg-slate-900 border border-slate-700 text-white rounded-lg font-mono focus:outline-none focus:border-[#00ff87]"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-500 uppercase mb-1">GSTIN Number</label>
+                    <label className="block text-slate-400 uppercase mb-1">GSTIN Number (Optional)</label>
                     <input
                       type="text"
                       defaultValue="07AABCN1234F1Z8"
-                      className="w-full p-2.5 border border-slate-200 rounded-lg font-mono uppercase"
+                      className="w-full p-2.5 bg-slate-900 border border-slate-700 text-white rounded-lg font-mono uppercase focus:outline-none focus:border-[#00ff87]"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-500 uppercase mb-1">Primary Email</label>
+                    <label className="block text-slate-400 uppercase mb-1">Primary Email</label>
                     <input
                       type="email"
                       defaultValue="arjun.malhotra@retailbrands.in"
-                      className="w-full p-2.5 border border-slate-200 rounded-lg font-mono"
+                      className="w-full p-2.5 bg-slate-900 border border-slate-700 text-white rounded-lg font-mono focus:outline-none focus:border-[#00ff87]"
                     />
                   </div>
                   <div>
-                    <label className="block text-slate-500 uppercase mb-1">Dispatch Contact Number</label>
+                    <label className="block text-slate-400 uppercase mb-1">WhatsApp Mobile Number</label>
                     <input
                       type="tel"
                       defaultValue="+91 98110 54321"
-                      className="w-full p-2.5 border border-slate-200 rounded-lg font-mono"
+                      className="w-full p-2.5 bg-slate-900 border border-slate-700 text-white rounded-lg font-mono focus:outline-none focus:border-[#00ff87]"
                     />
                   </div>
                 </div>
 
-                <div className="pt-4 border-t border-slate-200 flex justify-between items-center">
-                  <span className="text-xs text-slate-500 font-mono">
-                    Changes reflect on all future tax invoices.
+                <div className="pt-4 border-t border-slate-800 flex justify-between items-center">
+                  <span className="text-xs text-slate-400 font-mono">
+                    Changes reflect on all future retail invoices.
                   </span>
                   <button
                     onClick={() => showToast('Profile settings saved')}
-                    className="px-6 py-2.5 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold transition-all shadow-sm"
+                    className="px-6 py-2.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold transition-all shadow-neon"
                   >
                     SAVE CHANGES
                   </button>
@@ -749,56 +750,56 @@ export default function UserDashboardView() {
 
       {/* Invoice & Order Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-white rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+          <div className="relative w-full max-w-2xl bg-[#0b0f19] rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-700 text-white max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setSelectedOrder(null)}
-              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-900 rounded-full bg-slate-100"
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full bg-slate-900 border border-slate-700"
             >
               <X className="w-5 h-5" />
             </button>
 
             {/* Printable Tax Invoice Header */}
-            <div className="border-b border-slate-200 pb-5 mb-5 flex justify-between items-start">
+            <div className="border-b border-slate-800 pb-5 mb-5 flex justify-between items-start">
               <div>
-                <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase">
-                  ORIGINAL TAX INVOICE
+                <span className="text-[10px] font-mono tracking-widest text-[#00ff87] uppercase font-bold">
+                  ORIGINAL RETAIL TAX INVOICE
                 </span>
-                <h3 className="text-xl font-bold font-mono text-slate-900 uppercase">
+                <h3 className="text-xl font-bold font-mono text-white uppercase">
                   SLATE APPARELS NEW DELHI
                 </h3>
-                <p className="text-xs font-mono text-slate-500 mt-0.5">
-                  GSTIN: 07AAACS1429K1Z5 • IEC: 0514088921
+                <p className="text-xs font-mono text-slate-400 mt-0.5">
+                  GSTIN: 07AAACS1429K1Z5 • IEC: 0514088921 • UDYAM-DL-08-0024891
                 </p>
               </div>
               <div className="text-right">
-                <span className="text-sm font-mono font-bold text-slate-900">#{selectedOrder.id}</span>
-                <span className="text-xs font-mono text-slate-500 block">
+                <span className="text-sm font-mono font-bold text-white">#{selectedOrder.id}</span>
+                <span className="text-xs font-mono text-slate-400 block">
                   Date: {formatDate(selectedOrder.createdAt)}
                 </span>
               </div>
             </div>
 
             {/* Billed To */}
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 mb-5 text-xs font-mono grid grid-cols-2 gap-4">
+            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 mb-5 text-xs font-mono grid grid-cols-2 gap-4">
               <div>
                 <span className="text-slate-400 block mb-1">BILLED & SHIPPED TO:</span>
-                <strong className="text-slate-900 block">{selectedOrder.customer.name}</strong>
-                <span>{selectedOrder.customer.address}</span><br />
-                <span>{selectedOrder.customer.city}, {selectedOrder.customer.state} - {selectedOrder.customer.pincode}</span><br />
-                <span>Phone: {selectedOrder.customer.phone}</span>
+                <strong className="text-white block">{selectedOrder.customer.name}</strong>
+                <span className="text-slate-300">{selectedOrder.customer.address}</span><br />
+                <span className="text-slate-300">{selectedOrder.customer.city}, {selectedOrder.customer.state} - {selectedOrder.customer.pincode}</span><br />
+                <span className="text-slate-400">Phone: {selectedOrder.customer.phone}</span>
               </div>
               <div>
                 <span className="text-slate-400 block mb-1">DISPATCH METHOD:</span>
-                <strong className="text-slate-900 block">{selectedOrder.carrier}</strong>
-                <span>Air Waybill: {selectedOrder.trackingNumber}</span><br />
-                <span>Payment: {selectedOrder.paymentMethod} ({selectedOrder.paymentStatus})</span>
+                <strong className="text-white block">{selectedOrder.carrier}</strong>
+                <span className="text-slate-300">Air Waybill: {selectedOrder.trackingNumber}</span><br />
+                <span className="text-slate-300">Payment: {selectedOrder.paymentMethod} ({selectedOrder.paymentStatus})</span>
               </div>
             </div>
 
             {/* Line Items Table */}
             <div className="space-y-3 mb-5">
-              <div className="text-xs font-mono font-bold text-slate-400 uppercase grid grid-cols-12 pb-2 border-b border-slate-200">
+              <div className="text-xs font-mono font-bold text-slate-400 uppercase grid grid-cols-12 pb-2 border-b border-slate-800">
                 <div className="col-span-6">ITEM</div>
                 <div className="col-span-2 text-center">QTY</div>
                 <div className="col-span-2 text-right">PRICE</div>
@@ -806,14 +807,14 @@ export default function UserDashboardView() {
               </div>
 
               {selectedOrder.items.map((it, idx) => (
-                <div key={idx} className="text-xs font-mono grid grid-cols-12 items-center py-1.5 border-b border-slate-100">
+                <div key={idx} className="text-xs font-mono grid grid-cols-12 items-center py-2 border-b border-slate-800/60">
                   <div className="col-span-6">
-                    <span className="font-bold text-slate-900 block truncate">{it.name}</span>
-                    <span className="text-[10px] text-slate-500">{it.size} • {it.color}</span>
+                    <span className="font-bold text-white block truncate">{it.name}</span>
+                    <span className="text-[10px] text-slate-400">{it.size} • {it.color}</span>
                   </div>
-                  <div className="col-span-2 text-center text-slate-700">{it.quantity}</div>
-                  <div className="col-span-2 text-right text-slate-700">{formatPrice(it.price)}</div>
-                  <div className="col-span-2 text-right font-bold text-slate-900">
+                  <div className="col-span-2 text-center text-slate-300">{it.quantity}</div>
+                  <div className="col-span-2 text-right text-slate-300">{formatPrice(it.price)}</div>
+                  <div className="col-span-2 text-right font-bold text-[#00ff87]">
                     {formatPrice(it.price * it.quantity)}
                   </div>
                 </div>
@@ -821,13 +822,13 @@ export default function UserDashboardView() {
             </div>
 
             {/* Total Math */}
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-1.5 text-xs font-mono text-slate-600 mb-6">
+            <div className="bg-slate-900 p-4 rounded-xl border border-slate-800 space-y-1.5 text-xs font-mono text-slate-300 mb-6">
               <div className="flex justify-between">
                 <span>Subtotal:</span>
-                <span className="text-slate-900 font-bold">{formatPrice(selectedOrder.subtotal)}</span>
+                <span className="text-white font-bold">{formatPrice(selectedOrder.subtotal)}</span>
               </div>
               {selectedOrder.discount > 0 && (
-                <div className="flex justify-between text-[#047857]">
+                <div className="flex justify-between text-[#00ff87]">
                   <span>Promo Discount:</span>
                   <span>-{formatPrice(selectedOrder.discount)}</span>
                 </div>
@@ -840,23 +841,23 @@ export default function UserDashboardView() {
                 <span>Apparel GST (5%):</span>
                 <span>{formatPrice(selectedOrder.tax)}</span>
               </div>
-              <div className="flex justify-between text-base font-bold text-slate-950 pt-2 border-t border-slate-200">
-                <span>TOTAL PAID:</span>
-                <span className="text-[#0b0f19]">{formatPrice(selectedOrder.total)}</span>
+              <div className="flex justify-between text-base font-bold text-white pt-2 border-t border-slate-800">
+                <span>TOTAL SETTLED:</span>
+                <span className="text-[#00ff87] font-mono">{formatPrice(selectedOrder.total)}</span>
               </div>
             </div>
 
             <div className="flex gap-3">
               <button
                 onClick={() => window.print()}
-                className="flex-1 py-3 rounded-xl bg-slate-900 text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase transition-all flex items-center justify-center gap-2"
+                className="flex-1 py-3 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase transition-all flex items-center justify-center gap-2 shadow-neon"
               >
                 <Printer className="w-4 h-4" />
                 <span>PRINT TAX INVOICE</span>
               </button>
               <button
                 onClick={() => setSelectedOrder(null)}
-                className="px-6 py-3 rounded-xl border border-slate-200 text-slate-700 font-mono text-xs font-bold hover:bg-slate-100"
+                className="px-6 py-3 rounded-xl border border-slate-700 bg-slate-900 text-slate-300 font-mono text-xs font-bold hover:bg-slate-800"
               >
                 CLOSE
               </button>
@@ -867,15 +868,15 @@ export default function UserDashboardView() {
 
       {/* Add Address Modal */}
       {showAddAddressModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in">
-          <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-200">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
+          <div className="relative w-full max-w-lg bg-[#0b0f19] rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-700 text-white">
             <div className="flex justify-between items-center mb-4">
-              <h3 className="font-mono font-bold text-base uppercase text-slate-900">
+              <h3 className="font-mono font-bold text-base uppercase text-white">
                 ADD NEW SHIPPING ADDRESS
               </h3>
               <button
                 onClick={() => setShowAddAddressModal(false)}
-                className="text-slate-400 hover:text-slate-900"
+                className="text-slate-400 hover:text-white"
               >
                 ✕
               </button>
@@ -883,7 +884,7 @@ export default function UserDashboardView() {
 
             <form onSubmit={handleCreateAddress} className="space-y-3.5">
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                   Full Name / Contact Person
                 </label>
                 <input
@@ -892,12 +893,12 @@ export default function UserDashboardView() {
                   value={newAddrName}
                   onChange={(e) => setNewAddrName(e.target.value)}
                   placeholder="e.g. Arjun Malhotra"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                   Phone Number
                 </label>
                 <input
@@ -906,13 +907,13 @@ export default function UserDashboardView() {
                   value={newAddrPhone}
                   onChange={(e) => setNewAddrPhone(e.target.value)}
                   placeholder="+91 98110 54321"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
-                  Street Address / Floor / Building
+                <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
+                  Street Address / Flat / Building
                 </label>
                 <input
                   type="text"
@@ -920,13 +921,13 @@ export default function UserDashboardView() {
                   value={newAddrStreet}
                   onChange={(e) => setNewAddrStreet(e.target.value)}
                   placeholder="e.g. B-42, Defence Colony, Flyover Road"
-                  className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                     City
                   </label>
                   <input
@@ -935,11 +936,11 @@ export default function UserDashboardView() {
                     value={newAddrCity}
                     onChange={(e) => setNewAddrCity(e.target.value)}
                     placeholder="New Delhi"
-                    className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                     State
                   </label>
                   <input
@@ -948,11 +949,11 @@ export default function UserDashboardView() {
                     value={newAddrState}
                     onChange={(e) => setNewAddrState(e.target.value)}
                     placeholder="Delhi"
-                    className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                  <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                     Pincode
                   </label>
                   <input
@@ -961,13 +962,13 @@ export default function UserDashboardView() {
                     value={newAddrPincode}
                     onChange={(e) => setNewAddrPincode(e.target.value)}
                     placeholder="110024"
-                    className="w-full px-3 py-2 text-xs border border-slate-200 rounded-lg focus:outline-none focus:border-slate-800"
+                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-[10px] font-mono font-bold uppercase text-slate-700 mb-1">
+                <label className="block text-[10px] font-mono font-bold uppercase text-slate-300 mb-1">
                   Address Type
                 </label>
                 <div className="grid grid-cols-3 gap-2">
@@ -978,8 +979,8 @@ export default function UserDashboardView() {
                       onClick={() => setNewAddrType(t as any)}
                       className={`py-2 text-xs font-mono font-bold rounded-lg border uppercase transition-colors ${
                         newAddrType === t
-                          ? 'bg-[#0b0f19] text-white border-[#0b0f19]'
-                          : 'bg-slate-50 text-slate-700 border-slate-200'
+                          ? 'bg-[#00ff87] text-[#06080e] border-[#00ff87]'
+                          : 'bg-slate-900 text-slate-300 border-slate-700'
                       }`}
                     >
                       {t}
@@ -990,7 +991,7 @@ export default function UserDashboardView() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-md mt-2"
+                className="w-full py-3 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon mt-2"
               >
                 SAVE ADDRESS
               </button>

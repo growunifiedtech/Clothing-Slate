@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Product } from '@/lib/products-data';
 import { useStore } from '@/lib/store';
 import { formatPrice } from '@/lib/utils';
-import { X, ShoppingBag, Star, ShieldCheck, ArrowRight, Zap, Check } from 'lucide-react';
+import { X, ShoppingBag, Star, ShieldCheck, ArrowRight, Truck, Check } from 'lucide-react';
 
 interface ProductQuickViewModalProps {
   product: Product | null;
@@ -32,19 +32,19 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm select-none animate-in fade-in duration-150">
-      <div className="relative w-full max-w-4xl bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md select-none animate-in fade-in duration-150">
+      <div className="relative w-full max-w-4xl bg-[#0b0f19] rounded-3xl shadow-2xl border border-slate-700 overflow-hidden flex flex-col md:flex-row max-h-[90vh]">
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors"
+          className="absolute top-4 right-4 z-20 p-2 rounded-full bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Left: Gallery (Half width) */}
-        <div className="w-full md:w-1/2 p-6 bg-slate-50 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-200">
-          <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-slate-200 shadow-sm">
+        <div className="w-full md:w-1/2 p-6 bg-[#06080e] flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
+          <div className="relative aspect-[4/5] w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shadow-sm">
             <Image
               src={product.images[activeImageIdx] || product.images[0]}
               alt={product.name}
@@ -53,7 +53,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               className="object-cover object-center"
             />
             {product.badge && (
-              <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-bold bg-[#05f26c] text-[#0b0f19] shadow-sm">
+              <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-extrabold bg-[#00ff87] text-[#06080e] shadow-neon-sm uppercase">
                 {product.badge}
               </span>
             )}
@@ -61,13 +61,13 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
 
           {/* Thumbnails */}
           {product.images.length > 1 && (
-            <div className="flex gap-2 mt-4 overflow-x-auto pb-1">
+            <div className="flex gap-2.5 mt-4 overflow-x-auto pb-1">
               {product.images.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIdx(idx)}
-                  className={`relative w-14 h-14 rounded-lg overflow-hidden border-2 flex-shrink-0 transition-all ${
-                    activeImageIdx === idx ? 'border-slate-900 scale-105' : 'border-transparent opacity-70 hover:opacity-100'
+                  className={`relative w-14 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all ${
+                    activeImageIdx === idx ? 'border-[#00ff87] scale-105' : 'border-slate-800 opacity-60 hover:opacity-100'
                   }`}
                 >
                   <Image src={img} alt="" fill unoptimized className="object-cover" />
@@ -81,41 +81,41 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
         <div className="w-full md:w-1/2 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto">
           <div>
             {/* Category & Rating */}
-            <div className="flex items-center justify-between text-xs font-mono text-slate-500 mb-2">
-              <span className="uppercase">{product.category} • {product.season}</span>
-              <div className="flex items-center gap-1 text-slate-800">
+            <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+              <span className="uppercase text-[#00ff87] font-bold">{product.category} • {product.season}</span>
+              <div className="flex items-center gap-1 text-slate-300">
                 <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                <span className="font-bold">{product.rating}</span>
-                <span className="text-slate-400">({product.reviewsCount} reviews)</span>
+                <span className="font-bold text-white">{product.rating}</span>
+                <span className="text-slate-500">({product.reviewsCount} reviews)</span>
               </div>
             </div>
 
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 uppercase font-sans mb-3">
+            <h2 className="text-xl sm:text-2xl font-bold text-white uppercase font-sans mb-3">
               {product.name}
             </h2>
 
             {/* Price Row */}
             <div className="flex items-baseline gap-3 mb-4">
-              <span className="text-2xl font-extrabold font-mono text-slate-900">
+              <span className="text-2xl font-extrabold font-mono text-white">
                 {formatPrice(product.price)}
               </span>
-              <span className="text-sm font-mono text-slate-400 line-through">
+              <span className="text-sm font-mono text-slate-500 line-through">
                 {formatPrice(product.compareAtPrice)}
               </span>
-              <span className="text-xs font-mono font-bold text-[#047857] bg-[#05f26c]/15 px-2 py-0.5 rounded">
+              <span className="text-xs font-mono font-bold text-[#00ff87] bg-[#00ff87]/15 border border-[#00ff87]/30 px-2 py-0.5 rounded">
                 Save {discountPercent}%
               </span>
             </div>
 
             {/* Description */}
-            <p className="text-xs text-slate-600 leading-relaxed mb-6 font-sans">
+            <p className="text-xs text-slate-300 leading-relaxed mb-6 font-sans">
               {product.description}
             </p>
 
             {/* Color Swatch Selection */}
             <div className="mb-4">
-              <div className="text-xs font-mono font-bold uppercase text-slate-700 mb-2 flex justify-between">
-                <span>Color: {selectedColor}</span>
+              <div className="text-xs font-mono font-bold uppercase text-slate-300 mb-2 flex justify-between">
+                <span>Colorway: <strong className="text-white">{selectedColor}</strong></span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {product.colors.map((c) => (
@@ -124,8 +124,8 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                     onClick={() => setSelectedColor(c.name)}
                     className={`px-3 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-2 transition-all ${
                       selectedColor === c.name
-                        ? 'border-slate-900 bg-slate-900 text-white font-bold'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-300'
+                        ? 'border-[#00ff87] bg-[#00ff87]/15 text-[#00ff87] font-bold shadow-neon-sm'
+                        : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-700'
                     }`}
                   >
                     <span
@@ -140,9 +140,9 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
 
             {/* Size Selector */}
             <div className="mb-6">
-              <div className="text-xs font-mono font-bold uppercase text-slate-700 mb-2 flex justify-between">
+              <div className="text-xs font-mono font-bold uppercase text-slate-300 mb-2 flex justify-between">
                 <span>Select Size</span>
-                <span className="text-slate-400 font-normal">True to fit</span>
+                <span className="text-slate-400 font-normal">True to Indian Standard Size</span>
               </div>
               <div className="grid grid-cols-5 gap-2">
                 {product.sizes.map((s) => (
@@ -151,8 +151,8 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                     onClick={() => setSelectedSize(s)}
                     className={`py-2 rounded-lg border text-xs font-mono font-bold transition-all ${
                       selectedSize === s
-                        ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
-                        : 'border-slate-200 bg-slate-50 text-slate-700 hover:border-slate-400'
+                        ? 'border-[#00ff87] bg-[#00ff87] text-[#06080e] shadow-neon-sm'
+                        : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-600'
                     }`}
                   >
                     {s}
@@ -161,42 +161,33 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               </div>
             </div>
 
-            {/* Bulk Volume Tier Pricing Table */}
-            <div className="mb-6 p-3 rounded-xl bg-slate-50 border border-slate-200">
-              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-slate-900 uppercase mb-2">
-                <Zap className="w-3.5 h-3.5 text-[#047857]" />
-                B2B Volume Tier Pricing
+            {/* Retail Perks Callout */}
+            <div className="mb-6 p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
+              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#00ff87] uppercase">
+                <Truck className="w-3.5 h-3.5" />
+                FREE EXPRESS HOME DELIVERY OVER ₹999
               </div>
-              <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-mono">
-                {product.bulkTiers.map((tier) => (
-                  <div
-                    key={tier.minQty}
-                    className="p-2 rounded-lg bg-white border border-slate-200"
-                  >
-                    <div className="text-slate-500">{tier.minQty}+ Units</div>
-                    <div className="font-bold text-slate-900">{formatPrice(tier.pricePerUnit)}/ea</div>
-                    <div className="text-[10px] text-[#047857]">-{tier.discountPercentage}% OFF</div>
-                  </div>
-                ))}
-              </div>
+              <p className="text-[11px] text-slate-400 font-sans">
+                7-day easy size exchange guarantee • BlueDart air courier express dispatch from Okhla, New Delhi.
+              </p>
             </div>
           </div>
 
           {/* Action CTAs */}
-          <div className="pt-4 border-t border-slate-200 space-y-2">
+          <div className="pt-4 border-t border-slate-800 space-y-2">
             <div className="flex gap-3">
               {/* Quantity */}
-              <div className="flex items-center border border-slate-200 rounded-xl px-2 bg-slate-50">
+              <div className="flex items-center border border-slate-700 rounded-xl px-2 bg-slate-900">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-2 py-2 text-slate-500 hover:text-slate-900"
+                  className="px-2 py-2 text-slate-400 hover:text-white"
                 >
                   -
                 </button>
-                <span className="px-3 font-mono font-bold text-xs">{quantity}</span>
+                <span className="px-3 font-mono font-bold text-xs text-white">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="px-2 py-2 text-slate-500 hover:text-slate-900"
+                  className="px-2 py-2 text-slate-400 hover:text-white"
                 >
                   +
                 </button>
@@ -205,7 +196,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               {/* Add to Bag Button */}
               <button
                 onClick={handleAdd}
-                className="flex-1 py-3 rounded-xl bg-[#0b0f19] text-white hover:bg-[#05f26c] hover:text-[#0b0f19] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-md"
+                className="flex-1 py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>ADD TO BAG ({formatPrice(product.price * quantity)})</span>
@@ -215,7 +206,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
             <Link
               href={`/product/${product.id}`}
               onClick={onClose}
-              className="block text-center text-xs font-mono text-slate-500 hover:text-slate-900 pt-1"
+              className="block text-center text-xs font-mono text-slate-400 hover:text-[#00ff87] pt-1"
             >
               View Full Product Details & Technical Specs →
             </Link>
