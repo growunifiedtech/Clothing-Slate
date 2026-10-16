@@ -161,7 +161,7 @@ export default function ProductDetailPage() {
               </span>
 
               {/* Price Banner */}
-              <div className="flex items-baseline gap-3 p-4 rounded-2xl bg-slate-900 border border-slate-800 mb-6">
+              <div className="flex items-baseline gap-3 p-4 rounded-2xl bg-slate-900 border border-slate-800 mb-4">
                 <span className="text-3xl font-mono font-extrabold text-white">
                   {formatPrice(product.price)}
                 </span>
@@ -174,6 +174,29 @@ export default function ProductDetailPage() {
                 <span className="text-[11px] font-mono text-slate-400 ml-auto hidden sm:block">
                   Incl. 5% GST
                 </span>
+              </div>
+
+              {/* Live Stock Status Indicator */}
+              <div className="mb-6">
+                {product.stockCount === 0 ? (
+                  <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/50 text-xs font-mono text-red-300 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
+                    <span className="font-bold">OUT OF STOCK:</span>
+                    <span>Currently sold out. Fresh production run scheduled at Okhla facility.</span>
+                  </div>
+                ) : product.stockCount < 20 ? (
+                  <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs font-mono text-amber-300 flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                    <span className="font-bold">LOW STOCK ALERT:</span>
+                    <span>Only {product.stockCount} units remaining in factory inventory!</span>
+                  </div>
+                ) : (
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-emerald-400 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#00ff87]" />
+                    <span className="font-bold">IN STOCK:</span>
+                    <span className="text-slate-300">{product.stockCount} units ready for immediate BlueDart dispatch.</span>
+                  </div>
+                )}
               </div>
 
               {/* Description */}
@@ -258,14 +281,18 @@ export default function ProductDetailPage() {
                 <div className="flex items-center border border-slate-700 rounded-xl px-3 bg-slate-900">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-2 text-slate-400 hover:text-white font-bold"
+                    disabled={product.stockCount === 0}
+                    className="p-2 text-slate-400 hover:text-white font-bold disabled:opacity-40"
                   >
                     -
                   </button>
-                  <span className="px-3 font-mono font-bold text-sm text-white">{quantity}</span>
+                  <span className="px-3 font-mono font-bold text-sm text-white">
+                    {product.stockCount === 0 ? 0 : quantity}
+                  </span>
                   <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="p-2 text-slate-400 hover:text-white font-bold"
+                    onClick={() => setQuantity(Math.min(product.stockCount, quantity + 1))}
+                    disabled={product.stockCount === 0 || quantity >= product.stockCount}
+                    className="p-2 text-slate-400 hover:text-white font-bold disabled:opacity-40"
                   >
                     +
                   </button>
@@ -274,10 +301,19 @@ export default function ProductDetailPage() {
                 {/* Add to Bag Button */}
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 py-4 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
+                  disabled={product.stockCount === 0}
+                  className={`flex-1 py-4 rounded-xl font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                    product.stockCount === 0
+                      ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                      : 'bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] shadow-neon'
+                  }`}
                 >
                   <ShoppingBag className="w-4 h-4" />
-                  <span>ADD TO BAG ({formatPrice(product.price * quantity)})</span>
+                  <span>
+                    {product.stockCount === 0
+                      ? 'CURRENTLY OUT OF STOCK'
+                      : `ADD TO BAG (${formatPrice(product.price * quantity)})`}
+                  </span>
                 </button>
               </div>
 
@@ -285,9 +321,14 @@ export default function ProductDetailPage() {
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={handleBuyNow}
-                  className="py-3 rounded-xl border border-slate-700 bg-slate-900 hover:bg-[#00ff87] hover:text-[#06080e] hover:border-[#00ff87] text-white font-mono text-xs font-bold uppercase tracking-wider transition-all"
+                  disabled={product.stockCount === 0}
+                  className={`py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+                    product.stockCount === 0
+                      ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed'
+                      : 'border border-slate-700 bg-slate-900 hover:bg-[#00ff87] hover:text-[#06080e] hover:border-[#00ff87] text-white'
+                  }`}
                 >
-                  BUY NOW (EXPRESS)
+                  {product.stockCount === 0 ? 'UNAVAILABLE' : 'BUY NOW (EXPRESS)'}
                 </button>
 
                 <a

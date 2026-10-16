@@ -135,7 +135,13 @@ interface StoreContextType {
   // Wishlist
   wishlist: string[];
   toggleWishlist: (productId: string) => void;
+  removeFromWishlist: (productId: string) => void;
+  clearWishlist: () => void;
   isInWishlist: (productId: string) => boolean;
+
+  // Stock Management
+  updateProductStock: (id: string, newStock: number) => void;
+  adjustProductStock: (id: string, delta: number) => void;
 
   // Orders
   orders: Order[];
@@ -397,7 +403,39 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const removeFromWishlist = (productId: string) => {
+    setWishlist((prev) => prev.filter((id) => id !== productId));
+    showToast('Removed from wishlist');
+  };
+
+  const clearWishlist = () => {
+    setWishlist([]);
+    showToast('Wishlist cleared');
+  };
+
   const isInWishlist = (productId: string) => wishlist.includes(productId);
+
+  // Stock Management
+  const updateProductStock = (id: string, newStock: number) => {
+    const valid = Math.max(0, Math.round(Number(newStock) || 0));
+    setProducts((prev) =>
+      prev.map((p) => (p.id === id ? { ...p, stockCount: valid } : p))
+    );
+    showToast(`Stock updated to ${valid} units`);
+  };
+
+  const adjustProductStock = (id: string, delta: number) => {
+    setProducts((prev) =>
+      prev.map((p) => {
+        if (p.id === id) {
+          const updated = Math.max(0, p.stockCount + delta);
+          return { ...p, stockCount: updated };
+        }
+        return p;
+      })
+    );
+    showToast(`Stock adjusted (${delta > 0 ? `+${delta}` : delta})`);
+  };
 
   // Orders
   const placeOrder = (orderData: {
@@ -469,6 +507,20 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     };
 
     setOrders((prev) => [newOrder, ...prev]);
+
+    // Automatically decrement inventory stock for ordered items
+    setProducts((prev) =>
+      prev.map((p) => {
+        const itemOrdered = orderItems.find((it) => it.productId === p.id);
+        if (itemOrdered) {
+          return {
+            ...p,
+            stockCount: Math.max(0, p.stockCount - itemOrdered.quantity),
+          };
+        }
+        return p;
+      })
+    );
 
     // Automatically update user profile with genuine customer details if not yet configured
     setUserProfile((prev) => ({
@@ -636,7 +688,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         grandTotal,
         wishlist,
         toggleWishlist,
+        removeFromWishlist,
+        clearWishlist,
         isInWishlist,
+        updateProductStock,
+        adjustProductStock,
         orders,
         placeOrder,
         updateOrderStatus,

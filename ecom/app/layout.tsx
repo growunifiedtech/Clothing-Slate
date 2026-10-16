@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { StoreProvider } from '@/lib/store';
+import { AuthProvider } from '@/lib/auth-context';
 import AnnouncementBar from '@/components/layout/AnnouncementBar';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -24,14 +25,16 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="min-h-screen flex flex-col bg-[#06080e] text-slate-100 font-sans antialiased selection:bg-[#00ff87] selection:text-[#06080e]">
         <StoreProvider>
-          <AnnouncementBar />
-          <Navbar />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer />
-          <CartDrawer />
-          <ToastContainer />
+          <AuthProvider>
+            <AnnouncementBar />
+            <Navbar />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <CartDrawer />
+            <ToastContainer />
+          </AuthProvider>
         </StoreProvider>
       </body>
     </html>

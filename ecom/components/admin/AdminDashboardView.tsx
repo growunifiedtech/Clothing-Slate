@@ -21,6 +21,7 @@ import {
   Edit2,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   Truck,
   ExternalLink,
   Search,
@@ -32,6 +33,7 @@ import {
   Zap,
   Tag,
   ArrowUpRight,
+  Boxes,
 } from 'lucide-react';
 
 export default function AdminDashboardView() {
@@ -45,13 +47,19 @@ export default function AdminDashboardView() {
     deleteProduct,
     updateInquiryStatus,
     showToast,
+    updateProductStock,
+    adjustProductStock,
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'products' | 'quotes' | 'customers' | 'settings'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'inventory' | 'products' | 'quotes' | 'customers' | 'settings'>('overview');
   const [orderSearch, setOrderSearch] = useState('');
   const [orderStatusFilter, setOrderStatusFilter] = useState<string>('ALL');
   const [productCategoryFilter, setProductCategoryFilter] = useState<string>('ALL');
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  // Stock Management State
+  const [stockSearch, setStockSearch] = useState('');
+  const [stockStatusFilter, setStockStatusFilter] = useState<'ALL' | 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK'>('ALL');
 
   // Add Product Modal State
   const [showAddProductModal, setShowAddProductModal] = useState(false);
@@ -91,6 +99,30 @@ export default function AdminDashboardView() {
   const filteredProducts = products.filter((p) => {
     return productCategoryFilter === 'ALL' || p.category === productCategoryFilter;
   });
+
+  // Stock & Inventory Calculations
+  const totalStockUnits = useMemo(() => products.reduce((sum, p) => sum + p.stockCount, 0), [products]);
+  const totalInventoryValue = useMemo(() => products.reduce((sum, p) => sum + p.stockCount * p.price, 0), [products]);
+  const lowStockProducts = useMemo(() => products.filter((p) => p.stockCount > 0 && p.stockCount < 20), [products]);
+  const outOfStockProducts = useMemo(() => products.filter((p) => p.stockCount === 0), [products]);
+
+  const filteredStockProducts = useMemo(() => {
+    return products.filter((p) => {
+      const matchesSearch =
+        !stockSearch.trim() ||
+        p.name.toLowerCase().includes(stockSearch.toLowerCase()) ||
+        p.category.toLowerCase().includes(stockSearch.toLowerCase()) ||
+        p.sku.toLowerCase().includes(stockSearch.toLowerCase());
+
+      const matchesStatus =
+        stockStatusFilter === 'ALL' ||
+        (stockStatusFilter === 'IN_STOCK' && p.stockCount >= 20) ||
+        (stockStatusFilter === 'LOW_STOCK' && p.stockCount > 0 && p.stockCount < 20) ||
+        (stockStatusFilter === 'OUT_OF_STOCK' && p.stockCount === 0);
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [products, stockSearch, stockStatusFilter]);
 
   // Calculate real category sales distribution from actual orders
   const categoryStats = useMemo(() => {
@@ -248,11 +280,12 @@ export default function AdminDashboardView() {
         </div>
 
         {/* Admin Navigation Tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-slate-800 text-xs font-mono font-bold uppercase">
+        <div className="flex gap-2 overflow-x-auto pb-4 mb-6 border-b border-slate-800 text-xs font-mono font-bold uppercase scrollbar-none">
           {[
             { id: 'overview', label: 'OVERVIEW & ANALYTICS', icon: LayoutDashboard },
             { id: 'orders', label: `ORDERS (${orders.length})`, icon: Package },
-            { id: 'products', label: `PRODUCTS & STOCK (${products.length})`, icon: Layers },
+            { id: 'inventory', label: `STOCK MANAGEMENT (${totalStockUnits})`, icon: Boxes },
+            { id: 'products', label: `CATALOG & PRODUCTS (${products.length})`, icon: Layers },
             { id: 'quotes', label: `INQUIRIES (${inquiries.length})`, icon: MessageSquare },
             { id: 'customers', label: `CLIENT DIRECTORY (${dynamicClients.length})`, icon: Users },
             { id: 'settings', label: 'COUPONS & SETTINGS', icon: Settings },
@@ -575,7 +608,272 @@ export default function AdminDashboardView() {
           </div>
         )}
 
-        {/* TAB 3: PRODUCTS & INVENTORY */}
+        {/* TAB 3: STOCK & INVENTORY MANAGEMENT */}
+        {activeTab === 'inventory' && (
+          <div className="space-y-6">
+            
+            {/* Top 4 Inventory KPI Cards */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                <div className="flex items-center justify-between text-slate-400 mb-2">
+                  <span className="text-[10px] font-mono font-bold uppercase">TOTAL UNITS IN STOCK</span>
+                  <Boxes className="w-4 h-4 text-[#00ff87]" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#00ff87]">
+                  {totalStockUnits.toLocaleString()}
+                </div>
+                <span className="text-[11px] font-mono text-slate-400 mt-1 block">
+                  Across {products.length} factory drops
+                </span>
+              </div>
+
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                <div className="flex items-center justify-between text-slate-400 mb-2">
+                  <span className="text-[10px] font-mono font-bold uppercase">INVENTORY VALUATION</span>
+                  <DollarSign className="w-4 h-4 text-[#00f0ff]" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-mono font-extrabold text-[#00f0ff]">
+                  {formatPrice(totalInventoryValue)}
+                </div>
+                <span className="text-[11px] font-mono text-slate-400 mt-1 block">
+                  Factory retail asset value
+                </span>
+              </div>
+
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                <div className="flex items-center justify-between text-slate-400 mb-2">
+                  <span className="text-[10px] font-mono font-bold uppercase">LOW STOCK ALERTS (&lt;20)</span>
+                  <AlertTriangle className="w-4 h-4 text-amber-400" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-mono font-extrabold text-amber-400">
+                  {lowStockProducts.length}
+                </div>
+                <span className="text-[11px] font-mono text-slate-400 mt-1 block">
+                  Requires batch replenishment
+                </span>
+              </div>
+
+              <div className="p-4 sm:p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                <div className="flex items-center justify-between text-slate-400 mb-2">
+                  <span className="text-[10px] font-mono font-bold uppercase">OUT OF STOCK (0 UNITS)</span>
+                  <AlertCircle className="w-4 h-4 text-red-400" />
+                </div>
+                <div className="text-2xl sm:text-3xl font-mono font-extrabold text-red-400">
+                  {outOfStockProducts.length}
+                </div>
+                <span className="text-[11px] font-mono text-slate-400 mt-1 block">
+                  Sold out silhouettes
+                </span>
+              </div>
+            </div>
+
+            {/* Low Stock Warning Alert Banner */}
+            {(lowStockProducts.length > 0 || outOfStockProducts.length > 0) && (
+              <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-600/40 text-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono">
+                <div className="flex items-start gap-2.5">
+                  <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-white block">
+                      Production Inventory Notice: {lowStockProducts.length + outOfStockProducts.length} items require attention
+                    </span>
+                    <span className="text-amber-300/80 mt-0.5 block">
+                      {outOfStockProducts.length > 0 && `${outOfStockProducts.length} sold out; `}
+                      {lowStockProducts.length > 0 && `${lowStockProducts.length} running low on inventory.`}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setStockStatusFilter(outOfStockProducts.length > 0 ? 'OUT_OF_STOCK' : 'LOW_STOCK')}
+                  className="px-3 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold uppercase text-[11px] flex-shrink-0 transition-colors"
+                >
+                  VIEW CRITICAL ITEMS
+                </button>
+              </div>
+            )}
+
+            {/* Filter and Search Bar */}
+            <div className="bg-[#0b0f19] rounded-2xl p-4 border border-slate-800 shadow-lg space-y-4">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
+                {/* Search */}
+                <div className="relative w-full sm:w-72">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    value={stockSearch}
+                    onChange={(e) => setStockSearch(e.target.value)}
+                    placeholder="Search drops, SKU, fabric..."
+                    className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:border-[#00ff87]"
+                  />
+                  {stockSearch && (
+                    <button
+                      onClick={() => setStockSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs"
+                    >
+                      ×
+                    </button>
+                  )}
+                </div>
+
+                {/* Status Filter Chips */}
+                <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto font-mono text-xs scrollbar-none">
+                  {[
+                    { id: 'ALL', label: `ALL (${products.length})` },
+                    { id: 'IN_STOCK', label: `IN STOCK (${products.filter((p) => p.stockCount >= 20).length})` },
+                    { id: 'LOW_STOCK', label: `LOW STOCK (<20) (${lowStockProducts.length})` },
+                    { id: 'OUT_OF_STOCK', label: `OUT OF STOCK (${outOfStockProducts.length})` },
+                  ].map((f) => (
+                    <button
+                      key={f.id}
+                      onClick={() => setStockStatusFilter(f.id as any)}
+                      className={`px-3 py-1.5 rounded-xl border text-xs font-bold uppercase transition-all flex-shrink-0 ${
+                        stockStatusFilter === f.id
+                          ? 'bg-[#00ff87] text-[#06080e] border-[#00ff87] shadow-neon-sm'
+                          : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
+                      }`}
+                    >
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Stock Items Table */}
+              <div className="overflow-x-auto pt-2">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead>
+                    <tr className="border-b border-slate-800 text-slate-400 uppercase text-[11px]">
+                      <th className="pb-3 font-bold">SILHOUETTE / PRODUCT</th>
+                      <th className="pb-3 font-bold">CATEGORY</th>
+                      <th className="pb-3 font-bold">RETAIL PRICE</th>
+                      <th className="pb-3 font-bold">STOCK STATUS</th>
+                      <th className="pb-3 font-bold text-center">INLINE STOCK STEPPERS</th>
+                      <th className="pb-3 font-bold text-right">ONE-CLICK RESTOCK</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/60">
+                    {filteredStockProducts.map((p) => {
+                      const isLow = p.stockCount > 0 && p.stockCount < 20;
+                      const isOut = p.stockCount === 0;
+
+                      return (
+                        <tr key={p.id} className="hover:bg-slate-900/50 transition-colors">
+                          {/* Product Details */}
+                          <td className="py-3 flex items-center gap-3">
+                            <div className="relative w-12 h-14 rounded-lg bg-slate-950 overflow-hidden flex-shrink-0 border border-slate-800">
+                              <Image src={p.images[0]} alt={p.name} fill unoptimized className="object-cover" />
+                            </div>
+                            <div>
+                              <strong className="text-white block line-clamp-1 max-w-[220px]">{p.name}</strong>
+                              <span className="text-[10px] text-slate-400">SKU: {p.sku}</span>
+                            </div>
+                          </td>
+
+                          {/* Category */}
+                          <td className="py-3 text-slate-300 font-bold">{p.category}</td>
+
+                          {/* Retail Price */}
+                          <td className="py-3 font-extrabold text-[#00ff87]">{formatPrice(p.price)}</td>
+
+                          {/* Stock Status Badge */}
+                          <td className="py-3">
+                            <span
+                              className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase inline-flex items-center gap-1.5 ${
+                                isOut
+                                  ? 'bg-red-950/80 text-red-400 border border-red-800'
+                                  : isLow
+                                  ? 'bg-amber-950/80 text-amber-400 border border-amber-800 animate-pulse'
+                                  : 'bg-emerald-950/80 text-emerald-400 border border-emerald-800'
+                              }`}
+                            >
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full ${
+                                  isOut ? 'bg-red-500' : isLow ? 'bg-amber-400' : 'bg-[#00ff87]'
+                                }`}
+                              />
+                              <span>
+                                {isOut ? 'SOLD OUT' : isLow ? `LOW (${p.stockCount})` : `IN STOCK (${p.stockCount})`}
+                              </span>
+                            </span>
+                          </td>
+
+                          {/* Direct Inline Stock Steppers */}
+                          <td className="py-3">
+                            <div className="flex items-center justify-center gap-1">
+                              <button
+                                onClick={() => adjustProductStock(p.id, -10)}
+                                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-[10px] font-bold transition-all"
+                                title="Reduce 10 units"
+                              >
+                                -10
+                              </button>
+                              <button
+                                onClick={() => adjustProductStock(p.id, -1)}
+                                className="w-7 h-7 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white font-bold flex items-center justify-center transition-all"
+                                title="Reduce 1 unit"
+                              >
+                                -
+                              </button>
+
+                              <input
+                                type="number"
+                                min={0}
+                                value={p.stockCount}
+                                onChange={(e) => updateProductStock(p.id, Number(e.target.value))}
+                                className="w-16 text-center py-1 bg-slate-950 border border-slate-700 focus:border-[#00ff87] rounded text-white font-mono font-bold text-xs"
+                              />
+
+                              <button
+                                onClick={() => adjustProductStock(p.id, 1)}
+                                className="w-7 h-7 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white font-bold flex items-center justify-center transition-all"
+                                title="Add 1 unit"
+                              >
+                                +
+                              </button>
+                              <button
+                                onClick={() => adjustProductStock(p.id, 10)}
+                                className="px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 hover:text-white text-[10px] font-bold transition-all"
+                                title="Add 10 units"
+                              >
+                                +10
+                              </button>
+                              <button
+                                onClick={() => adjustProductStock(p.id, 50)}
+                                className="px-2 py-1 rounded bg-[#00ff87]/15 hover:bg-[#00ff87]/25 border border-[#00ff87]/40 text-[#00ff87] text-[10px] font-bold transition-all"
+                                title="Add 50 units"
+                              >
+                                +50
+                              </button>
+                            </div>
+                          </td>
+
+                          {/* Quick Actions */}
+                          <td className="py-3 text-right space-x-2">
+                            <button
+                              onClick={() => updateProductStock(p.id, 0)}
+                              className="px-2.5 py-1 rounded bg-slate-900 hover:bg-red-950 border border-slate-700 hover:border-red-600 text-slate-400 hover:text-red-300 text-[10px] font-bold uppercase transition-all"
+                              title="Mark out of stock"
+                            >
+                              SET 0
+                            </button>
+                            <button
+                              onClick={() => adjustProductStock(p.id, 100)}
+                              className="px-3 py-1 rounded bg-[#00ff87] hover:bg-[#05f26c] text-[#06080e] font-extrabold text-[10px] uppercase shadow-neon-sm transition-all"
+                              title="Add 100 units immediately"
+                            >
+                              RESTOCK +100
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: PRODUCTS & CATALOG */}
         {activeTab === 'products' && (
           <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-lg space-y-5">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -646,15 +944,12 @@ export default function AdminDashboardView() {
                       <td className="py-3 text-right space-x-2">
                         <button
                           onClick={() => {
-                            const newStock = prompt(`Update stock for ${p.name}:`, String(p.stockCount));
-                            if (newStock !== null && !isNaN(Number(newStock))) {
-                              updateProduct(p.id, { stockCount: Number(newStock) });
-                              showToast(`Stock updated for ${p.name}`);
-                            }
+                            setStockSearch(p.name);
+                            setActiveTab('inventory');
                           }}
-                          className="px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700"
+                          className="px-2.5 py-1 rounded bg-slate-900 hover:bg-[#00ff87] hover:text-[#06080e] text-slate-200 border border-slate-700 font-bold transition-colors"
                         >
-                          EDIT STOCK
+                          MANAGE STOCK
                         </button>
                         <button
                           onClick={() => {

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -28,7 +28,11 @@ import {
   Printer,
   X,
   Sparkles,
+  LogOut,
+  KeyRound,
 } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
+import AuthModal from '@/components/auth/AuthModal';
 
 export default function UserDashboardView() {
   const searchParams = useSearchParams();
@@ -37,10 +41,22 @@ export default function UserDashboardView() {
   const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'addresses' | 'wishlist' | 'quotes' | 'settings'>(
     initialTab as any
   );
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const { user, logout } = useAuth();
+
+  useEffect(() => {
+    const t = searchParams.get('tab');
+    if (t && ['overview', 'orders', 'addresses', 'wishlist', 'quotes', 'settings'].includes(t)) {
+      setActiveTab(t as any);
+    }
+  }, [searchParams]);
 
   const {
     orders,
     wishlist,
+    removeFromWishlist,
+    clearWishlist,
     products,
     addresses,
     addAddress,
@@ -122,42 +138,101 @@ export default function UserDashboardView() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Top User Identity Bar */}
-        <div className="bg-[#0b0f19] rounded-2xl p-6 border border-slate-800 shadow-xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-slate-900 text-[#00ff87] flex items-center justify-center font-mono font-bold text-xl shadow-neon-sm border-2 border-[#00ff87]">
-              {getInitials(userProfile.name)}
+        <div className="bg-[#0b0f19] rounded-2xl p-4 sm:p-6 border border-slate-800 shadow-xl mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-900 text-[#00ff87] flex items-center justify-center font-mono font-bold text-lg sm:text-xl shadow-neon-sm border-2 border-[#00ff87] flex-shrink-0">
+              {getInitials(user?.displayName || userProfile.name)}
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold font-sans text-white uppercase">
-                  {userProfile.name ? userProfile.name : 'MY CUSTOMER ACCOUNT'}
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-lg sm:text-2xl font-bold font-sans text-white uppercase">
+                  {user?.displayName || userProfile.name || 'MY CLIENT ACCOUNT'}
                 </h1>
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40">
-                  RETAIL STORE MEMBER
-                </span>
+                {user ? (
+                  <span className="px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-[#00ff87]/20 text-[#00ff87] border border-[#00ff87]/40 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] animate-pulse" />
+                    <span>AUTHENTICATED</span>
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => setShowAuthModal(true)}
+                    className="px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 hover:bg-amber-400/30 transition-all flex items-center gap-1"
+                  >
+                    <KeyRound className="w-3 h-3 text-amber-400" />
+                    <span>CONNECT FIREBASE AUTH</span>
+                  </button>
+                )}
               </div>
-              <p className="text-xs font-mono text-slate-400 mt-0.5">
-                {userProfile.email ? userProfile.email : 'Personalize your details in settings'}
-                {userProfile.phone ? ` • ${userProfile.phone}` : ''}
+              <p className="text-xs font-mono text-slate-400 mt-0.5 truncate max-w-sm sm:max-w-md">
+                {user?.email || userProfile.email || 'Sign in or personalize your profile below'}
+                {(user?.phoneNumber || userProfile.phone) ? ` • ${user?.phoneNumber || userProfile.phone}` : ''}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {user ? (
+              <button
+                onClick={logout}
+                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-red-950/40 text-slate-300 hover:text-red-300 border border-slate-700 hover:border-red-600 text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+                title="Sign out"
+              >
+                <LogOut className="w-3.5 h-3.5" />
+                <span>SIGN OUT</span>
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+              >
+                <User className="w-3.5 h-3.5 text-[#00ff87]" />
+                <span>SIGN IN</span>
+              </button>
+            )}
+
             <Link
               href="/shop"
-              className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-mono font-semibold transition-colors"
+              className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-mono font-semibold transition-colors"
             >
               BROWSE CATALOG
             </Link>
             <Link
               href="/admin"
-              className="px-4 py-2 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] text-xs font-mono font-extrabold transition-all shadow-neon flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] text-xs font-mono font-extrabold transition-all shadow-neon flex items-center gap-1.5"
             >
               <Zap className="w-3.5 h-3.5" />
               <span>ADMIN CONSOLE</span>
             </Link>
           </div>
+        </div>
+
+        {/* Mobile Horizontal Navigation Tabs (< lg) */}
+        <div className="lg:hidden flex gap-2 overflow-x-auto pb-2 mb-6 border-b border-slate-800 scrollbar-none font-mono text-xs">
+          {[
+            { id: 'overview', label: 'OVERVIEW', icon: User },
+            { id: 'orders', label: `ORDERS (${orders.length})`, icon: Package },
+            { id: 'addresses', label: `ADDRESSES (${addresses.length})`, icon: MapPin },
+            { id: 'wishlist', label: `WISHLIST (${wishlist.length})`, icon: Heart },
+            { id: 'quotes', label: `INQUIRIES (${inquiries.length})`, icon: Clock },
+            { id: 'settings', label: 'SETTINGS', icon: Settings },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-3.5 py-2 rounded-xl flex-shrink-0 font-bold transition-all flex items-center gap-1.5 ${
+                  isActive
+                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm font-extrabold'
+                    : 'bg-[#0b0f19] text-slate-300 border border-slate-800'
+                }`}
+              >
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#06080e]' : 'text-slate-400'}`} />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Layout Grid: Left Sidebar Tabs (3 cols) + Right Content View (9 cols) */}
@@ -617,9 +692,21 @@ export default function UserDashboardView() {
             {/* TAB 4: WISHLIST */}
             {activeTab === 'wishlist' && (
               <div className="space-y-4">
-                <h3 className="font-mono font-bold text-base uppercase text-white mb-2">
-                  SAVED ITEMS ({wishlistProducts.length})
-                </h3>
+                <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                  <h3 className="font-mono font-bold text-base uppercase text-white flex items-center gap-2">
+                    <Heart className="w-4 h-4 text-[#00ff87]" />
+                    <span>SAVED ITEMS ({wishlistProducts.length})</span>
+                  </h3>
+                  {wishlistProducts.length > 0 && (
+                    <button
+                      onClick={clearWishlist}
+                      className="px-3 py-1 rounded-lg border border-red-500/30 text-xs font-mono font-bold text-red-400 hover:text-white hover:bg-red-500/20 flex items-center gap-1.5 transition-all"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>CLEAR ALL</span>
+                    </button>
+                  )}
+                </div>
 
                 {wishlistProducts.length === 0 ? (
                   <div className="p-12 text-center bg-[#0b0f19] rounded-2xl border border-slate-800 shadow-xl space-y-3">
@@ -640,7 +727,7 @@ export default function UserDashboardView() {
                     {wishlistProducts.map((prod) => (
                       <div
                         key={prod.id}
-                        className="p-4 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg flex flex-col justify-between"
+                        className="p-4 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg flex flex-col justify-between group relative"
                       >
                         <div className="relative aspect-[4/5] rounded-xl overflow-hidden bg-slate-950 mb-3 border border-slate-800">
                           <Image
@@ -650,6 +737,14 @@ export default function UserDashboardView() {
                             unoptimized
                             className="object-cover"
                           />
+                          {/* Corner Quick-Remove Button */}
+                          <button
+                            onClick={() => removeFromWishlist(prod.id)}
+                            className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-slate-950/80 backdrop-blur-md text-slate-300 hover:text-white hover:bg-red-600 border border-slate-700 hover:border-red-500 flex items-center justify-center transition-all shadow-md z-10"
+                            title="Remove from Wishlist"
+                          >
+                            <X className="w-4 h-4" />
+                          </button>
                         </div>
 
                         <div>
@@ -666,11 +761,22 @@ export default function UserDashboardView() {
 
                         <div className="pt-3 mt-3 border-t border-slate-800 flex gap-2">
                           <button
-                            onClick={() => addToCart(prod, prod.sizes[0], prod.colors[0].name, 1)}
-                            className="flex-1 py-2 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-neon-sm"
+                            onClick={() => {
+                              addToCart(prod, prod.sizes[0], prod.colors[0].name, 1);
+                              removeFromWishlist(prod.id);
+                            }}
+                            className="flex-1 py-2.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-[11px] font-extrabold transition-all flex items-center justify-center gap-1.5 shadow-neon-sm"
                           >
                             <ShoppingBag className="w-3.5 h-3.5" />
                             <span>MOVE TO BAG</span>
+                          </button>
+                          <button
+                            onClick={() => removeFromWishlist(prod.id)}
+                            className="px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-700 hover:border-red-500/50 hover:bg-red-950/30 text-slate-300 hover:text-red-400 font-mono text-[11px] font-bold transition-all flex items-center justify-center gap-1"
+                            title="Remove item"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                            <span className="hidden sm:inline">REMOVE</span>
                           </button>
                         </div>
                       </div>
@@ -1120,6 +1226,13 @@ export default function UserDashboardView() {
           </div>
         </div>
       )}
+
+      {/* Firebase Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => setShowAuthModal(false)}
+      />
     </div>
   );
 }

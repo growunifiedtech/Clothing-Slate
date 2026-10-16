@@ -18,10 +18,16 @@ import {
   ArrowLeft,
   MapPin,
   User,
+  Sparkles,
 } from 'lucide-react';
+import { useAuth } from '@/lib/auth-context';
+import AuthModal from '@/components/auth/AuthModal';
 
 export default function CheckoutPage() {
   const router = useRouter();
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const {
     cart,
     cartSubtotal,
@@ -37,9 +43,9 @@ export default function CheckoutPage() {
   const defaultAddr = addresses.find((a) => a.isDefault) || addresses[0];
 
   // Form Fields initialized from real user profile or saved address if present
-  const [name, setName] = useState(userProfile.name || defaultAddr?.fullName || '');
-  const [email, setEmail] = useState(userProfile.email || '');
-  const [phone, setPhone] = useState(userProfile.phone || defaultAddr?.phone || '');
+  const [name, setName] = useState(user?.displayName || userProfile.name || defaultAddr?.fullName || '');
+  const [email, setEmail] = useState(user?.email || userProfile.email || '');
+  const [phone, setPhone] = useState(user?.phoneNumber || userProfile.phone || defaultAddr?.phone || '');
   const [address, setAddress] = useState(defaultAddr?.street || '');
   const [city, setCity] = useState(defaultAddr?.city || '');
   const [state, setState] = useState(defaultAddr?.state || '');
@@ -50,6 +56,15 @@ export default function CheckoutPage() {
   const [shippingMethod, setShippingMethod] = useState<'AIR' | 'SURFACE'>('AIR');
   const [orderNotes, setOrderNotes] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Sync if Firebase auth user loads or logs in
+  useEffect(() => {
+    if (user) {
+      if (user.displayName && !name) setName(user.displayName);
+      if (user.email && !email) setEmail(user.email);
+      if (user.phoneNumber && !phone) setPhone(user.phoneNumber);
+    }
+  }, [user]);
 
   // Sync if profile or address loads from localStorage
   useEffect(() => {
@@ -154,6 +169,29 @@ export default function CheckoutPage() {
               
               {/* 1. Dispatch & Contact Info */}
               <div className="bg-[#0b0f19] rounded-2xl p-6 sm:p-7 border border-slate-800 shadow-xl space-y-4">
+                
+                {/* Auth Prompt or Authenticated Banner */}
+                {!user ? (
+                  <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-700/80 flex items-center justify-between gap-3 text-xs font-mono">
+                    <div className="flex items-center gap-2 text-slate-300">
+                      <Sparkles className="w-4 h-4 text-[#00ff87]" />
+                      <span>Already have an account? Sign in for 1-click checkout.</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setShowAuthModal(true)}
+                      className="px-3 py-1 rounded-lg bg-[#00ff87] text-[#06080e] font-extrabold uppercase text-[11px] shadow-neon-sm flex-shrink-0"
+                    >
+                      SIGN IN
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center gap-2 text-xs font-mono text-emerald-400">
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Logged in as <strong>{user.displayName || user.email || user.phoneNumber}</strong></span>
+                  </div>
+                )}
+
                 <div className="flex justify-between items-center pb-3 border-b border-slate-800">
                   <h3 className="font-mono font-bold text-sm uppercase text-white flex items-center gap-2">
                     <span className="w-6 h-6 rounded-full bg-[#00ff87] text-[#06080e] flex items-center justify-center text-xs font-extrabold">
@@ -465,6 +503,12 @@ export default function CheckoutPage() {
           </div>
         </form>
       </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => setShowAuthModal(false)}
+      />
     </div>
   );
 }
