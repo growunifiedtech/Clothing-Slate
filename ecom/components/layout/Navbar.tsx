@@ -75,16 +75,16 @@ export default function Navbar() {
             
             {/* 1. Brand Logo */}
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-md group-hover:border-[#00ff87] group-hover:shadow-neon transition-all">
+              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-md group-hover:border-[#ff007f] group-hover:shadow-neon-pink transition-all">
                 <span className="text-white font-mono font-black text-base sm:text-lg tracking-tighter">S</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] ml-0.5 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#ff007f] via-[#00f0ff] to-[#00ff87] ml-0.5 animate-pulse" />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-sm sm:text-lg tracking-wider text-white uppercase font-sans">
                     SLATE APPARELS
                   </span>
-                  <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded font-mono font-bold bg-[#00ff87] text-[#04060a] shadow-neon-sm hidden xs:inline-block">
+                  <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded font-mono font-bold bg-gradient-to-r from-[#ff007f] to-[#b026ff] text-white shadow-neon-pink-sm hidden xs:inline-block">
                     RETAIL
                   </span>
                 </div>
@@ -94,7 +94,7 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* 2. Desktop Navigation Links (Clean - loose categories removed) */}
+            {/* 2. Desktop Navigation Links (Multi-Neon Spectrum) */}
             <nav className="hidden lg:flex items-center gap-6 text-xs font-mono tracking-widest uppercase">
               <Link
                 href="/"
@@ -108,7 +108,7 @@ export default function Navbar() {
               <Link
                 href="/shop"
                 className={`py-1 transition-colors font-bold ${
-                  pathname === '/shop' ? 'text-[#00ff87]' : 'text-slate-300 hover:text-[#00ff87]'
+                  pathname === '/shop' ? 'text-[#00f0ff]' : 'text-slate-300 hover:text-[#00f0ff]'
                 }`}
               >
                 COLLECTIONS
@@ -120,12 +120,12 @@ export default function Navbar() {
                   onClick={() => setCategoryDropdownOpen(!categoryDropdownOpen)}
                   className={`py-1 flex items-center gap-1 transition-colors font-bold ${
                     categoryDropdownOpen || pathname.includes('category')
-                      ? 'text-[#00ff87]'
-                      : 'text-slate-300 hover:text-[#00ff87]'
+                      ? 'text-[#ff007f]'
+                      : 'text-slate-300 hover:text-[#ff007f]'
                   }`}
                 >
                   <span>CATEGORIES</span>
-                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${categoryDropdownOpen ? 'rotate-180 text-[#00ff87]' : ''}`} />
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform ${categoryDropdownOpen ? 'rotate-180 text-[#ff007f]' : ''}`} />
                 </button>
 
                 {categoryDropdownOpen && (
@@ -135,26 +135,37 @@ export default function Navbar() {
                       <Link
                         href="/shop"
                         onClick={() => setCategoryDropdownOpen(false)}
-                        className="text-[#00ff87] hover:underline"
+                        className="text-[#00f0ff] hover:underline"
                       >
                         VIEW ALL
                       </Link>
                     </div>
 
                     <div className="py-1">
-                      {categories.map((cat) => (
-                        <Link
-                          key={cat}
-                          href={`/shop?category=${encodeURIComponent(cat)}`}
-                          onClick={() => setCategoryDropdownOpen(false)}
-                          className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono text-slate-300 hover:bg-slate-800/80 hover:text-[#00ff87] transition-colors"
-                        >
-                          <span>{cat}</span>
-                          <span className="text-[10px] text-slate-500">
-                            {products.filter((p) => p.category === cat).length} drops
-                          </span>
-                        </Link>
-                      ))}
+                      {categories.map((cat) => {
+                        const hoverColor =
+                          cat.includes('HOODIE') ? 'hover:text-[#ff007f] hover:border-[#ff007f]' :
+                          cat.includes('JACKET') ? 'hover:text-[#00f0ff] hover:border-[#00f0ff]' :
+                          cat.includes('T-SHIRT') ? 'hover:text-[#00ff87] hover:border-[#00ff87]' :
+                          cat.includes('TRACKSUIT') ? 'hover:text-[#b026ff] hover:border-[#b026ff]' :
+                          cat.includes('SWEATER') ? 'hover:text-[#ff6b00] hover:border-[#ff6b00]' :
+                          cat.includes('DENIM') ? 'hover:text-[#00bfff] hover:border-[#00bfff]' :
+                          'hover:text-[#faff00] hover:border-[#faff00]';
+
+                        return (
+                          <Link
+                            key={cat}
+                            href={`/shop?category=${encodeURIComponent(cat)}`}
+                            onClick={() => setCategoryDropdownOpen(false)}
+                            className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs font-mono text-slate-300 hover:bg-slate-800/80 transition-colors ${hoverColor}`}
+                          >
+                            <span>{cat}</span>
+                            <span className="text-[10px] text-slate-500">
+                              {products.filter((p) => p.category === cat).length} drops
+                            </span>
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -167,11 +178,11 @@ export default function Navbar() {
                 href="/dashboard"
                 className={`px-3 py-1 rounded-full transition-all font-bold flex items-center gap-1.5 ${
                   pathname.startsWith('/dashboard')
-                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm font-extrabold'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#ff007f] to-[#ff2a85] text-white shadow-neon-pink-sm font-extrabold'
+                    : 'text-slate-400 hover:text-[#ff007f]'
                 }`}
               >
-                <User className="w-3 h-3 text-[#00ff87]" />
+                <User className="w-3 h-3 text-[#ff007f]" />
                 <span>USER PORTAL</span>
               </Link>
 
@@ -179,11 +190,11 @@ export default function Navbar() {
                 href="/admin"
                 className={`px-3 py-1 rounded-full transition-all font-bold flex items-center gap-1.5 ${
                   pathname.startsWith('/admin')
-                    ? 'bg-[#00f0ff] text-[#06080e] font-extrabold shadow-neon-cyan'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-gradient-to-r from-[#00f0ff] to-[#00bfff] text-[#06080e] font-extrabold shadow-neon-cyan'
+                    : 'text-slate-400 hover:text-[#00f0ff]'
                 }`}
               >
-                <Shield className="w-3 h-3" />
+                <Shield className="w-3 h-3 text-[#00f0ff]" />
                 <span>ADMIN</span>
               </Link>
             </div>
@@ -193,7 +204,7 @@ export default function Navbar() {
               
               {/* Desktop Search Bar (Hidden on small mobile) */}
               <div className="hidden sm:block relative" ref={searchRef}>
-                <div className="flex items-center border border-slate-800 bg-slate-900/90 rounded-full px-3 py-1.5 focus-within:border-[#00ff87] focus-within:shadow-neon-sm transition-all w-36 md:w-48 lg:w-56">
+                <div className="flex items-center border border-slate-800 bg-slate-900/90 rounded-full px-3 py-1.5 focus-within:border-[#00f0ff] focus-within:shadow-neon-cyan-sm transition-all w-36 md:w-48 lg:w-56">
                   <Search className="w-3.5 h-3.5 text-slate-400 mr-2 flex-shrink-0" />
                   <input
                     type="text"
@@ -222,7 +233,7 @@ export default function Navbar() {
                 {/* Instant Search Dropdown */}
                 {isSearchOpen && searchResults.length > 0 && (
                   <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-[#0d1320] border border-slate-700 rounded-2xl shadow-2xl overflow-hidden z-50 p-2 animate-in fade-in zoom-in-95 duration-150">
-                    <div className="text-[10px] font-mono font-bold tracking-wider text-[#00ff87] px-2 py-1 uppercase">
+                    <div className="text-[10px] font-mono font-bold tracking-wider text-[#00f0ff] px-2 py-1 uppercase">
                       Matching Drops ({searchResults.length})
                     </div>
                     <div className="space-y-1">
@@ -246,7 +257,7 @@ export default function Navbar() {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold text-slate-100 truncate group-hover:text-[#00ff87]">
+                            <p className="text-xs font-bold text-slate-100 truncate group-hover:text-[#00f0ff]">
                               {item.name}
                             </p>
                             <div className="flex items-center gap-2 mt-0.5">
@@ -267,7 +278,7 @@ export default function Navbar() {
                         setIsSearchOpen(false);
                         setSearchQuery('');
                       }}
-                      className="block text-center text-[11px] font-mono font-bold text-[#00ff87] hover:underline pt-2 mt-1 border-t border-slate-800 uppercase"
+                      className="block text-center text-[11px] font-mono font-bold text-[#00f0ff] hover:underline pt-2 mt-1 border-t border-slate-800 uppercase"
                     >
                       View All Results →
                     </Link>
@@ -278,7 +289,7 @@ export default function Navbar() {
               {/* Mobile Search Icon Toggle (< sm) */}
               <button
                 onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
-                className="sm:hidden p-2 rounded-full text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                className="sm:hidden p-2 rounded-full text-slate-300 hover:text-[#00f0ff] hover:bg-slate-800 transition-colors"
                 title="Search"
               >
                 <Search className="w-4 h-4" />
@@ -289,10 +300,10 @@ export default function Navbar() {
                 <div className="relative flex items-center">
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#00ff87] transition-all"
+                    className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#ff007f] hover:shadow-neon-pink-sm transition-all"
                     title="User Dashboard"
                   >
-                    <div className="w-5 h-5 rounded-full bg-[#00ff87] text-[#06080e] font-mono font-bold text-[10px] flex items-center justify-center">
+                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#ff007f] to-[#b026ff] text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-sm">
                       {(user.displayName || user.email || user.phoneNumber || 'U').slice(0, 1).toUpperCase()}
                     </div>
                     <span className="text-[11px] font-mono font-bold text-white max-w-[80px] truncate hidden md:inline">
@@ -303,36 +314,36 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={() => setShowAuthModal(true)}
-                  className="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#00ff87] text-slate-200 hover:text-white font-mono text-xs font-bold transition-all flex items-center gap-1.5"
+                  className="px-2.5 sm:px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#b026ff] text-slate-200 hover:text-[#c084fc] font-mono text-xs font-bold transition-all flex items-center gap-1.5"
                   title="Sign In / Register"
                 >
-                  <User className="w-3.5 h-3.5 text-[#00ff87]" />
+                  <User className="w-3.5 h-3.5 text-[#b026ff]" />
                   <span className="hidden sm:inline">LOGIN</span>
                 </button>
               )}
 
-              {/* Wishlist Link */}
+              {/* Wishlist Link with Neon Pink Accent */}
               <Link
                 href="/dashboard?tab=wishlist"
-                className="relative p-2 rounded-full text-slate-300 hover:text-white hover:bg-slate-800 transition-colors"
+                className="relative p-2 rounded-full text-slate-300 hover:text-[#ff007f] hover:bg-slate-800 transition-colors"
                 title="Saved Wishlist"
               >
                 <Heart className="w-4 h-4 sm:w-5 sm:h-5" />
                 {wishlist.length > 0 && (
-                  <span className="absolute 0 top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#00ff87] text-[#06080e] text-[9px] font-mono font-black flex items-center justify-center shadow-neon-sm">
+                  <span className="absolute 0 top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#ff007f] text-white text-[9px] font-mono font-black flex items-center justify-center shadow-neon-pink-sm">
                     {wishlist.length}
                   </span>
                 )}
               </Link>
 
-              {/* Cart Trigger Button */}
+              {/* Cart Trigger Button with Neon Green/Cyan Accent */}
               <button
                 onClick={openCart}
-                className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-slate-900 border border-slate-700 text-white hover:border-[#00ff87] transition-all shadow-md group"
+                className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-full bg-slate-900 border border-slate-700 text-white hover:border-[#00ff87] hover:shadow-neon-sm transition-all shadow-md group"
                 title="View Bag"
               >
                 <ShoppingBag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00ff87] group-hover:scale-110 transition-transform" />
-                <span className="text-xs font-mono font-bold">{cartTotalCount}</span>
+                <span className="text-xs font-mono font-bold text-[#00ff87]">{cartTotalCount}</span>
               </button>
 
               {/* Mobile Menu Toggle */}

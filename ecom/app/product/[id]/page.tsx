@@ -24,6 +24,20 @@ import {
   X,
 } from 'lucide-react';
 
+const getCategoryColor = (cat: string) => {
+  switch (cat?.toUpperCase()) {
+    case 'HOODIES': return 'text-[#ff007f]';
+    case 'JACKETS': return 'text-[#00f0ff]';
+    case 'T-SHIRTS': return 'text-[#00ff87]';
+    case 'TRACKSUITS': return 'text-[#b026ff]';
+    case 'TRACKPANTS': return 'text-[#00bfff]';
+    case 'SWEATERS': return 'text-[#ff6b00]';
+    case 'POLOS': return 'text-[#faff00]';
+    case 'BEANIES': return 'text-[#ff1493]';
+    default: return 'text-[#00ff87]';
+  }
+};
+
 export default function ProductDetailPage() {
   const params = useParams();
   const router = useRouter();
@@ -63,11 +77,11 @@ export default function ProductDetailPage() {
         
         {/* Breadcrumb Navigation */}
         <div className="flex items-center gap-2 text-xs font-mono text-slate-400 mb-6">
-          <Link href="/" className="hover:text-[#00ff87] transition-colors">
+          <Link href="/" className="hover:text-[#00f0ff] transition-colors">
             HOME
           </Link>
           <span>/</span>
-          <Link href={`/shop?category=${product.category}`} className="hover:text-[#00ff87] transition-colors">
+          <Link href={`/shop?category=${product.category}`} className={`hover:underline font-bold transition-colors ${getCategoryColor(product.category)}`}>
             {product.category}
           </Link>
           <span>/</span>
@@ -92,7 +106,17 @@ export default function ProductDetailPage() {
 
               {product.badge && (
                 <div className="absolute top-4 left-4">
-                  <span className="px-3 py-1 rounded-full text-[10px] font-mono font-extrabold bg-[#00ff87] text-[#06080e] shadow-neon-sm uppercase">
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-mono font-extrabold uppercase shadow-md ${
+                    product.badge === 'BESTSELLER'
+                      ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm'
+                      : product.badge === 'NEW DROP'
+                      ? 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan-sm'
+                      : product.badge === 'HOT SELLER'
+                      ? 'bg-[#ff007f] text-white shadow-neon-pink-sm'
+                      : product.badge === 'HEAVYWEIGHT'
+                      ? 'bg-[#faff00] text-[#06080e] shadow-neon-yellow'
+                      : 'bg-[#b026ff] text-white shadow-neon-purple-sm'
+                  }`}>
                     {product.badge}
                   </span>
                 </div>
@@ -103,11 +127,11 @@ export default function ProductDetailPage() {
                 onClick={() => toggleWishlist(product.id)}
                 className={`absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center transition-all shadow-md ${
                   isFavorite
-                    ? 'bg-red-500/20 text-red-400 border border-red-500 scale-110'
-                    : 'bg-[#06080e]/80 text-slate-300 hover:text-white hover:bg-[#06080e] border border-slate-700'
+                    ? 'bg-[#ff007f]/20 text-[#ff007f] border border-[#ff007f] shadow-neon-pink-sm scale-110'
+                    : 'bg-[#06080e]/80 text-slate-300 hover:text-[#ff007f] hover:border-[#ff007f]/60 hover:bg-[#06080e] border border-slate-700'
                 }`}
               >
-                <Heart className={`w-5 h-5 ${isFavorite ? 'fill-current text-red-500' : ''}`} />
+                <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#ff007f] text-[#ff007f]' : ''}`} />
               </button>
             </div>
 
@@ -120,7 +144,7 @@ export default function ProductDetailPage() {
                     onClick={() => setActiveImageIdx(idx)}
                     className={`relative w-20 h-24 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all ${
                       activeImageIdx === idx
-                        ? 'border-[#00ff87] scale-105 shadow-neon-sm'
+                        ? 'border-[#00f0ff] scale-105 shadow-neon-cyan-sm'
                         : 'border-slate-800 opacity-60 hover:opacity-100'
                     }`}
                   >
@@ -132,7 +156,7 @@ export default function ProductDetailPage() {
 
             {/* Factory Authenticity Notice */}
             <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3 text-xs font-mono text-slate-300">
-              <ShieldCheck className="w-5 h-5 text-[#00ff87] flex-shrink-0" />
+              <ShieldCheck className="w-5 h-5 text-[#00f0ff] flex-shrink-0" />
               <span>
                 Fabricated at Okhla Industrial Hub, New Delhi. Pre-shrunk & enzymatic washed for zero post-production shrinkage.
               </span>
@@ -144,9 +168,11 @@ export default function ProductDetailPage() {
             <div>
               {/* Category & Rating */}
               <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
-                <span className="uppercase tracking-widest text-[#00ff87] font-bold">{product.category} • {product.season}</span>
+                <span className={`uppercase tracking-widest font-extrabold ${getCategoryColor(product.category)}`}>
+                  {product.category} • {product.season}
+                </span>
                 <div className="flex items-center gap-1.5 text-slate-300">
-                  <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                  <Star className="w-4 h-4 fill-[#faff00] text-[#faff00]" />
                   <span className="font-bold text-white">{product.rating}</span>
                   <span className="text-slate-500 font-mono">({product.reviewsCount} verified reviews)</span>
                 </div>
@@ -168,7 +194,7 @@ export default function ProductDetailPage() {
                 <span className="text-base font-mono text-slate-500 line-through">
                   {formatPrice(product.compareAtPrice)}
                 </span>
-                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-[#00ff87]/15 text-[#00ff87] border border-[#00ff87]/30">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-extrabold bg-[#ff007f]/20 text-[#ff007f] border border-[#ff007f]/40 shadow-neon-pink-sm">
                   SAVE {discountPercent}%
                 </span>
                 <span className="text-[11px] font-mono text-slate-400 ml-auto hidden sm:block">
@@ -191,7 +217,7 @@ export default function ProductDetailPage() {
                     <span>Only {product.stockCount} units remaining in factory inventory!</span>
                   </div>
                 ) : (
-                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-emerald-400 flex items-center gap-2">
+                  <div className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono text-[#00ff87] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#00ff87]" />
                     <span className="font-bold">IN STOCK:</span>
                     <span className="text-slate-300">{product.stockCount} units ready for immediate BlueDart dispatch.</span>
@@ -217,7 +243,7 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedColor(c.name)}
                       className={`px-3.5 py-2 rounded-xl border text-xs font-mono flex items-center gap-2 transition-all ${
                         selectedColor === c.name
-                          ? 'border-[#00ff87] bg-[#00ff87]/15 text-[#00ff87] font-bold shadow-neon-sm'
+                          ? 'border-[#00f0ff] bg-[#00f0ff]/15 text-[#00f0ff] font-bold shadow-neon-cyan-sm'
                           : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-700'
                       }`}
                     >
@@ -237,7 +263,7 @@ export default function ProductDetailPage() {
                   <span>Select Size</span>
                   <button
                     onClick={() => setShowSizeGuide(true)}
-                    className="text-[#00ff87] hover:underline flex items-center gap-1 font-bold"
+                    className="text-[#ff007f] hover:underline flex items-center gap-1 font-bold"
                   >
                     <Ruler className="w-3.5 h-3.5" />
                     <span>SIZE GUIDE</span>
@@ -251,7 +277,7 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedSize(s)}
                       className={`py-2.5 rounded-xl border text-xs font-mono font-bold uppercase transition-all ${
                         selectedSize === s
-                          ? 'border-[#00ff87] bg-[#00ff87] text-[#06080e] shadow-neon-sm'
+                          ? 'border-[#00f0ff] bg-[#00f0ff] text-[#06080e] shadow-neon-cyan-sm'
                           : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-600'
                       }`}
                     >
@@ -264,7 +290,7 @@ export default function ProductDetailPage() {
               {/* Retail Value Props */}
               <div className="mb-6 p-4 rounded-2xl bg-slate-900 border border-slate-800 grid grid-cols-2 gap-3 text-xs font-mono">
                 <div className="flex items-center gap-2 text-slate-300">
-                  <Truck className="w-4 h-4 text-[#00ff87]" />
+                  <Truck className="w-4 h-4 text-[#00f0ff]" />
                   <span>Free shipping on orders ₹999+</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-300">
@@ -305,7 +331,7 @@ export default function ProductDetailPage() {
                   className={`flex-1 py-4 rounded-xl font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                     product.stockCount === 0
                       ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                      : 'bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] shadow-neon'
+                      : 'bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white shadow-neon hover:shadow-neon-pink'
                   }`}
                 >
                   <ShoppingBag className="w-4 h-4" />
@@ -322,13 +348,13 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleBuyNow}
                   disabled={product.stockCount === 0}
-                  className={`py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all ${
+                  className={`py-3.5 rounded-xl font-mono text-xs font-black uppercase tracking-wider transition-all ${
                     product.stockCount === 0
                       ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed'
-                      : 'border border-slate-700 bg-slate-900 hover:bg-[#00ff87] hover:text-[#06080e] hover:border-[#00ff87] text-white'
+                      : 'bg-gradient-to-r from-[#ff007f] to-[#b026ff] hover:from-[#b026ff] hover:to-[#ff007f] text-white shadow-neon-pink'
                   }`}
                 >
-                  {product.stockCount === 0 ? 'UNAVAILABLE' : 'BUY NOW (EXPRESS)'}
+                  {product.stockCount === 0 ? 'UNAVAILABLE' : '⚡ BUY NOW (EXPRESS)'}
                 </button>
 
                 <a
@@ -337,9 +363,9 @@ export default function ProductDetailPage() {
                   )}.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="py-3 rounded-xl bg-emerald-950/40 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                  className="py-3.5 rounded-xl bg-slate-900 hover:bg-[#00ff87]/15 text-[#00ff87] border border-[#00ff87]/40 font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-sm"
                 >
-                  <MessageSquare className="w-4 h-4 text-emerald-400" />
+                  <MessageSquare className="w-4 h-4 text-[#00ff87]" />
                   <span>WHATSAPP SUPPORT</span>
                 </a>
               </div>

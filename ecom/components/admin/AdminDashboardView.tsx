@@ -36,6 +36,19 @@ import {
   Boxes,
 } from 'lucide-react';
 
+const getAdminTabStyle = (tabId: string) => {
+  switch (tabId) {
+    case 'overview': return 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold';
+    case 'orders': return 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan font-extrabold';
+    case 'inventory': return 'bg-[#ff007f] text-white shadow-neon-pink font-extrabold';
+    case 'products': return 'bg-[#b026ff] text-white shadow-neon-purple font-extrabold';
+    case 'quotes': return 'bg-[#ff6b00] text-white shadow-[0_0_15px_rgba(255,107,0,0.35)] font-extrabold';
+    case 'customers': return 'bg-[#00bfff] text-[#06080e] font-extrabold';
+    case 'settings': return 'bg-[#faff00] text-[#06080e] shadow-neon-yellow font-extrabold';
+    default: return 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold';
+  }
+};
+
 export default function AdminDashboardView() {
   const {
     orders,
@@ -127,7 +140,7 @@ export default function AdminDashboardView() {
   // Calculate real category sales distribution from actual orders
   const categoryStats = useMemo(() => {
     const categories = ['HOODIES', 'JACKETS', 'T-SHIRTS', 'TRACKSUITS', 'TRACKPANTS', 'SWEATERS', 'POLOS', 'BEANIES'];
-    const colors = ['#00ff87', '#00f0ff', '#faff00', '#38bdf8', '#fb923c', '#a855f7', '#ec4899', '#34d399'];
+    const colors = ['#ff007f', '#00f0ff', '#00ff87', '#b026ff', '#00bfff', '#ff6b00', '#faff00', '#ff1493'];
 
     return categories.map((cat, idx) => {
       let revenue = 0;
@@ -243,7 +256,7 @@ export default function AdminDashboardView() {
         {/* Top Header Bar */}
         <div className="bg-[#0b0f19] rounded-2xl p-6 text-white border border-slate-800 shadow-xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#00ff87] text-[#06080e] flex items-center justify-center font-mono font-black text-xl shadow-neon">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] text-white flex items-center justify-center font-mono font-black text-xl shadow-neon-pink">
               ⚡
             </div>
             <div>
@@ -251,8 +264,8 @@ export default function AdminDashboardView() {
                 <h1 className="text-xl sm:text-2xl font-bold font-mono tracking-wider uppercase text-white">
                   SLATE APPARELS OPERATIONS CONSOLE
                 </h1>
-                <span className="w-2 h-2 rounded-full bg-[#00ff87] animate-ping" />
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[#00ff87]">
+                <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping" />
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[#00f0ff]">
                   LIVE SYSTEM
                 </span>
               </div>
@@ -268,11 +281,11 @@ export default function AdminDashboardView() {
               className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white text-xs font-mono font-bold transition-colors flex items-center gap-1.5"
             >
               <span>VIEW STOREFRONT</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-[#00ff87]" />
+              <ArrowUpRight className="w-3.5 h-3.5 text-[#00f0ff]" />
             </Link>
             <Link
               href="/dashboard"
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-mono font-bold transition-colors"
+              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-[#ff007f]/20 hover:text-[#ff007f] hover:border-[#ff007f]/40 border border-slate-700 text-slate-300 text-xs font-mono font-bold transition-colors"
             >
               CUSTOMER PORTAL
             </Link>
@@ -298,11 +311,11 @@ export default function AdminDashboardView() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-4 py-2.5 rounded-xl transition-all flex items-center gap-2 flex-shrink-0 ${
                   isActive
-                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold'
+                    ? getAdminTabStyle(tab.id)
                     : 'bg-[#0b0f19] text-slate-300 hover:bg-slate-900 border border-slate-800 hover:text-white'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-[#06080e]' : 'text-slate-500'}`} />
+                <Icon className={`w-4 h-4 ${isActive ? 'opacity-90' : 'text-slate-500'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -312,9 +325,9 @@ export default function AdminDashboardView() {
         {/* TAB 1: OVERVIEW & ANALYTICS */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            {/* 4 KPI Cards - Live Accurate Metrics */}
+            {/* 4 KPI Cards - Live Accurate Metrics in Multi-Neon */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#00ff87]/50 hover:shadow-neon transition-all shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
                   <span className="text-[10px] font-mono font-bold uppercase">SETTLED REVENUE</span>
                   <DollarSign className="w-4 h-4 text-[#00ff87]" />
@@ -328,12 +341,12 @@ export default function AdminDashboardView() {
                 </div>
               </div>
 
-              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#00f0ff]/50 hover:shadow-neon-cyan transition-all shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
                   <span className="text-[10px] font-mono font-bold uppercase">TOTAL ORDERS</span>
-                  <Package className="w-4 h-4 text-slate-300" />
+                  <Package className="w-4 h-4 text-[#00f0ff]" />
                 </div>
-                <div className="text-3xl font-mono font-extrabold text-white">
+                <div className="text-3xl font-mono font-extrabold text-[#00f0ff]">
                   {totalOrdersCount}
                 </div>
                 <span className="text-xs font-mono text-slate-400 mt-2 block">
@@ -341,12 +354,12 @@ export default function AdminDashboardView() {
                 </span>
               </div>
 
-              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#b026ff]/50 hover:shadow-neon-purple transition-all shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
                   <span className="text-[10px] font-mono font-bold uppercase">AVG ORDER VALUE</span>
-                  <ShoppingBag className="w-4 h-4 text-slate-300" />
+                  <ShoppingBag className="w-4 h-4 text-[#b026ff]" />
                 </div>
-                <div className="text-3xl font-mono font-extrabold text-white">
+                <div className="text-3xl font-mono font-extrabold text-[#b026ff]">
                   {formatPrice(avgOrderValue)}
                 </div>
                 <span className="text-xs font-mono text-slate-400 mt-2 block">
@@ -354,17 +367,17 @@ export default function AdminDashboardView() {
                 </span>
               </div>
 
-              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+              <div className="p-6 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#ff007f]/50 hover:shadow-neon-pink transition-all shadow-lg">
                 <div className="flex items-center justify-between text-slate-400 mb-2">
                   <span className="text-[10px] font-mono font-bold uppercase">ACTIVE INQUIRIES</span>
-                  <Clock className="w-4 h-4 text-amber-400" />
+                  <Clock className="w-4 h-4 text-[#ff007f]" />
                 </div>
-                <div className="text-3xl font-mono font-extrabold text-white">
+                <div className="text-3xl font-mono font-extrabold text-[#ff007f]">
                   {inquiries.length}
                 </div>
                 <button
                   onClick={() => setActiveTab('quotes')}
-                  className="text-xs font-mono text-[#00ff87] font-bold hover:underline mt-2 block"
+                  className="text-xs font-mono text-[#ff007f] font-bold hover:underline mt-2 block"
                 >
                   Manage Inquiries →
                 </button>

@@ -9,12 +9,12 @@ export default function AnnouncementBar() {
     <div className="bg-[#06080e] text-slate-300 text-xs py-2 px-4 border-b border-slate-800/80 select-none overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#00ff87]/15 text-[#00ff87] font-mono text-[10px] font-bold border border-[#00ff87]/30 shadow-neon-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff007f]/20 via-[#b026ff]/20 to-[#00f0ff]/20 text-[#ff007f] font-mono text-[10px] font-bold border border-[#ff007f]/40 shadow-neon-pink-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#ff007f] animate-pulse" />
             SLATE RETAIL DROP
           </span>
           <span className="hidden sm:inline font-mono text-[11px] text-slate-300">
-            ⚡ FREE EXPRESS HOME DELIVERY ON ORDERS OVER ₹999 • USE CODE <strong className="text-white bg-white/10 px-1.5 py-0.5 rounded border border-white/20">NEON10</strong> FOR 10% OFF
+            ⚡ FREE EXPRESS HOME DELIVERY OVER ₹999 • CODE <strong className="text-[#faff00] bg-[#faff00]/10 px-1.5 py-0.5 rounded border border-[#faff00]/30 font-bold">NEON10</strong> (10% OFF)
           </span>
         </div>
 
@@ -26,15 +26,15 @@ export default function AnnouncementBar() {
             className="hidden md:flex items-center gap-1.5 hover:text-[#00ff87] transition-colors"
           >
             <Phone className="w-3.5 h-3.5 text-[#00ff87]" />
-            <span>+91 9599084873</span>
+            <span className="text-slate-300 hover:text-[#00ff87]">+91 9599084873</span>
           </a>
           <span className="hidden md:flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-[#00f0ff]" />
-            GST & IEC CERTIFIED
+            <span className="text-[#00f0ff]">GST & IEC VERIFIED</span>
           </span>
           <Link
             href="/admin"
-            className="text-[10px] uppercase font-bold text-slate-400 hover:text-[#00ff87] transition-colors border-l border-slate-800 pl-3"
+            className="text-[10px] uppercase font-bold text-slate-400 hover:text-[#ff007f] transition-colors border-l border-slate-800 pl-3"
           >
             ADMIN CONSOLE →
           </Link>

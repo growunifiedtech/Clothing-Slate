@@ -34,6 +34,32 @@ import {
 import { useAuth } from '@/lib/auth-context';
 import AuthModal from '@/components/auth/AuthModal';
 
+const getActiveTabStyle = (tabId: string) => {
+  switch (tabId) {
+    case 'overview': return 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold';
+    case 'orders': return 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan font-extrabold';
+    case 'addresses': return 'bg-[#b026ff] text-white shadow-neon-purple font-extrabold';
+    case 'wishlist': return 'bg-[#ff007f] text-white shadow-neon-pink font-extrabold';
+    case 'quotes': return 'bg-[#ff6b00] text-white shadow-[0_0_15px_rgba(255,107,0,0.4)] font-extrabold';
+    case 'settings': return 'bg-[#00bfff] text-[#06080e] font-extrabold shadow-neon-cyan-sm';
+    default: return 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold';
+  }
+};
+
+const getCategoryColor = (cat: string) => {
+  switch (cat?.toUpperCase()) {
+    case 'HOODIES': return 'text-[#ff007f]';
+    case 'JACKETS': return 'text-[#00f0ff]';
+    case 'T-SHIRTS': return 'text-[#00ff87]';
+    case 'TRACKSUITS': return 'text-[#b026ff]';
+    case 'TRACKPANTS': return 'text-[#00bfff]';
+    case 'SWEATERS': return 'text-[#ff6b00]';
+    case 'POLOS': return 'text-[#faff00]';
+    case 'BEANIES': return 'text-[#ff1493]';
+    default: return 'text-[#00ff87]';
+  }
+};
+
 export default function UserDashboardView() {
   const searchParams = useSearchParams();
   const initialTab = searchParams.get('tab') || 'overview';
@@ -140,7 +166,7 @@ export default function UserDashboardView() {
         {/* Top User Identity Bar */}
         <div className="bg-[#0b0f19] rounded-2xl p-4 sm:p-6 border border-slate-800 shadow-xl mb-6 sm:mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-3 sm:gap-4">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-900 text-[#00ff87] flex items-center justify-center font-mono font-bold text-lg sm:text-xl shadow-neon-sm border-2 border-[#00ff87] flex-shrink-0">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-slate-900 text-[#ff007f] flex items-center justify-center font-mono font-bold text-lg sm:text-xl shadow-neon-pink-sm border-2 border-[#ff007f] flex-shrink-0">
               {getInitials(user?.displayName || userProfile.name)}
             </div>
             <div>
@@ -156,9 +182,9 @@ export default function UserDashboardView() {
                 ) : (
                   <button
                     onClick={() => setShowAuthModal(true)}
-                    className="px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 hover:bg-amber-400/30 transition-all flex items-center gap-1"
+                    className="px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold bg-[#b026ff]/20 text-[#b026ff] border border-[#b026ff]/40 hover:bg-[#b026ff]/30 transition-all flex items-center gap-1 shadow-neon-purple-sm"
                   >
-                    <KeyRound className="w-3 h-3 text-amber-400" />
+                    <KeyRound className="w-3 h-3 text-[#b026ff]" />
                     <span>CONNECT FIREBASE AUTH</span>
                   </button>
                 )}
@@ -183,9 +209,9 @@ export default function UserDashboardView() {
             ) : (
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 border border-slate-700 text-xs font-mono font-bold transition-all flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-[#b026ff]/15 text-slate-200 hover:text-[#b026ff] border border-slate-700 hover:border-[#b026ff] text-xs font-mono font-bold transition-all flex items-center gap-1.5"
               >
-                <User className="w-3.5 h-3.5 text-[#00ff87]" />
+                <User className="w-3.5 h-3.5 text-[#b026ff]" />
                 <span>SIGN IN</span>
               </button>
             )}
@@ -198,7 +224,7 @@ export default function UserDashboardView() {
             </Link>
             <Link
               href="/admin"
-              className="px-3.5 py-2 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] text-xs font-mono font-extrabold transition-all shadow-neon flex items-center gap-1.5"
+              className="px-3.5 py-2 rounded-xl bg-[#00f0ff] hover:bg-[#00e5ff] text-[#06080e] text-xs font-mono font-extrabold transition-all shadow-neon-cyan flex items-center gap-1.5"
             >
               <Zap className="w-3.5 h-3.5" />
               <span>ADMIN CONSOLE</span>
@@ -224,11 +250,11 @@ export default function UserDashboardView() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`px-3.5 py-2 rounded-xl flex-shrink-0 font-bold transition-all flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm font-extrabold'
+                    ? getActiveTabStyle(tab.id)
                     : 'bg-[#0b0f19] text-slate-300 border border-slate-800'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#06080e]' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'opacity-90' : 'text-slate-400'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -257,15 +283,15 @@ export default function UserDashboardView() {
                     onClick={() => setActiveTab(tab.id as any)}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-xs font-mono font-bold uppercase transition-all ${
                       isActive
-                        ? 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold'
+                        ? getActiveTabStyle(tab.id)
                         : 'text-slate-300 hover:bg-slate-900 hover:text-white'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#06080e]' : 'text-slate-500'}`} />
+                      <Icon className={`w-4 h-4 ${isActive ? 'opacity-90' : 'text-slate-500'}`} />
                       <span>{tab.label}</span>
                     </div>
-                    <ChevronRight className={`w-3.5 h-3.5 ${isActive ? 'text-[#06080e]' : 'text-slate-500'}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 ${isActive ? 'opacity-90' : 'text-slate-500'}`} />
                   </button>
                 );
               })}
@@ -273,7 +299,7 @@ export default function UserDashboardView() {
 
             {/* Support Widget Box */}
             <div className="p-5 rounded-2xl bg-gradient-to-b from-[#0b0f19] to-[#0d1320] text-white border border-slate-800 shadow-xl space-y-3">
-              <span className="text-[10px] font-mono tracking-widest text-[#00ff87] uppercase block font-bold">
+              <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase block font-bold">
                 RETAIL HELPDESK
               </span>
               <h4 className="text-xs font-mono font-bold uppercase text-white">
@@ -286,7 +312,7 @@ export default function UserDashboardView() {
                 href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20my%20orders."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
+                className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] hover:from-[#00f0ff] hover:to-[#ff007f] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>WHATSAPP SUPPORT</span>
@@ -300,55 +326,55 @@ export default function UserDashboardView() {
             {/* TAB 1: OVERVIEW */}
             {activeTab === 'overview' && (
               <div className="space-y-6">
-                {/* 4 KPI Metric Cards */}
+                {/* 4 KPI Metric Cards in Vibrant Multi-Neon */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#00f0ff]/50 hover:shadow-neon-cyan transition-all shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       TOTAL ORDERS
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-white">
+                    <div className="text-2xl font-mono font-extrabold text-[#00f0ff]">
                       {orders.length}
                     </div>
-                    <span className="text-[10px] font-mono text-[#00ff87] font-semibold mt-1 block">
+                    <span className="text-[10px] font-mono text-[#00f0ff]/80 font-semibold mt-1 block">
                       Lifetime Verified
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#00ff87]/50 hover:shadow-neon transition-all shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       LIFETIME SPEND
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-white">
+                    <div className="text-2xl font-mono font-extrabold text-[#00ff87]">
                       {formatPrice(totalSpent)}
                     </div>
-                    <span className="text-[10px] font-mono text-[#00ff87] font-semibold mt-1 block">
+                    <span className="text-[10px] font-mono text-[#00ff87]/80 font-semibold mt-1 block">
                       Settled Invoices
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#ff6b00]/50 hover:shadow-[0_0_15px_rgba(255,107,0,0.35)] transition-all shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       ACTIVE SHIPMENTS
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-[#00ff87] flex items-center gap-1.5">
+                    <div className="text-2xl font-mono font-extrabold text-[#ff6b00] flex items-center gap-1.5">
                       <span>{activeShipments}</span>
-                      <Truck className="w-4 h-4 text-[#00ff87]" />
+                      <Truck className="w-4 h-4 text-[#ff6b00]" />
                     </div>
                     <span className="text-[10px] font-mono text-slate-400 mt-1 block">
                       BlueDart Express
                     </span>
                   </div>
 
-                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 shadow-lg">
+                  <div className="p-5 rounded-2xl bg-[#0b0f19] border border-slate-800 hover:border-[#ff007f]/50 hover:shadow-neon-pink transition-all shadow-lg">
                     <span className="text-[10px] font-mono font-bold text-slate-400 uppercase block mb-1">
                       SAVED IN WISHLIST
                     </span>
-                    <div className="text-2xl font-mono font-extrabold text-white">
+                    <div className="text-2xl font-mono font-extrabold text-[#ff007f]">
                       {wishlist.length}
                     </div>
                     <button
                       onClick={() => setActiveTab('wishlist')}
-                      className="text-[10px] font-mono text-[#00ff87] font-bold hover:underline mt-1 block"
+                      className="text-[10px] font-mono text-[#ff007f] font-bold hover:underline mt-1 block"
                     >
                       View Items →
                     </button>

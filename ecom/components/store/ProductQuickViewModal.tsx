@@ -13,6 +13,20 @@ interface ProductQuickViewModalProps {
   onClose: () => void;
 }
 
+const getCategoryColor = (cat?: string) => {
+  switch (cat?.toUpperCase()) {
+    case 'HOODIES': return 'text-[#ff007f]';
+    case 'JACKETS': return 'text-[#00f0ff]';
+    case 'T-SHIRTS': return 'text-[#00ff87]';
+    case 'TRACKSUITS': return 'text-[#b026ff]';
+    case 'TRACKPANTS': return 'text-[#00bfff]';
+    case 'SWEATERS': return 'text-[#ff6b00]';
+    case 'POLOS': return 'text-[#faff00]';
+    case 'BEANIES': return 'text-[#ff1493]';
+    default: return 'text-[#00ff87]';
+  }
+};
+
 export default function ProductQuickViewModal({ product, onClose }: ProductQuickViewModalProps) {
   const { addToCart } = useStore();
   const [activeImageIdx, setActiveImageIdx] = useState(0);
@@ -53,7 +67,17 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               className="object-cover object-center"
             />
             {product.badge && (
-              <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-extrabold bg-[#00ff87] text-[#06080e] shadow-neon-sm uppercase">
+              <span className={`absolute top-3 left-3 px-2.5 py-1 rounded-full text-[9px] font-mono font-extrabold uppercase shadow-md ${
+                product.badge === 'BESTSELLER'
+                  ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm'
+                  : product.badge === 'NEW DROP'
+                  ? 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan-sm'
+                  : product.badge === 'HOT SELLER'
+                  ? 'bg-[#ff007f] text-white shadow-neon-pink-sm'
+                  : product.badge === 'HEAVYWEIGHT'
+                  ? 'bg-[#faff00] text-[#06080e] shadow-neon-yellow'
+                  : 'bg-[#b026ff] text-white shadow-neon-purple-sm'
+              }`}>
                 {product.badge}
               </span>
             )}
@@ -67,7 +91,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                   key={idx}
                   onClick={() => setActiveImageIdx(idx)}
                   className={`relative w-14 h-16 rounded-xl overflow-hidden border-2 flex-shrink-0 transition-all ${
-                    activeImageIdx === idx ? 'border-[#00ff87] scale-105' : 'border-slate-800 opacity-60 hover:opacity-100'
+                    activeImageIdx === idx ? 'border-[#00f0ff] scale-105 shadow-neon-cyan-sm' : 'border-slate-800 opacity-60 hover:opacity-100'
                   }`}
                 >
                   <Image src={img} alt="" fill unoptimized className="object-cover" />
@@ -82,9 +106,11 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
           <div>
             {/* Category & Rating */}
             <div className="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
-              <span className="uppercase text-[#00ff87] font-bold">{product.category} • {product.season}</span>
+              <span className={`uppercase font-extrabold ${getCategoryColor(product.category)}`}>
+                {product.category} • {product.season}
+              </span>
               <div className="flex items-center gap-1 text-slate-300">
-                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                <Star className="w-3.5 h-3.5 fill-[#faff00] text-[#faff00]" />
                 <span className="font-bold text-white">{product.rating}</span>
                 <span className="text-slate-500">({product.reviewsCount} reviews)</span>
               </div>
@@ -102,7 +128,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               <span className="text-sm font-mono text-slate-500 line-through">
                 {formatPrice(product.compareAtPrice)}
               </span>
-              <span className="text-xs font-mono font-bold text-[#00ff87] bg-[#00ff87]/15 border border-[#00ff87]/30 px-2 py-0.5 rounded">
+              <span className="text-xs font-mono font-extrabold text-[#ff007f] bg-[#ff007f]/20 border border-[#ff007f]/40 px-2 py-0.5 rounded shadow-neon-pink-sm">
                 Save {discountPercent}%
               </span>
             </div>
@@ -124,7 +150,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                     onClick={() => setSelectedColor(c.name)}
                     className={`px-3 py-1.5 rounded-lg border text-xs font-mono flex items-center gap-2 transition-all ${
                       selectedColor === c.name
-                        ? 'border-[#00ff87] bg-[#00ff87]/15 text-[#00ff87] font-bold shadow-neon-sm'
+                        ? 'border-[#00f0ff] bg-[#00f0ff]/15 text-[#00f0ff] font-bold shadow-neon-cyan-sm'
                         : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-700'
                     }`}
                   >
@@ -151,7 +177,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                     onClick={() => setSelectedSize(s)}
                     className={`py-2 rounded-lg border text-xs font-mono font-bold transition-all ${
                       selectedSize === s
-                        ? 'border-[#00ff87] bg-[#00ff87] text-[#06080e] shadow-neon-sm'
+                        ? 'border-[#00f0ff] bg-[#00f0ff] text-[#06080e] shadow-neon-cyan-sm'
                         : 'border-slate-800 bg-slate-900 text-slate-300 hover:border-slate-600'
                     }`}
                   >
@@ -163,8 +189,8 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
 
             {/* Retail Perks Callout */}
             <div className="mb-6 p-3 rounded-xl bg-slate-900 border border-slate-800 space-y-1.5">
-              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#00ff87] uppercase">
-                <Truck className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-[#00f0ff] uppercase">
+                <Truck className="w-3.5 h-3.5 text-[#00f0ff]" />
                 FREE EXPRESS HOME DELIVERY OVER ₹999
               </div>
               <p className="text-[11px] text-slate-400 font-sans">
@@ -196,7 +222,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               {/* Add to Bag Button */}
               <button
                 onClick={handleAdd}
-                className="flex-1 py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
+                className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-pink"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>ADD TO BAG ({formatPrice(product.price * quantity)})</span>
@@ -206,7 +232,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
             <Link
               href={`/product/${product.id}`}
               onClick={onClose}
-              className="block text-center text-xs font-mono text-slate-400 hover:text-[#00ff87] pt-1"
+              className="block text-center text-xs font-mono text-slate-400 hover:text-[#00f0ff] pt-1"
             >
               View Full Product Details & Technical Specs →
             </Link>

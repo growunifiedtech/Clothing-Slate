@@ -36,9 +36,10 @@ export default function WholesaleBanner() {
 
   return (
     <section className="py-16 sm:py-20 bg-[#06080e] border-y border-slate-800 select-none relative overflow-hidden">
-      {/* Subtle Cyber Neon Glows */}
-      <div className="absolute top-0 right-10 w-96 h-96 bg-[#00ff87]/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#00f0ff]/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Multi-Neon Cyber Glows */}
+      <div className="absolute top-0 right-10 w-96 h-96 bg-[#ff007f]/10 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#00f0ff]/10 rounded-full blur-[130px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[#b026ff]/8 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="bg-gradient-to-r from-[#0b0f19] via-[#0e1424] to-[#0b0f19] rounded-3xl p-8 sm:p-12 border border-slate-700/80 shadow-2xl relative overflow-hidden">
@@ -46,38 +47,42 @@ export default function WholesaleBanner() {
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Info (7 cols) */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-mono tracking-widest text-[#00ff87]">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] animate-pulse" />
-                RETAIL CLUB & CUSTOM PERSONALIZATION DESK
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-mono tracking-widest shadow-neon-pink-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#ff007f] animate-pulse" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] font-extrabold">
+                  RETAIL CLUB & CUSTOM PERSONALIZATION DESK
+                </span>
               </div>
 
-              <h2 className="text-3xl sm:text-5xl font-extrabold uppercase font-sans tracking-tight text-white">
+              <h2 className="text-3xl sm:text-5xl font-extrabold uppercase font-sans tracking-tight text-white leading-tight">
                 PURCHASE DIRECT. <br />
-                <span className="text-[#00ff87]">WEAR LUXURY STREETWEAR.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f0ff] via-[#00ff87] to-[#ff007f]">
+                  WEAR LUXURY STREETWEAR.
+                </span>
               </h2>
 
               <p className="text-sm text-slate-300 font-normal leading-relaxed max-w-xl">
                 Every hoodie, tee, and jacket is manufactured with industrial precision in New Delhi. Order single pieces with free express shipping across India, or consult our desk for bespoke colorways and personalized monogram embroidery.
               </p>
 
-              {/* 3 Retail Perks */}
+              {/* 3 Retail Perks Color-Coded */}
               <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#00f0ff]/30 text-center shadow-neon-cyan-sm">
                   <div className="text-[10px] font-mono text-slate-400 uppercase">RETAIL PRICING</div>
                   <div className="text-base sm:text-lg font-mono font-bold text-white">From ₹599</div>
-                  <div className="text-[10px] font-mono font-bold text-[#00ff87] mt-0.5">NO MINIMUM</div>
+                  <div className="text-[10px] font-mono font-bold text-[#00f0ff] mt-0.5">NO MINIMUM</div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#00ff87]/40 text-center shadow-neon-sm">
-                  <div className="text-[10px] font-mono text-[#00ff87] uppercase">FREE SHIPPING</div>
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#ff007f]/40 text-center shadow-neon-pink-sm">
+                  <div className="text-[10px] font-mono text-[#ff007f] uppercase">FREE SHIPPING</div>
                   <div className="text-base sm:text-lg font-mono font-bold text-white">Orders ₹999+</div>
-                  <div className="text-[10px] font-mono font-bold text-[#00ff87] mt-0.5">EXPRESS AIR</div>
+                  <div className="text-[10px] font-mono font-bold text-[#ff007f] mt-0.5">EXPRESS AIR</div>
                 </div>
 
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 text-center">
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#b026ff]/40 text-center shadow-neon-purple-sm">
                   <div className="text-[10px] font-mono text-slate-400 uppercase">EASY EXCHANGE</div>
                   <div className="text-base sm:text-lg font-mono font-bold text-white">7 Days</div>
-                  <div className="text-[10px] font-mono font-bold text-[#00ff87] mt-0.5">DOORSTEP PICKUP</div>
+                  <div className="text-[10px] font-mono font-bold text-[#b026ff] mt-0.5">DOORSTEP PICKUP</div>
                 </div>
               </div>
             </div>
@@ -85,7 +90,7 @@ export default function WholesaleBanner() {
             {/* Right Action Box (5 cols) */}
             <div className="lg:col-span-5 bg-slate-900/90 border border-slate-700/80 rounded-2xl p-6 sm:p-8 backdrop-blur-md space-y-4">
               <h3 className="font-mono font-bold text-base uppercase text-white tracking-wider flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-[#00ff87]" />
+                <Sparkles className="w-4 h-4 text-[#ff007f]" />
                 RETAIL VIP DESK & SUPPORT
               </h3>
               <p className="text-xs text-slate-300 font-light">
@@ -97,7 +102,7 @@ export default function WholesaleBanner() {
                   href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20retail%20products%20and%20sizing."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
+                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] hover:from-[#00f0ff] hover:to-[#ff007f] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-pink"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>CHAT ON WHATSAPP (+91 9599084873)</span>
@@ -105,7 +110,7 @@ export default function WholesaleBanner() {
 
                 <button
                   onClick={() => setShowInquiryModal(true)}
-                  className="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all"
+                  className="w-full py-3.5 rounded-xl bg-slate-800 hover:bg-[#ff007f]/10 border border-[#ff007f]/40 hover:border-[#ff007f] text-slate-200 hover:text-[#ff007f] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-pink-sm"
                 >
                   <Tag className="w-4 h-4 text-[#00f0ff]" />
                   <span>REQUEST BESPOKE PERSONALIZATION</span>
@@ -113,9 +118,9 @@ export default function WholesaleBanner() {
               </div>
 
               <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 pt-3 border-t border-slate-800">
-                <span>NEW DELHI FACTORY HUB</span>
+                <span className="text-[#00f0ff]">NEW DELHI FACTORY HUB</span>
                 <span>•</span>
-                <span>100% SECURE PREPAID / COD</span>
+                <span className="text-[#00ff87]">100% SECURE PREPAID / COD</span>
               </div>
             </div>
           </div>
@@ -131,7 +136,7 @@ export default function WholesaleBanner() {
                 <h3 className="text-lg font-bold text-white font-mono uppercase">
                   CUSTOM PERSONALIZATION DESK
                 </h3>
-                <span className="text-xs text-[#00ff87] font-mono">SLATE APPARELS NEW DELHI</span>
+                <span className="text-xs text-[#00f0ff] font-mono">SLATE APPARELS NEW DELHI</span>
               </div>
               <button
                 onClick={() => setShowInquiryModal(false)}
@@ -152,7 +157,7 @@ export default function WholesaleBanner() {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Enter your full name"
-                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00f0ff]"
                 />
               </div>
 
@@ -167,7 +172,7 @@ export default function WholesaleBanner() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@email.com"
-                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
+                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00f0ff]"
                   />
                 </div>
                 <div>
@@ -180,7 +185,7 @@ export default function WholesaleBanner() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+91 98765 43210"
-                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
+                    className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00f0ff]"
                   />
                 </div>
               </div>
@@ -192,7 +197,7 @@ export default function WholesaleBanner() {
                 <select
                   value={productInterested}
                   onChange={(e) => setProductInterested(e.target.value)}
-                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00f0ff]"
                 >
                   <option value="Oversized Heavyweight Hoodies">Oversized Hoodies (380 GSM)</option>
                   <option value="Drop Shoulder T-Shirts">Drop Shoulder T-Shirts (240 GSM)</option>
@@ -212,13 +217,13 @@ export default function WholesaleBanner() {
                   value={requestedDetails}
                   onChange={(e) => setRequestedDetails(e.target.value)}
                   placeholder="Tell us what you'd like customized (e.g. monogram on cuff, custom oversized chest embroidery)..."
-                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00ff87]"
+                  className="w-full px-3 py-2 text-xs bg-slate-900 border border-slate-700 rounded-lg text-white focus:outline-none focus:border-[#00f0ff]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon"
+                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] text-white font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon-pink"
               >
                 SUBMIT TO PERSONALIZATION DESK
               </button>

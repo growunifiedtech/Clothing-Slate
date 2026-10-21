@@ -13,6 +13,32 @@ interface ProductCardProps {
   onQuickView?: (product: Product) => void;
 }
 
+const getCategoryColor = (cat: string) => {
+  switch (cat.toUpperCase()) {
+    case 'HOODIES': return 'text-[#ff007f]';
+    case 'JACKETS': return 'text-[#00f0ff]';
+    case 'T-SHIRTS': return 'text-[#00ff87]';
+    case 'TRACKSUITS': return 'text-[#b026ff]';
+    case 'TRACKPANTS': return 'text-[#00bfff]';
+    case 'SWEATERS': return 'text-[#ff6b00]';
+    case 'POLOS': return 'text-[#faff00]';
+    case 'BEANIES': return 'text-[#ff1493]';
+    default: return 'text-[#00ff87]';
+  }
+};
+
+const getCategoryHoverStyle = (cat: string) => {
+  switch (cat.toUpperCase()) {
+    case 'HOODIES': return 'hover:border-[#ff007f]/70 hover:shadow-neon-pink';
+    case 'JACKETS': return 'hover:border-[#00f0ff]/70 hover:shadow-neon-cyan';
+    case 'TRACKSUITS': return 'hover:border-[#b026ff]/70 hover:shadow-neon-purple';
+    case 'SWEATERS': return 'hover:border-[#ff6b00]/70 hover:shadow-[0_0_20px_rgba(255,107,0,0.35)]';
+    case 'POLOS': return 'hover:border-[#faff00]/70 hover:shadow-neon-yellow';
+    case 'BEANIES': return 'hover:border-[#ff1493]/70 hover:shadow-neon-pink';
+    default: return 'hover:border-[#00ff87]/70 hover:shadow-neon';
+  }
+};
+
 export default function ProductCard({ product, onQuickView }: ProductCardProps) {
   const { addToCart, toggleWishlist, isInWishlist } = useStore();
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name || '');
@@ -42,11 +68,14 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
     if (onQuickView) onQuickView(product);
   };
 
+  const catColor = getCategoryColor(product.category);
+  const hoverStyle = getCategoryHoverStyle(product.category);
+
   return (
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative bg-[#0b0f19] rounded-2xl border border-slate-800 hover:border-[#00ff87]/80 hover:shadow-neon-sm transition-all duration-300 flex flex-col justify-between overflow-hidden select-none h-full"
+      className={`group relative bg-[#0b0f19] rounded-2xl border border-slate-800 ${hoverStyle} transition-all duration-300 flex flex-col justify-between overflow-hidden select-none h-full`}
     >
       <div>
         {/* Visual Media Header: Strict uniform aspect-[4/5] container */}
@@ -91,19 +120,21 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
               <span
                 className={`px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[8px] sm:text-[9px] font-mono font-extrabold uppercase tracking-widest shadow-md ${
                   product.badge === 'BESTSELLER'
-                    ? 'bg-[#00ff87] text-[#06080e]'
+                    ? 'bg-[#00ff87] text-[#06080e] shadow-neon-sm'
                     : product.badge === 'NEW DROP'
-                    ? 'bg-[#00f0ff] text-[#06080e]'
+                    ? 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan-sm'
+                    : product.badge === 'HOT SELLER'
+                    ? 'bg-[#ff007f] text-white shadow-neon-pink-sm'
                     : product.badge === 'HEAVYWEIGHT'
-                    ? 'bg-[#faff00] text-[#06080e]'
-                    : 'bg-white text-[#06080e]'
+                    ? 'bg-[#faff00] text-[#06080e] shadow-neon-yellow'
+                    : 'bg-[#b026ff] text-white shadow-neon-purple-sm'
                 }`}
               >
                 {product.badge}
               </span>
             ) : null}
             {discountPercent > 0 && product.stockCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold bg-[#06080e]/90 text-slate-200 border border-slate-700 backdrop-blur-sm">
+              <span className="px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold bg-[#ff007f]/20 text-[#ff007f] border border-[#ff007f]/40 backdrop-blur-sm">
                 {discountPercent}% OFF
               </span>
             )}
@@ -115,18 +146,18 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
               onClick={handleToggleFavorite}
               className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center transition-all shadow-md ${
                 isFavorite
-                  ? 'bg-red-500/20 text-red-400 border border-red-500 scale-110'
-                  : 'bg-[#06080e]/80 backdrop-blur-sm text-slate-300 hover:text-white hover:bg-[#06080e] border border-slate-700'
+                  ? 'bg-[#ff007f]/20 text-[#ff007f] border border-[#ff007f] shadow-neon-pink-sm scale-110'
+                  : 'bg-[#06080e]/80 backdrop-blur-sm text-slate-300 hover:text-[#ff007f] hover:border-[#ff007f]/50 border border-slate-700'
               }`}
               title={isFavorite ? 'Remove from Wishlist' : 'Add to Wishlist'}
             >
-              <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFavorite ? 'fill-current text-red-500' : ''}`} />
+              <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isFavorite ? 'fill-[#ff007f] text-[#ff007f]' : ''}`} />
             </button>
 
             {onQuickView && (
               <button
                 onClick={handleOpenQuickView}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#06080e]/80 backdrop-blur-sm text-slate-300 hover:text-white hover:bg-[#06080e] border border-slate-700 hidden sm:flex items-center justify-center transition-all shadow-md opacity-0 group-hover:opacity-100"
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#06080e]/80 backdrop-blur-sm text-slate-300 hover:text-[#00f0ff] hover:border-[#00f0ff]/50 border border-slate-700 hidden sm:flex items-center justify-center transition-all shadow-md opacity-0 group-hover:opacity-100"
                 title="Quick Look"
               >
                 <Eye className="w-4 h-4" />
@@ -142,7 +173,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
               className={`w-full py-2.5 rounded-xl font-mono text-[11px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                 product.stockCount === 0
                   ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                  : 'bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] shadow-neon'
+                  : 'bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white shadow-neon hover:shadow-neon-pink'
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
@@ -155,9 +186,9 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
         <div className="p-3 sm:p-5">
           {/* Category & Rating */}
           <div className="flex items-center justify-between text-[10px] font-mono text-slate-400 mb-1.5">
-            <span className="uppercase tracking-widest text-[#00ff87] font-bold">{product.category}</span>
+            <span className={`uppercase tracking-widest font-extrabold ${catColor}`}>{product.category}</span>
             <div className="flex items-center gap-1 text-slate-300">
-              <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+              <Star className="w-3 h-3 fill-[#faff00] text-[#faff00]" />
               <span className="font-bold">{product.rating}</span>
               <span className="text-slate-500">({product.reviewsCount})</span>
             </div>
@@ -165,7 +196,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
 
           {/* Product Name */}
           <Link href={`/product/${product.id}`}>
-            <h3 className="font-bold text-sm text-white group-hover:text-[#00ff87] transition-colors line-clamp-1 leading-snug">
+            <h3 className="font-bold text-sm text-white group-hover:text-[#00f0ff] transition-colors line-clamp-1 leading-snug">
               {product.name}
             </h3>
           </Link>
@@ -186,7 +217,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
                 }}
                 className={`w-3.5 h-3.5 rounded-full border transition-all ${
                   selectedColor === color.name
-                    ? 'ring-2 ring-[#00ff87] ring-offset-1 ring-offset-[#0b0f19] scale-110'
+                    ? 'ring-2 ring-[#00f0ff] ring-offset-1 ring-offset-[#0b0f19] scale-110'
                     : 'border-slate-600 hover:scale-105'
                 }`}
                 style={{ backgroundColor: color.hex }}
@@ -209,7 +240,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
                 }}
                 className={`px-1.5 py-0.5 text-[9px] font-mono rounded border transition-colors ${
                   selectedSize === size
-                    ? 'bg-[#00ff87] text-[#06080e] border-[#00ff87] font-bold'
+                    ? 'bg-[#00f0ff] text-[#06080e] border-[#00f0ff] font-bold shadow-neon-cyan-sm'
                     : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'
                 }`}
               >
@@ -239,13 +270,13 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           <button
             onClick={handleQuickAdd}
             disabled={product.stockCount === 0}
-            className="sm:hidden p-1.5 rounded-lg bg-[#00ff87] text-[#06080e] disabled:bg-slate-800 disabled:text-slate-500 shadow-neon-sm active:scale-95 transition-all"
+            className="sm:hidden p-1.5 rounded-lg bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] disabled:bg-slate-800 disabled:text-slate-500 shadow-neon-sm active:scale-95 transition-all"
             title={product.stockCount === 0 ? 'Sold Out' : 'Quick Add to Bag'}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
           </button>
-          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-[#00ff87] font-semibold bg-[#00ff87]/10 px-2 py-0.5 rounded border border-[#00ff87]/20">
-            <CheckCircle2 className="w-2.5 h-2.5 text-[#00ff87]" />
+          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-[#00f0ff] font-semibold bg-[#00f0ff]/10 px-2 py-0.5 rounded border border-[#00f0ff]/30">
+            <CheckCircle2 className="w-2.5 h-2.5 text-[#00f0ff]" />
             RETAIL PIECE
           </span>
         </div>
