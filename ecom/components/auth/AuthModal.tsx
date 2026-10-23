@@ -24,6 +24,33 @@ interface AuthModalProps {
   onSuccess?: () => void;
 }
 
+const formatAuthError = (err: any): string => {
+  const code = err?.code || '';
+  const msg = err?.message || '';
+  if (code === 'auth/unauthorized-domain' || msg.includes('unauthorized-domain')) {
+    return 'Domain unauthorized in Firebase: Go to Firebase Console > Authentication > Settings > Authorized domains and add your Vercel URL.';
+  }
+  if (code === 'auth/popup-closed-by-user') {
+    return 'Sign-in window closed before completing. Please try again.';
+  }
+  if (code === 'auth/invalid-credential' || code === 'auth/user-not-found' || code === 'auth/wrong-password') {
+    return 'Invalid email or password. Please check your credentials or register a new account.';
+  }
+  if (code === 'auth/email-already-in-use') {
+    return 'This email is already registered. Please switch to Sign In.';
+  }
+  if (code === 'auth/operation-not-allowed') {
+    return 'This sign-in method is not enabled yet in Firebase Console > Authentication > Sign-in method.';
+  }
+  if (code === 'auth/invalid-phone-number') {
+    return 'Invalid phone number format. Please enter a valid 10-digit mobile number.';
+  }
+  if (code === 'auth/too-many-requests') {
+    return 'Too many attempts. Please wait a few moments before trying again.';
+  }
+  return msg || 'Authentication error. Please try again.';
+};
+
 export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const {
     user,
@@ -80,7 +107,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       onSuccess?.();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Google Sign-in failed. Please verify Firebase setup.');
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -104,7 +131,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       onSuccess?.();
       onClose();
     } catch (err: any) {
-      setError(err?.message || 'Email authentication failed. Please check your credentials.');
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -134,7 +161,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
       setOtpSent(true);
       showToast(`Verification OTP sent to ${cleaned}`);
     } catch (err: any) {
-      setError(err?.message || 'Failed to send OTP. Please check mobile number or Firebase phone auth settings.');
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
@@ -154,7 +181,7 @@ export default function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps
         onClose();
       }
     } catch (err: any) {
-      setError(err?.message || 'Invalid or expired OTP. Please check the code.');
+      setError(formatAuthError(err));
     } finally {
       setLoading(false);
     }
