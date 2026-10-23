@@ -17,7 +17,14 @@ export default function HomePage() {
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [activeCategoryTab, setActiveCategoryTab] = useState<string>('ALL');
 
-  const filterTabs = ['ALL', 'HOODIES', 'JACKETS', 'T-SHIRTS', 'TRACKSUITS', 'TRACKPANTS'];
+  const filterTabs = [
+    { name: 'ALL', activeClass: 'bg-[#00ff87] text-[#06080e] shadow-neon' },
+    { name: 'HOODIES', activeClass: 'bg-[#ff007f] text-white shadow-neon-pink' },
+    { name: 'JACKETS', activeClass: 'bg-[#00f0ff] text-[#06080e] shadow-neon-cyan' },
+    { name: 'T-SHIRTS', activeClass: 'bg-[#00ff87] text-[#06080e] shadow-neon' },
+    { name: 'TRACKSUITS', activeClass: 'bg-[#b026ff] text-white shadow-neon-purple' },
+    { name: 'TRACKPANTS', activeClass: 'bg-[#ff6b00] text-white shadow-[0_0_20px_rgba(255,107,0,0.4)]' },
+  ];
 
   const displayedProducts = products
     .filter((p) => {
@@ -52,19 +59,19 @@ export default function HomePage() {
               </h2>
             </div>
 
-            {/* Category Filter Pills */}
+            {/* Category Filter Pills with Solid Distinct Neons */}
             <div className="flex gap-1.5 overflow-x-auto pb-1 text-xs font-mono font-bold uppercase">
               {filterTabs.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => setActiveCategoryTab(cat)}
-                  className={`px-3.5 py-1.5 rounded-full transition-all flex-shrink-0 ${
-                    activeCategoryTab === cat
-                      ? 'bg-[#00ff87] text-[#06080e] shadow-neon font-extrabold'
+                  key={cat.name}
+                  onClick={() => setActiveCategoryTab(cat.name)}
+                  className={`px-3.5 py-1.5 rounded-full transition-all flex-shrink-0 font-mono text-xs ${
+                    activeCategoryTab === cat.name
+                      ? `${cat.activeClass} font-black`
                       : 'bg-slate-900 text-slate-300 hover:text-white border border-slate-700'
                   }`}
                 >
-                  {cat}
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -85,7 +92,7 @@ export default function HomePage() {
           <div className="mt-12 text-center">
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon"
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] hover:text-black font-mono text-xs font-black uppercase tracking-wider transition-all shadow-neon hover:shadow-neon-cyan"
             >
               <span>VIEW FULL 18 STYLES CATALOG</span>
               <ArrowRight className="w-4 h-4" />

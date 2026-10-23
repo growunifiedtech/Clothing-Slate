@@ -7,7 +7,7 @@ import { ArrowRight, Sparkles, ShieldCheck, Zap, Truck, CheckCircle2 } from 'luc
 
 export default function HeroBanner() {
   return (
-    <div className="relative overflow-hidden bg-gradient-to-b from-[#06080e] via-[#090d16] to-[#0d1320] text-slate-100 pt-8 pb-16 sm:pb-24 border-b border-slate-800 select-none">
+    <div className="relative overflow-hidden bg-[#06080e] text-slate-100 pt-8 pb-16 sm:pb-24 border-b border-slate-800 select-none">
       {/* Background Multi-Neon Cyber Glows */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-[#ff007f]/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#00f0ff]/10 rounded-full blur-[110px] pointer-events-none" />
@@ -22,7 +22,7 @@ export default function HeroBanner() {
             {/* Tagline Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/90 border border-slate-700/80 shadow-neon-pink-sm text-xs font-mono backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#ff007f] shadow-neon-pink animate-pulse" />
-              <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] uppercase tracking-wider">
+              <span className="font-extrabold text-[#ff007f] uppercase tracking-wider">
                 WHERE IDEAS BECOME APPAREL
               </span>
               <span className="text-slate-600">•</span>
@@ -32,9 +32,9 @@ export default function HeroBanner() {
             {/* Massive Heading */}
             <h1 className="text-4xl sm:text-6xl xl:text-7xl font-extrabold tracking-tight text-white uppercase font-sans leading-[1.08]">
               PURE COTTON. <br />
-              <span className="relative inline-block text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00f0ff] to-[#ff007f]">
+              <span className="relative inline-block text-[#00f0ff]">
                 PRECISION FIT.
-                <span className="absolute left-0 bottom-1 w-full h-3 bg-gradient-to-r from-[#00f0ff]/30 via-[#b026ff]/30 to-[#ff007f]/30 -z-10 -rotate-1 shadow-neon-cyan-sm" />
+                <span className="absolute left-0 bottom-1 w-full h-1.5 bg-[#ff007f] shadow-neon-pink -rotate-1" />
               </span>
             </h1>
 
@@ -43,11 +43,11 @@ export default function HeroBanner() {
               Heavyweight 340–420 GSM fleece hoodies, drop shoulder t-shirts, selvedge denim jackets, and tailored joggers crafted in New Delhi. Direct retail purchasing with free express home delivery across India.
             </p>
 
-            {/* Action CTAs with Multi-Neon Styling */}
+            {/* Action CTAs with Solid Neon Styling */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
               <Link
                 href="/shop"
-                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] hover:from-[#00f0ff] hover:to-[#ff007f] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-neon hover:shadow-neon-pink"
+                className="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-neon hover:shadow-neon-cyan"
               >
                 <span>SHOP RETAIL DROPS</span>
                 <ArrowRight className="w-4 h-4" />
@@ -55,14 +55,14 @@ export default function HeroBanner() {
 
               <Link
                 href="/shop?category=HOODIES"
-                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-slate-900/90 hover:bg-[#ff007f]/10 border border-[#ff007f]/40 hover:border-[#ff007f] text-slate-200 hover:text-[#ff007f] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-pink-sm"
+                className="w-full sm:w-auto px-6 py-4 rounded-xl bg-slate-900/90 hover:bg-[#ff007f] border-2 border-[#ff007f] text-[#ff007f] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-pink-sm"
               >
                 <span>WINTER HOODIES</span>
               </Link>
 
               <Link
                 href="/dashboard"
-                className="w-full sm:w-auto px-5 py-4 rounded-xl bg-slate-900/90 hover:bg-[#00f0ff]/10 border border-slate-700 hover:border-[#00f0ff] text-slate-300 hover:text-[#00f0ff] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-cyan-sm"
+                className="w-full sm:w-auto px-5 py-4 rounded-xl bg-slate-900/90 hover:bg-[#00f0ff] border-2 border-[#00f0ff] text-[#00f0ff] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-cyan-sm"
               >
                 <span>TRACK ORDER</span>
               </Link>
@@ -127,7 +127,7 @@ export default function HeroBanner() {
 
                   <Link
                     href="/product/oversized-hoodies"
-                    className="p-3 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#ff007f] hover:to-[#b026ff] text-[#06080e] hover:text-white transition-all shadow-neon-sm hover:shadow-neon-pink"
+                    className="p-3 rounded-xl bg-[#00ff87] hover:bg-[#ff007f] text-[#06080e] hover:text-white transition-all shadow-neon-sm hover:shadow-neon-pink"
                   >
                     <ArrowRight className="w-4 h-4" />
                   </Link>
@@ -153,7 +153,7 @@ export default function HeroBanner() {
               </div>
 
               {/* Top Floating Badge */}
-              <div className="absolute -top-4 -right-4 px-4 py-1.5 rounded-full bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] text-white font-mono text-xs font-black tracking-wider shadow-neon-pink">
+              <div className="absolute -top-4 -right-4 px-4 py-1.5 rounded-full bg-[#faff00] text-[#06080e] font-mono text-xs font-black tracking-wider shadow-neon-yellow">
                 ★ 100% COMBED COTTON
               </div>
             </div>

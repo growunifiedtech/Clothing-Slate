@@ -19,8 +19,15 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#090d16] text-slate-300 border-t border-slate-800 select-none relative">
-      {/* Top Multi-Neon Gradient Line */}
-      <div className="h-[2px] w-full bg-gradient-to-r from-[#ff007f] via-[#00f0ff] to-[#00ff87]" />
+      {/* Top 6 Solid Neon Colors Accent Bar */}
+      <div className="h-[3px] w-full flex">
+        <div className="flex-1 bg-[#00ff87]" />
+        <div className="flex-1 bg-[#00f0ff]" />
+        <div className="flex-1 bg-[#ff007f]" />
+        <div className="flex-1 bg-[#b026ff]" />
+        <div className="flex-1 bg-[#faff00]" />
+        <div className="flex-1 bg-[#ff6b00]" />
+      </div>
 
       {/* 4 Feature Value Props */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12 border-b border-slate-800">

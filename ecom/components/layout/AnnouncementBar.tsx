@@ -9,12 +9,12 @@ export default function AnnouncementBar() {
     <div className="bg-[#06080e] text-slate-300 text-xs py-2 px-4 border-b border-slate-800/80 select-none overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gradient-to-r from-[#ff007f]/20 via-[#b026ff]/20 to-[#00f0ff]/20 text-[#ff007f] font-mono text-[10px] font-bold border border-[#ff007f]/40 shadow-neon-pink-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#ff007f] animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#ff007f] text-[#06080e] font-mono text-[10px] font-black shadow-neon-pink-sm tracking-wider">
+            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
             SLATE RETAIL DROP
           </span>
           <span className="hidden sm:inline font-mono text-[11px] text-slate-300">
-            ⚡ FREE EXPRESS HOME DELIVERY OVER ₹999 • CODE <strong className="text-[#faff00] bg-[#faff00]/10 px-1.5 py-0.5 rounded border border-[#faff00]/30 font-bold">NEON10</strong> (10% OFF)
+            ⚡ <span className="text-[#00ff87] font-bold">FREE EXPRESS DELIVERY</span> OVER ₹999 • CODE <strong className="text-[#06080e] bg-[#faff00] px-1.5 py-0.5 rounded font-black tracking-wide shadow-neon-yellow">NEON10</strong> (<span className="text-[#00f0ff] font-bold">10% OFF</span>)
           </span>
         </div>
 

@@ -222,7 +222,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
               {/* Add to Bag Button */}
               <button
                 onClick={handleAdd}
-                className="flex-1 py-3.5 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-pink"
+                className="flex-1 py-3.5 rounded-xl bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-cyan"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>ADD TO BAG ({formatPrice(product.price * quantity)})</span>

@@ -59,7 +59,7 @@ export default function ReviewsSection() {
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-mono font-bold tracking-widest uppercase mb-3 shadow-neon-purple-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-[#b026ff] animate-pulse" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff]">
+            <span className="text-[#b026ff] font-black">
               AUTHENTIC CUSTOMER TESTIMONIALS
             </span>
           </div>

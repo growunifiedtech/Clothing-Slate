@@ -126,7 +126,7 @@ export default function FeaturedCategories() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-mono font-bold tracking-widest uppercase mb-2 shadow-neon-pink-sm">
               <span className="w-1.5 h-1.5 rounded-full bg-[#ff007f] animate-pulse" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff]">
+              <span className="text-[#ff007f] font-black">
                 CURATED RETAIL SILHOUETTES
               </span>
             </div>

@@ -134,7 +134,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
               </span>
             ) : null}
             {discountPercent > 0 && product.stockCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-bold bg-[#ff007f]/20 text-[#ff007f] border border-[#ff007f]/40 backdrop-blur-sm">
+              <span className="px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-mono font-black bg-[#ff007f] text-white shadow-neon-pink-sm">
                 {discountPercent}% OFF
               </span>
             )}
@@ -170,10 +170,10 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
             <button
               onClick={handleQuickAdd}
               disabled={product.stockCount === 0}
-              className={`w-full py-2.5 rounded-xl font-mono text-[11px] font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+              className={`w-full py-2.5 rounded-xl font-mono text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                 product.stockCount === 0
                   ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                  : 'bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white shadow-neon hover:shadow-neon-pink'
+                  : 'bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black shadow-neon hover:shadow-neon-cyan'
               }`}
             >
               <ShoppingBag className="w-3.5 h-3.5" />
@@ -270,7 +270,7 @@ export default function ProductCard({ product, onQuickView }: ProductCardProps) 
           <button
             onClick={handleQuickAdd}
             disabled={product.stockCount === 0}
-            className="sm:hidden p-1.5 rounded-lg bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] disabled:bg-slate-800 disabled:text-slate-500 shadow-neon-sm active:scale-95 transition-all"
+            className="sm:hidden p-1.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] disabled:bg-slate-800 disabled:text-slate-500 shadow-neon-sm active:scale-95 transition-all"
             title={product.stockCount === 0 ? 'Sold Out' : 'Quick Add to Bag'}
           >
             <ShoppingBag className="w-3.5 h-3.5" />

@@ -77,14 +77,14 @@ export default function Navbar() {
             <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center shadow-md group-hover:border-[#ff007f] group-hover:shadow-neon-pink transition-all">
                 <span className="text-white font-mono font-black text-base sm:text-lg tracking-tighter">S</span>
-                <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-[#ff007f] via-[#00f0ff] to-[#00ff87] ml-0.5 animate-pulse" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] ml-0.5 shadow-neon-sm" />
               </div>
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-sm sm:text-lg tracking-wider text-white uppercase font-sans">
                     SLATE APPARELS
                   </span>
-                  <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded font-mono font-bold bg-gradient-to-r from-[#ff007f] to-[#b026ff] text-white shadow-neon-pink-sm hidden xs:inline-block">
+                  <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded font-mono font-black bg-[#ff007f] text-[#06080e] shadow-neon-pink-sm hidden xs:inline-block">
                     RETAIL
                   </span>
                 </div>
@@ -178,11 +178,11 @@ export default function Navbar() {
                 href="/dashboard"
                 className={`px-3 py-1 rounded-full transition-all font-bold flex items-center gap-1.5 ${
                   pathname.startsWith('/dashboard')
-                    ? 'bg-gradient-to-r from-[#ff007f] to-[#ff2a85] text-white shadow-neon-pink-sm font-extrabold'
+                    ? 'bg-[#ff007f] text-[#06080e] shadow-neon-pink font-black'
                     : 'text-slate-400 hover:text-[#ff007f]'
                 }`}
               >
-                <User className="w-3 h-3 text-[#ff007f]" />
+                <User className={`w-3 h-3 ${pathname.startsWith('/dashboard') ? 'text-[#06080e]' : 'text-[#ff007f]'}`} />
                 <span>USER PORTAL</span>
               </Link>
 
@@ -190,11 +190,11 @@ export default function Navbar() {
                 href="/admin"
                 className={`px-3 py-1 rounded-full transition-all font-bold flex items-center gap-1.5 ${
                   pathname.startsWith('/admin')
-                    ? 'bg-gradient-to-r from-[#00f0ff] to-[#00bfff] text-[#06080e] font-extrabold shadow-neon-cyan'
+                    ? 'bg-[#00f0ff] text-[#06080e] font-black shadow-neon-cyan'
                     : 'text-slate-400 hover:text-[#00f0ff]'
                 }`}
               >
-                <Shield className="w-3 h-3 text-[#00f0ff]" />
+                <Shield className={`w-3 h-3 ${pathname.startsWith('/admin') ? 'text-[#06080e]' : 'text-[#00f0ff]'}`} />
                 <span>ADMIN</span>
               </Link>
             </div>
@@ -303,7 +303,7 @@ export default function Navbar() {
                     className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-[#ff007f] hover:shadow-neon-pink-sm transition-all"
                     title="User Dashboard"
                   >
-                    <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-[#ff007f] to-[#b026ff] text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-sm">
+                    <div className="w-5 h-5 rounded-full bg-[#b026ff] text-white font-mono font-bold text-[10px] flex items-center justify-center shadow-neon-purple-sm">
                       {(user.displayName || user.email || user.phoneNumber || 'U').slice(0, 1).toUpperCase()}
                     </div>
                     <span className="text-[11px] font-mono font-bold text-white max-w-[80px] truncate hidden md:inline">

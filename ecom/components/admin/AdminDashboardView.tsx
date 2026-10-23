@@ -256,7 +256,7 @@ export default function AdminDashboardView() {
         {/* Top Header Bar */}
         <div className="bg-[#0b0f19] rounded-2xl p-6 text-white border border-slate-800 shadow-xl mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] text-white flex items-center justify-center font-mono font-black text-xl shadow-neon-pink">
+            <div className="w-12 h-12 rounded-xl bg-[#b026ff] text-white flex items-center justify-center font-mono font-black text-xl shadow-neon-purple">
               ⚡
             </div>
             <div>

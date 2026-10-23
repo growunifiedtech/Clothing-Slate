@@ -298,7 +298,7 @@ export default function UserDashboardView() {
             </div>
 
             {/* Support Widget Box */}
-            <div className="p-5 rounded-2xl bg-gradient-to-b from-[#0b0f19] to-[#0d1320] text-white border border-slate-800 shadow-xl space-y-3">
+            <div className="p-5 rounded-2xl bg-[#0b0f19] text-white border border-slate-800 shadow-xl space-y-3">
               <span className="text-[10px] font-mono tracking-widest text-[#00f0ff] uppercase block font-bold">
                 RETAIL HELPDESK
               </span>
@@ -312,7 +312,7 @@ export default function UserDashboardView() {
                 href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20my%20orders."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] hover:from-[#00f0ff] hover:to-[#ff007f] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
+                className="w-full py-2.5 rounded-lg bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-cyan"
               >
                 <MessageSquare className="w-3.5 h-3.5" />
                 <span>WHATSAPP SUPPORT</span>

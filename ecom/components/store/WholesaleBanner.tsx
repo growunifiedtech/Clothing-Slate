@@ -42,21 +42,21 @@ export default function WholesaleBanner() {
       <div className="absolute top-1/2 left-1/3 w-80 h-80 bg-[#b026ff]/8 rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-gradient-to-r from-[#0b0f19] via-[#0e1424] to-[#0b0f19] rounded-3xl p-8 sm:p-12 border border-slate-700/80 shadow-2xl relative overflow-hidden">
+        <div className="bg-[#0b0f19] rounded-3xl p-8 sm:p-12 border border-slate-700/80 shadow-2xl relative overflow-hidden">
           
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Left Info (7 cols) */}
             <div className="lg:col-span-7 space-y-4">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-[10px] font-mono tracking-widest shadow-neon-pink-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ff007f] animate-pulse" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] font-extrabold">
+                <span className="text-[#ff007f] font-black">
                   RETAIL CLUB & CUSTOM PERSONALIZATION DESK
                 </span>
               </div>
 
               <h2 className="text-3xl sm:text-5xl font-extrabold uppercase font-sans tracking-tight text-white leading-tight">
                 PURCHASE DIRECT. <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00f0ff] via-[#00ff87] to-[#ff007f]">
+                <span className="text-[#00f0ff] font-extrabold">
                   WEAR LUXURY STREETWEAR.
                 </span>
               </h2>
@@ -65,9 +65,9 @@ export default function WholesaleBanner() {
                 Every hoodie, tee, and jacket is manufactured with industrial precision in New Delhi. Order single pieces with free express shipping across India, or consult our desk for bespoke colorways and personalized monogram embroidery.
               </p>
 
-              {/* 3 Retail Perks Color-Coded */}
-              <div className="grid grid-cols-3 gap-3 pt-2 max-w-lg">
-                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#00f0ff]/30 text-center shadow-neon-cyan-sm">
+              {/* 4 Retail Perks Color-Coded with Solid Neons */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 max-w-2xl">
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#00f0ff]/40 text-center shadow-neon-cyan-sm">
                   <div className="text-[10px] font-mono text-slate-400 uppercase">RETAIL PRICING</div>
                   <div className="text-base sm:text-lg font-mono font-bold text-white">From ₹599</div>
                   <div className="text-[10px] font-mono font-bold text-[#00f0ff] mt-0.5">NO MINIMUM</div>
@@ -83,6 +83,12 @@ export default function WholesaleBanner() {
                   <div className="text-[10px] font-mono text-slate-400 uppercase">EASY EXCHANGE</div>
                   <div className="text-base sm:text-lg font-mono font-bold text-white">7 Days</div>
                   <div className="text-[10px] font-mono font-bold text-[#b026ff] mt-0.5">DOORSTEP PICKUP</div>
+                </div>
+
+                <div className="p-3 rounded-xl bg-slate-900/80 border border-[#faff00]/40 text-center shadow-neon-yellow">
+                  <div className="text-[10px] font-mono text-slate-400 uppercase">PURE COMBED</div>
+                  <div className="text-base sm:text-lg font-mono font-bold text-white">100% Cotton</div>
+                  <div className="text-[10px] font-mono font-bold text-[#faff00] mt-0.5">240-420 GSM</div>
                 </div>
               </div>
             </div>
@@ -102,7 +108,7 @@ export default function WholesaleBanner() {
                   href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20retail%20products%20and%20sizing."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#00ff87] to-[#00f0ff] text-[#06080e] hover:from-[#00f0ff] hover:to-[#ff007f] hover:text-white font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-pink"
+                  className="w-full py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-cyan"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span>CHAT ON WHATSAPP (+91 9599084873)</span>
@@ -223,7 +229,7 @@ export default function WholesaleBanner() {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-[#ff007f] via-[#b026ff] to-[#00f0ff] text-white font-mono text-xs font-extrabold uppercase tracking-wider transition-all shadow-neon-pink"
+                className="w-full py-3 rounded-xl bg-[#ff007f] hover:bg-[#b026ff] text-black hover:text-white font-mono text-xs font-black uppercase tracking-wider transition-all shadow-neon-pink hover:shadow-neon-purple"
               >
                 SUBMIT TO PERSONALIZATION DESK
               </button>

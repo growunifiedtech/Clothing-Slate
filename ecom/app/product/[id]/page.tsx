@@ -328,10 +328,10 @@ export default function ProductDetailPage() {
                 <button
                   onClick={handleAddToCart}
                   disabled={product.stockCount === 0}
-                  className={`flex-1 py-4 rounded-xl font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
+                  className={`flex-1 py-4 rounded-xl font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all ${
                     product.stockCount === 0
                       ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                      : 'bg-gradient-to-r from-[#00ff87] to-[#00f0ff] hover:from-[#00f0ff] hover:to-[#ff007f] text-[#06080e] hover:text-white shadow-neon hover:shadow-neon-pink'
+                      : 'bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black shadow-neon hover:shadow-neon-cyan'
                   }`}
                 >
                   <ShoppingBag className="w-4 h-4" />
@@ -351,7 +351,7 @@ export default function ProductDetailPage() {
                   className={`py-3.5 rounded-xl font-mono text-xs font-black uppercase tracking-wider transition-all ${
                     product.stockCount === 0
                       ? 'bg-slate-900 text-slate-600 border border-slate-800 cursor-not-allowed'
-                      : 'bg-gradient-to-r from-[#ff007f] to-[#b026ff] hover:from-[#b026ff] hover:to-[#ff007f] text-white shadow-neon-pink'
+                      : 'bg-[#ff007f] hover:bg-[#b026ff] text-black hover:text-white shadow-neon-pink hover:shadow-neon-purple'
                   }`}
                 >
                   {product.stockCount === 0 ? 'UNAVAILABLE' : '⚡ BUY NOW (EXPRESS)'}
