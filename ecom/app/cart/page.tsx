@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
+import { useAuth } from '@/lib/auth-context';
+import AuthModal from '@/components/auth/AuthModal';
 import { formatPrice } from '@/lib/utils';
 import {
   ShoppingBag,
@@ -35,6 +37,8 @@ export default function CartPage() {
     grandTotal,
   } = useStore();
 
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [couponInput, setCouponInput] = useState('');
 
   const freeShippingThreshold = 999;
@@ -46,6 +50,14 @@ export default function CartPage() {
     if (couponInput) {
       applyCoupon(couponInput);
       setCouponInput('');
+    }
+  };
+
+  const handleProceedToCheckout = () => {
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      router.push('/checkout');
     }
   };
 
@@ -273,7 +285,7 @@ export default function CartPage() {
 
                 {/* Checkout CTA */}
                 <button
-                  onClick={() => router.push('/checkout')}
+                  onClick={handleProceedToCheckout}
                   className="w-full py-4 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon"
                 >
                   <span>PROCEED TO CHECKOUT</span>
@@ -289,6 +301,16 @@ export default function CartPage() {
           </div>
         )}
       </div>
+
+      {/* Firebase Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          router.push('/checkout');
+        }}
+      />
     </div>
   );
 }

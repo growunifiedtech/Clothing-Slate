@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useStore } from '@/lib/store';
+import { useAuth } from '@/lib/auth-context';
+import AuthModal from '@/components/auth/AuthModal';
 import { Product } from '@/lib/products-data';
 import { formatPrice } from '@/lib/utils';
 import ProductCard from '@/components/store/ProductCard';
@@ -47,6 +49,9 @@ export default function ProductDetailPage() {
 
   const product = products.find((p) => p.id === productId) || products[0];
 
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [selectedColor, setSelectedColor] = useState(product.colors[0]?.name || '');
   const [selectedSize, setSelectedSize] = useState(product.sizes[0] || 'M');
@@ -64,7 +69,11 @@ export default function ProductDetailPage() {
 
   const handleBuyNow = () => {
     addToCart(product, selectedSize, selectedColor, quantity);
-    router.push('/checkout');
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      router.push('/checkout');
+    }
   };
 
   const relatedProducts = products
@@ -511,6 +520,16 @@ export default function ProductDetailPage() {
           </div>
         </div>
       )}
+
+      {/* Firebase Auth Modal triggered on Buy Now */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          router.push('/checkout');
+        }}
+      />
     </div>
   );
 }

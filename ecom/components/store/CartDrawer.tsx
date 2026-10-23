@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
+import { useAuth } from '@/lib/auth-context';
+import AuthModal from '@/components/auth/AuthModal';
 import { formatPrice } from '@/lib/utils';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, Tag, Truck, ShieldCheck } from 'lucide-react';
 
@@ -27,6 +29,8 @@ export default function CartDrawer() {
     grandTotal,
   } = useStore();
 
+  const { user } = useAuth();
+  const [showAuthModal, setShowAuthModal] = useState(false);
   const [couponCode, setCouponCode] = useState('');
 
   if (!isCartOpen) return null;
@@ -44,8 +48,12 @@ export default function CartDrawer() {
   };
 
   const handleCheckout = () => {
-    closeCart();
-    router.push('/checkout');
+    if (!user) {
+      setShowAuthModal(true);
+    } else {
+      closeCart();
+      router.push('/checkout');
+    }
   };
 
   return (
@@ -291,6 +299,17 @@ export default function CartDrawer() {
           )}
         </div>
       </div>
+
+      {/* Firebase Auth Modal */}
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onSuccess={() => {
+          setShowAuthModal(false);
+          closeCart();
+          router.push('/checkout');
+        }}
+      />
     </div>
   );
 }

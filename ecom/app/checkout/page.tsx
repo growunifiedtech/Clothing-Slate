@@ -96,6 +96,10 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) {
+      setShowAuthModal(true);
+      return;
+    }
     if (cart.length === 0) {
       alert('Your cart is empty');
       router.push('/shop');
@@ -172,23 +176,31 @@ export default function CheckoutPage() {
                 
                 {/* Auth Prompt or Authenticated Banner */}
                 {!user ? (
-                  <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-700/80 flex items-center justify-between gap-3 text-xs font-mono">
-                    <div className="flex items-center gap-2 text-slate-300">
-                      <Sparkles className="w-4 h-4 text-[#00ff87]" />
-                      <span>Already have an account? Sign in for 1-click checkout.</span>
+                  <div className="p-4 rounded-xl bg-slate-900 border border-[#00f0ff]/50 shadow-neon-cyan-sm flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+                    <div className="flex items-center gap-2.5 text-slate-200">
+                      <Sparkles className="w-5 h-5 text-[#00f0ff] flex-shrink-0" />
+                      <div>
+                        <div className="font-bold text-white text-sm">SIGN IN REQUIRED TO FINALIZE ORDER</div>
+                        <span className="text-slate-400 text-[11px]">Sign in via Google, Phone OTP, or Email to link your dispatch & live BlueDart tracking.</span>
+                      </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => setShowAuthModal(true)}
-                      className="px-3 py-1 rounded-lg bg-[#00ff87] text-[#06080e] font-extrabold uppercase text-[11px] shadow-neon-sm flex-shrink-0"
+                      className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black font-mono font-black uppercase text-xs shadow-neon transition-all flex-shrink-0"
                     >
-                      SIGN IN
+                      SIGN IN WITH FIREBASE
                     </button>
                   </div>
                 ) : (
-                  <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 flex items-center gap-2 text-xs font-mono text-emerald-400">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Logged in as <strong>{user.displayName || user.email || user.phoneNumber}</strong></span>
+                  <div className="p-3.5 rounded-xl bg-emerald-950/40 border border-emerald-500/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-emerald-400 shadow-neon-sm">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="w-4 h-4 text-[#00ff87]" />
+                      <span>Verified Customer: <strong className="text-white">{user.displayName || user.email || user.phoneNumber}</strong></span>
+                    </div>
+                    <span className="text-[10px] font-bold uppercase bg-emerald-500/20 text-[#00ff87] px-2 py-0.5 rounded border border-emerald-500/30">
+                      FIREBASE AUTHENTICATED
+                    </span>
                   </div>
                 )}
 
@@ -483,10 +495,15 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting || cart.length === 0}
-                  className="w-full py-4 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon disabled:opacity-50"
+                  className="w-full py-4 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <span>PROCESSING ORDER...</span>
+                  ) : !user ? (
+                    <>
+                      <span>SIGN IN WITH FIREBASE TO PLACE ORDER</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
                   ) : (
                     <>
                       <span>CONFIRM & PLACE ORDER</span>
