@@ -2,13 +2,13 @@ import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, Auth } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || 'AIzaSyBSAEqBnu1CRlmsFm47wUWLTlkVk0D9R7w',
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || 'slate-clothing-e62a8.firebaseapp.com',
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'slate-clothing-e62a8',
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'slate-clothing-e62a8.firebasestorage.app',
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '591930534094',
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || '1:591930534094:web:1b12aad02e28d3c3a3089f',
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || 'G-7RDD80L1CC',
+  apiKey: 'AIzaSyBSAEqBnu1CRlmsFm47wUWLTlkVk0D9R7w',
+  authDomain: 'slate-clothing-e62a8.firebaseapp.com',
+  projectId: 'slate-clothing-e62a8',
+  storageBucket: 'slate-clothing-e62a8.firebasestorage.app',
+  messagingSenderId: '591930534094',
+  appId: '1:591930534094:web:1b12aad02e28d3c3a3089f',
+  measurementId: 'G-7RDD80L1CC',
 };
 
 export const isFirebaseConfigured = Boolean(
