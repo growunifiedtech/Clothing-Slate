@@ -92,7 +92,7 @@ export default function CameraHUD({ scrollProgress, activeStageIndex }: CameraHU
       <div className="w-full flex items-center justify-between text-[9px] font-mono text-slate-500 border-t border-white/5 pt-2">
         <div className="flex items-center gap-2">
           <span className="w-1.5 h-1.5 bg-slate-400 rounded-sm" />
-          <span className="tracking-widest">SLATE APPARELS NEW DELHI</span>
+          <span className="tracking-widest">SLATE APPARELS</span>
         </div>
 
         {/* Linear Progress Indicator */}

@@ -78,11 +78,6 @@ export default function ProductModal({
             </div>
           )}
 
-          {/* Authentic Production Notice */}
-          <div className="mt-4 pt-3 border-t border-white/5 flex items-center gap-2 text-[10px] font-mono text-slate-500">
-            <ShieldCheck className="w-3.5 h-3.5 text-slate-400" />
-            <span>FABRICATED AT OKHLA INDUSTRIAL HUB, NEW DELHI</span>
-          </div>
         </div>
 
         {/* Right Column: Specifications & B2B Inquiry Actions */}

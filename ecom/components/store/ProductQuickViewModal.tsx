@@ -194,7 +194,7 @@ export default function ProductQuickViewModal({ product, onClose }: ProductQuick
                 FREE EXPRESS HOME DELIVERY OVER ₹999
               </div>
               <p className="text-[11px] text-slate-400 font-sans">
-                7-day easy size exchange guarantee • BlueDart air courier express dispatch from Okhla, New Delhi.
+                7-day easy size exchange guarantee • BlueDart air courier express dispatch from New Delhi.
               </p>
             </div>
           </div>

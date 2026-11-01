@@ -487,7 +487,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         },
         {
           status: 'IN_PRODUCTION',
-          title: 'Quality Check & Packaged at Okhla Hub',
+          title: 'Quality Check & Packaged at Facility',
           time: 'Within 24 Hours',
           completed: false,
         },

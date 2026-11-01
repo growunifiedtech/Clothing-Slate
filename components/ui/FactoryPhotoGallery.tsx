@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Maximize2, X, Info } from 'lucide-react';
+import { Maximize2, X } from 'lucide-react';
 
 interface PhotoItem {
   id: string;
@@ -14,25 +14,11 @@ interface PhotoItem {
 
 const FACTORY_PHOTOS: PhotoItem[] = [
   {
-    id: 'photo-1',
-    title: 'INDUSTRIAL STITCHING LINES',
-    location: 'FLOOR 01 // OKHLA FACILITY',
-    image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=75&fm=webp',
-    caption: 'High-speed computerized lockstitch and overlock sewing lines in active bulk production.',
-  },
-  {
     id: 'photo-2',
     title: 'FABRIC ROLL INVENTORY & QC',
     location: 'WAREHOUSE // RAW TEXTILE DOCK',
     image: 'https://images.unsplash.com/photo-1558769132-cb1aea458c5e?auto=format&fit=crop&w=800&q=75&fm=webp',
     caption: 'Curated organic cotton terry, fleece, and pique knits staged for inspection.',
-  },
-  {
-    id: 'photo-3',
-    title: 'CAD PATTERN CUTTING TABLE',
-    location: 'ZONE 02 // CUTTING DEPARTMENT',
-    image: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=75&fm=webp',
-    caption: 'Multi-ply automated precision fabric cutting aligned with approved CAD tech packs.',
   },
   {
     id: 'photo-4',
@@ -73,21 +59,13 @@ export default function FactoryPhotoGallery() {
               INSIDE SLATE
             </h2>
             <p className="text-slate-400 text-sm sm:text-base mt-2 max-w-xl font-light">
-              Actual production environments, high-capacity machinery, and active assembly workflows at our New Delhi facility.
+              Actual production environments, quality inspection benches, and active assembly workflows at our New Delhi facility.
             </p>
-          </div>
-
-          {/* Compliance & Authenticity Notice */}
-          <div className="flex items-start gap-2 p-3.5 border border-white/15 bg-[#090b10] max-w-md text-[11px] font-mono text-slate-400">
-            <Info className="w-4 h-4 text-white flex-shrink-0 mt-0.5" />
-            <span>
-              Real factory photographs of Slate Apparels manufacturing floor at Zakir Nagar, Okhla. Conceptual 3D interactive models illustrate technical production pipelines.
-            </span>
           </div>
         </div>
 
         {/* Photography Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FACTORY_PHOTOS.map((photo) => (
             <div
               key={photo.id}
@@ -99,7 +77,7 @@ export default function FactoryPhotoGallery() {
                 alt={photo.title}
                 fill
                 unoptimized
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 className="object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500"
               />
 
@@ -138,34 +116,34 @@ export default function FactoryPhotoGallery() {
           onClick={() => setActivePhoto(null)}
         >
           <div
-            className="relative max-w-5xl w-full bg-[#080a0e] border border-white/20 p-4 sm:p-6"
+            className="relative max-w-4xl w-full bg-[#080a0f] border border-white/20 p-4 sm:p-6 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setActivePhoto(null)}
-              className="absolute top-4 right-4 z-10 p-2 border border-white/20 bg-black/70 text-white hover:bg-white hover:text-black transition-all"
+              className="absolute top-4 right-4 text-slate-400 hover:text-white p-2 border border-white/10 bg-black/40"
             >
               <X className="w-5 h-5" />
             </button>
 
-            <div className="relative aspect-[16/10] w-full mb-4 bg-black overflow-hidden">
+            <div className="relative aspect-[16/10] w-full mb-4 border border-white/10 bg-black">
               <Image
                 src={activePhoto.image}
                 alt={activePhoto.title}
                 fill
                 unoptimized
-                className="object-cover grayscale contrast-125"
+                className="object-cover"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-white/10 pt-4 gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-white/10 pt-4">
               <div>
-                <span className="text-[10px] font-mono tracking-widest text-slate-500 uppercase">
+                <span className="text-[9px] font-mono text-slate-400 tracking-widest block uppercase mb-0.5">
                   {activePhoto.location}
                 </span>
-                <h3 className="text-lg font-bold font-mono text-white tracking-widest uppercase">
+                <h4 className="text-base font-bold font-mono text-white tracking-widest uppercase">
                   {activePhoto.title}
-                </h3>
+                </h4>
               </div>
               <p className="text-xs text-slate-400 font-light max-w-md">
                 {activePhoto.caption}

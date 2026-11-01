@@ -167,7 +167,7 @@ export default function ProductDetailPage() {
             <div className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center gap-3 text-xs font-mono text-slate-300">
               <ShieldCheck className="w-5 h-5 text-[#00f0ff] flex-shrink-0" />
               <span>
-                Fabricated at Okhla Industrial Hub, New Delhi. Pre-shrunk & enzymatic washed for zero post-production shrinkage.
+                Pre-shrunk & enzymatic washed for zero post-production shrinkage.
               </span>
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function ProductDetailPage() {
                   <div className="p-3 rounded-xl bg-red-950/40 border border-red-500/50 text-xs font-mono text-red-300 flex items-center gap-2">
                     <span className="w-2.5 h-2.5 rounded-full bg-red-500" />
                     <span className="font-bold">OUT OF STOCK:</span>
-                    <span>Currently sold out. Fresh production run scheduled at Okhla facility.</span>
+                    <span>Currently sold out. Fresh production run scheduled at production facility.</span>
                   </div>
                 ) : product.stockCount < 20 ? (
                   <div className="p-3 rounded-xl bg-amber-950/40 border border-amber-500/50 text-xs font-mono text-amber-300 flex items-center gap-2">

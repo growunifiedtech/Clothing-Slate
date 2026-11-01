@@ -50,9 +50,7 @@ export default function LoadingScreen({ onEnter }: LoadingScreenProps) {
     >
       {/* Top Telemetry */}
       <div className="w-full flex justify-between items-center text-[10px] sm:text-xs text-slate-500 font-mono tracking-widest border-b border-white/5 pb-4">
-        <span>SLATE APPARELS // DELHI, INDIA</span>
-        <span>SYS.V 2.8 // PRODUCTION 3D</span>
-        <span className="hidden sm:inline">LAT 28.5603° N, LON 77.2882° E</span>
+        <span>SLATE APPARELS</span>
       </div>
 
       {/* Center Brand Monolith */}
@@ -103,9 +101,8 @@ export default function LoadingScreen({ onEnter }: LoadingScreenProps) {
       </div>
 
       {/* Bottom Credentials Footer */}
-      <div className="w-full flex flex-col sm:flex-row justify-between items-center gap-3 text-[10px] font-mono text-slate-600 border-t border-white/5 pt-4">
+      <div className="w-full flex justify-center items-center text-[10px] font-mono text-slate-600 border-t border-white/5 pt-4">
         <span>GST REGISTERED • IMPORT EXPORT CODE (IEC) • UDYAM</span>
-        <span>OKHLA, NEW DELHI - 110025</span>
       </div>
     </div>
   );

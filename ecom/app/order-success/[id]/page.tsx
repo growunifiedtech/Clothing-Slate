@@ -54,7 +54,7 @@ export default function OrderSuccessPage() {
           </h1>
 
           <p className="text-sm text-slate-300 font-sans max-w-md mx-auto">
-            Thank you, <strong className="text-white">{order.customer.name}</strong>. Your apparel shipment is scheduled for BlueDart air courier dispatch from Okhla, New Delhi.
+            Thank you, <strong className="text-white">{order.customer.name}</strong>. Your apparel shipment is scheduled for BlueDart air courier dispatch from New Delhi.
           </p>
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800 max-w-sm mx-auto text-xs font-mono">

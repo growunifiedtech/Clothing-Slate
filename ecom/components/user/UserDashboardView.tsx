@@ -898,7 +898,7 @@ export default function UserDashboardView() {
 
                         <div className="flex justify-between items-center pt-2">
                           <span className="text-[11px] font-mono text-slate-400">
-                            Production Desk Status: Verified by New Delhi Okhla Unit
+                            Production Desk Status: Verified by New Delhi Production Unit
                           </span>
                           <a
                             href={`https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20following%20up%20on%20my%20inquiry%20${inq.id}`}
