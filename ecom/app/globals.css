@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-[#06080e] text-slate-100 antialiased selection:bg-[#00ff87] selection:text-[#06080e];
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
