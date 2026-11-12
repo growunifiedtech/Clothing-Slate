@@ -38,7 +38,7 @@ export default function GenZLandingPage() {
   const { user } = useAuth();
 
   // Active section tracking for navbar highlight
-  const [activeNav, setActiveNav] = useState<'hero' | 'collections' | 'winter' | 'atelier' | 'catalog'>('hero');
+  const [activeNav, setActiveNav] = useState<'hero' | 'collections' | 'winter' | 'catalog'>('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -57,11 +57,10 @@ export default function GenZLandingPage() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 200;
-      const sections: ('hero' | 'collections' | 'winter' | 'atelier' | 'catalog')[] = [
+      const sections: ('hero' | 'collections' | 'winter' | 'catalog')[] = [
         'hero',
         'collections',
         'winter',
-        'atelier',
         'catalog',
       ];
 
@@ -82,7 +81,7 @@ export default function GenZLandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (id: 'hero' | 'collections' | 'winter' | 'atelier' | 'catalog') => {
+  const scrollToSection = (id: 'hero' | 'collections' | 'winter' | 'catalog') => {
     setMobileMenuOpen(false);
     const element = document.getElementById(id);
     if (element) {
@@ -179,19 +178,7 @@ export default function GenZLandingPage() {
               WINTER DROPS
             </button>
 
-            {/* 4. ATELIER SPECS (Solid Neon Lime) */}
-            <button
-              onClick={() => scrollToSection('atelier')}
-              className={`px-3 py-1.5 rounded-xl border transition-all ${
-                activeNav === 'atelier'
-                  ? 'bg-[#00ff87] text-[#05070c] border-[#00ff87] shadow-neon'
-                  : 'bg-slate-900/70 text-slate-300 border-slate-800 hover:border-[#00ff87] hover:text-[#00ff87]'
-              }`}
-            >
-              ATELIER SPECS
-            </button>
-
-            {/* 5. CATALOG (Solid Neon Yellow) */}
+            {/* 4. CATALOG (Solid Neon Yellow) */}
             <button
               onClick={() => scrollToSection('catalog')}
               className={`px-3 py-1.5 rounded-xl border transition-all ${
@@ -278,17 +265,10 @@ export default function GenZLandingPage() {
                 <span className="text-[10px]">AW26 MATRIX</span>
               </button>
               <button
-                onClick={() => scrollToSection('atelier')}
-                className="w-full text-left px-4 py-2.5 rounded-xl bg-slate-900 border border-[#00ff87]/50 text-[#00ff87] flex items-center justify-between"
-              >
-                <span>04 // ATELIER SPECS</span>
-                <span className="text-[10px]">OKHLA FACTORY</span>
-              </button>
-              <button
                 onClick={() => scrollToSection('catalog')}
                 className="w-full text-left px-4 py-2.5 rounded-xl bg-slate-900 border border-[#faff00]/50 text-[#faff00] flex items-center justify-between"
               >
-                <span>05 // CATALOG</span>
+                <span>04 // CATALOG</span>
                 <span className="text-[10px]">18 STYLES</span>
               </button>
             </div>
@@ -630,7 +610,7 @@ export default function GenZLandingPage() {
 
             <div className="flex items-center gap-2 font-mono text-xs text-slate-400">
               <span className="w-2 h-2 rounded-full bg-[#ff007f] shadow-neon-pink-sm animate-ping" />
-              <span>LIVE ATELIER STOCK: READY FOR DISPATCH</span>
+              <span>LIVE WAREHOUSE STOCK: READY FOR DISPATCH</span>
             </div>
           </div>
 
@@ -731,141 +711,7 @@ export default function GenZLandingPage() {
       </section>
 
       {/* ======================================================== */}
-      {/* SECTION 4: ATELIER SPECS - "FACTORY TELEMETRY" (LIME)    */}
-      {/* ======================================================== */}
-      <section id="atelier" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 bg-[#080d1a] border-t border-slate-800">
-        <div className="max-w-7xl mx-auto">
-          
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 mb-10 border-b border-slate-800">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#00ff87]/10 border border-[#00ff87] text-[#00ff87] font-mono font-black text-xs uppercase tracking-widest mb-3 shadow-neon-sm">
-                <span>// 03 MANUFACTURING TRANSPARENCY</span>
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-black uppercase text-white font-sans tracking-tight">
-                NEW DELHI ATELIER SPECIFICATIONS
-              </h2>
-              <p className="text-slate-400 font-mono text-xs sm:text-sm mt-2">
-                PLOT 27, OKHLA PHASE 1, NEW DELHI - 110025 // 100% COMBED COTTON DIRECT RETAIL
-              </p>
-            </div>
-
-            <div className="px-3.5 py-1.5 rounded-xl bg-slate-900 border border-[#00ff87]/40 text-[#00ff87] font-mono text-xs font-bold">
-              GST & IEC CERTIFIED ATELIER
-            </div>
-          </div>
-
-          {/* 6 Brutalist Technical Spec Modules */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 font-mono">
-            
-            {/* Spec 1: Cotton Fiber (Lime) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#00ff87] hover:shadow-neon transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#00ff87] uppercase tracking-wider">01 // RAW FIBER</span>
-                <span className="w-2 h-2 rounded-full bg-[#00ff87] shadow-neon-sm" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                100% COMBED RINGSPUN
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Long-staple Indian cotton carded and combed to strip away impurities and short fibers. Pre-treated with bio-enzymatic wash for zero residual shrinkage and silk-like hand feel.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                0% SYNTHETIC FILLER // ORGANIC BIO-WASH
-              </div>
-            </div>
-
-            {/* Spec 2: GSM Spectrum (Cyan) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#00f0ff] hover:shadow-neon-cyan transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#00f0ff] uppercase tracking-wider">02 // FABRIC DENSITY</span>
-                <span className="w-2 h-2 rounded-full bg-[#00f0ff] shadow-neon-cyan-sm" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                220 GSM TO 450 GSM
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Calibrated weight spectrum: 240 GSM for boxy summer drape, 380 GSM double-knit brushed fleece for all-day thermal retention, and 450 GSM ripstop for severe sub-zero weather.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                LAB-CERTIFIED WEIGHT VERIFICATION
-              </div>
-            </div>
-
-            {/* Spec 3: Stitch Integrity (Pink) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#ff007f] hover:shadow-neon-pink transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#ff007f] uppercase tracking-wider">03 // SEAM ENGINEERING</span>
-                <span className="w-2 h-2 rounded-full bg-[#ff007f] shadow-neon-pink-sm" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                5-THREAD OVERLOCK
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Heavy industrial twin-needle topstitch across collar, cuffs, and hem. Bartacked stress points along pockets and fly zippers to withstand high-torque everyday wear.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                1.25" HEAVY LYCRA-REINFORCED RIB
-              </div>
-            </div>
-
-            {/* Spec 4: Logistics Telemetry (Yellow) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#faff00] hover:shadow-neon-yellow transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#faff00] uppercase tracking-wider">04 // DISPATCH LOGISTICS</span>
-                <span className="w-2 h-2 rounded-full bg-[#faff00] shadow-neon-yellow" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                BLUEDART AIR EXPRESS
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Direct dispatch from Okhla Phase 1 facility within 24 hours. Free express shipping across India on all orders over ₹999. Live SMS tracking and tamper-proof security seals.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                DELHI NCR 24H // METROS 48H
-              </div>
-            </div>
-
-            {/* Spec 5: Tax & Legal (Orange) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#ff6b00] hover:shadow-neon-orange transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#ff6b00] uppercase tracking-wider">05 // STATUTORY COMPLIANCE</span>
-                <span className="w-2 h-2 rounded-full bg-[#ff6b00] shadow-neon-orange" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                GSTIN & IEC REGISTERED
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Full 5% apparel GST input tax invoice issued with every order. Verified manufacturing license under Directorate of Industries, Govt. of NCT of Delhi.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                OFFICIAL B2C & B2B TAX INVOICING
-              </div>
-            </div>
-
-            {/* Spec 6: Wash & Longevity (Purple) */}
-            <div className="p-6 rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#b026ff] hover:shadow-neon-purple transition-all">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] font-bold text-[#b026ff] uppercase tracking-wider">06 // FABRIC LONGEVITY</span>
-                <span className="w-2 h-2 rounded-full bg-[#b026ff] shadow-neon-purple-sm" />
-              </div>
-              <h4 className="text-lg font-black text-white uppercase font-sans">
-                100+ WASH STABILITY
-              </h4>
-              <p className="text-xs text-slate-300 font-sans mt-2">
-                Dyed with colorfast reactive pigments resistant to fading and bleeding. Machine wash cold (30°C), tumble dry low. Engineered to maintain its boxy silhouette wash after wash.
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-800 text-[10px] text-slate-400">
-                ZERO SIDE-SEAM TORQUE / TWISTING
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ======================================================== */}
-      {/* SECTION 5: CATALOG - "FULL 18 STYLES INVENTORY" (YELLOW)  */}
+      {/* SECTION 4: CATALOG - "FULL 18 STYLES INVENTORY" (YELLOW)  */}
       {/* ======================================================== */}
       <section id="catalog" className="relative w-full py-20 px-4 sm:px-6 lg:px-8 bg-[#05070c] border-t border-slate-800">
         <div className="max-w-7xl mx-auto">
@@ -874,7 +720,7 @@ export default function GenZLandingPage() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 mb-10 border-b border-slate-800">
             <div>
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-[#faff00]/10 border border-[#faff00] text-[#faff00] font-mono font-black text-xs uppercase tracking-widest mb-3 shadow-neon-yellow">
-                <span>// 04 COMPLETE RETAIL CATALOG</span>
+                <span>// 03 COMPLETE RETAIL CATALOG</span>
               </div>
               <h2 className="text-3xl sm:text-5xl font-black uppercase text-white font-sans tracking-tight">
                 FULL APPAREL INVENTORY (18 STYLES)
@@ -1019,7 +865,7 @@ export default function GenZLandingPage() {
                 </span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
-                Direct-to-consumer luxury retail streetwear atelier. 100% combed cotton, heavyweight fleece, selvedge twill, and technical outerwear.
+                Direct-to-consumer luxury retail streetwear brand. 100% combed cotton, heavyweight fleece, selvedge twill, and technical outerwear.
               </p>
               <div className="mt-4 text-[11px] font-mono text-[#00ff87]">
                 NEW DELHI // EST. 2026
@@ -1041,19 +887,16 @@ export default function GenZLandingPage() {
                 <button onClick={() => scrollToSection('winter')} className="text-left text-slate-400 hover:text-[#ff007f] transition-colors">
                   → 03 WINTER DROPS MATRIX
                 </button>
-                <button onClick={() => scrollToSection('atelier')} className="text-left text-slate-400 hover:text-[#00ff87] transition-colors">
-                  → 04 ATELIER SPECS
-                </button>
                 <button onClick={() => scrollToSection('catalog')} className="text-left text-slate-400 hover:text-[#faff00] transition-colors">
-                  → 05 FULL CATALOG (18)
+                  → 04 FULL CATALOG (18)
                 </button>
               </div>
             </div>
 
-            {/* Col 3: Customer Care & Atelier Address */}
+            {/* Col 3: Customer Care & Facility Address */}
             <div>
               <h5 className="font-mono text-xs font-bold text-white uppercase tracking-wider mb-3">
-                // ATELIER HOTLINE
+                // CUSTOMER CARE
               </h5>
               <div className="flex flex-col gap-2.5 text-xs text-slate-400">
                 <div className="flex items-center gap-2">
