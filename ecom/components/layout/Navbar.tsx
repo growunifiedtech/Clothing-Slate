@@ -422,7 +422,7 @@ export default function Navbar() {
               ) : (
                 <div className="flex items-center gap-2">
                   <User className="w-4 h-4 text-[#00ff87]" />
-                  <span className="text-xs font-mono font-bold text-white">Client Portal Access</span>
+                  <span className="text-xs font-mono font-bold text-white">Account Login</span>
                 </div>
               )}
 

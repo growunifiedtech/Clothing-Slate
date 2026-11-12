@@ -181,7 +181,7 @@ export default function CheckoutPage() {
                       <Sparkles className="w-5 h-5 text-[#00f0ff] flex-shrink-0" />
                       <div>
                         <div className="font-bold text-white text-sm">SIGN IN REQUIRED TO FINALIZE ORDER</div>
-                        <span className="text-slate-400 text-[11px]">Sign in via Google, Phone OTP, or Email to link your dispatch & live BlueDart tracking.</span>
+                        <span className="text-slate-400 text-[11px]">Sign in via Google or Email to link your dispatch & live BlueDart tracking.</span>
                       </div>
                     </div>
                     <button
@@ -189,7 +189,7 @@ export default function CheckoutPage() {
                       onClick={() => setShowAuthModal(true)}
                       className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black font-mono font-black uppercase text-xs shadow-neon transition-all flex-shrink-0"
                     >
-                      SIGN IN WITH FIREBASE
+                      LOGIN / REGISTER
                     </button>
                   </div>
                 ) : (
