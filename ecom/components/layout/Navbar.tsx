@@ -87,7 +87,7 @@ export default function Navbar() {
               <div className="flex flex-col">
                 <div className="flex items-center gap-1.5">
                   <span className="font-extrabold text-sm sm:text-lg tracking-wider text-white uppercase font-sans">
-                    SLATE APPARELS
+                    SLATE CLOTHING
                   </span>
                   <span className="text-[8px] sm:text-[9px] px-1 sm:px-1.5 py-0.5 rounded font-mono font-black bg-[#ff007f] text-[#06080e] shadow-neon-pink-sm hidden xs:inline-block">
                     RETAIL

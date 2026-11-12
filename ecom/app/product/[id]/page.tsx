@@ -367,7 +367,7 @@ export default function ProductDetailPage() {
                 </button>
 
                 <a
-                  href={`https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20${encodeURIComponent(
+                  href={`https://wa.me/919599084873?text=Hello%20Slate%20Clothing%2C%20I%20have%20an%20inquiry%20regarding%20${encodeURIComponent(
                     product.name
                   )}.`}
                   target="_blank"
@@ -463,7 +463,7 @@ export default function ProductDetailPage() {
             </div>
 
             <p className="text-xs text-slate-400 mb-4 font-sans">
-              Measurements taken flat. All Slate Apparels garments adhere to international sizing tolerances.
+              Measurements taken flat. All Slate Clothing garments adhere to international sizing tolerances.
             </p>
 
             <div className="overflow-x-auto">

@@ -124,7 +124,7 @@ function ShopContent() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <span className="text-[10px] font-mono tracking-widest text-[#00ff87] uppercase block mb-1">
-                SLATE APPARELS // RETAIL PRODUCTION DROPS
+                SLATE CLOTHING // RETAIL PRODUCTION DROPS
               </span>
               <h1 className="text-2xl sm:text-5xl font-extrabold text-white uppercase font-sans tracking-tight">
                 {selectedCategory === 'ALL' ? 'COMPLETE RETAIL CATALOG' : `${selectedCategory} COLLECTION`}

@@ -67,7 +67,7 @@ export default function ReviewsSection() {
             VERIFIED RETAIL REVIEWS
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mt-2 font-sans">
-            Hear from streetwear enthusiasts across India who wear Slate Apparels every day.
+            Hear from streetwear enthusiasts across India who wear Slate Clothing every day.
           </p>
         </div>
 

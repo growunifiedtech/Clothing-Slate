@@ -131,7 +131,7 @@ export default function GenZLandingPage() {
             </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-sm sm:text-base tracking-wider text-white uppercase font-sans leading-none flex items-center gap-1.5">
-                SLATE APPARELS
+                SLATE CLOTHING
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] shadow-neon-sm animate-pulse" />
               </span>
               <span className="text-[8px] font-mono text-slate-400 uppercase mt-0.5 hidden xs:block">
@@ -298,7 +298,7 @@ export default function GenZLandingPage() {
         <div className="absolute inset-0 w-full h-full">
           <Image
             src="/images/hero-models-crew-wide-fullbody.jpg"
-            alt="Slate Apparels - 4 Streetwear Models (2 Women, 2 Men)"
+            alt="Slate Clothing - 4 Streetwear Models (2 Women, 2 Men)"
             fill
             priority
             unoptimized
@@ -863,7 +863,7 @@ export default function GenZLandingPage() {
                   S
                 </div>
                 <span className="font-black text-sm tracking-wider text-white uppercase font-sans">
-                  SLATE APPARELS
+                  SLATE CLOTHING
                 </span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed">
@@ -907,7 +907,7 @@ export default function GenZLandingPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="w-3.5 h-3.5 text-[#00f0ff]" />
-                  <span>care@slateapparels.com</span>
+                  <span>care@slateclothing.com</span>
                 </div>
                 <div className="flex items-start gap-2">
                   <MapPin className="w-3.5 h-3.5 text-[#ff007f] flex-shrink-0 mt-0.5" />
@@ -938,7 +938,7 @@ export default function GenZLandingPage() {
           {/* Bottom Bar: Copyright & Back to Top */}
           <div className="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
             <div>
-              © 2026 SLATE APPARELS INC. ALL RIGHTS RESERVED. GST REGISTERED.
+              © 2026 SLATE CLOTHING INC. ALL RIGHTS RESERVED. GST REGISTERED.
             </div>
             <button
               onClick={() => scrollToSection('hero')}

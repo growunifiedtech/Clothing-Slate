@@ -309,7 +309,7 @@ export default function UserDashboardView() {
                 Connect with our New Delhi team for order modifications, address updates, or custom personalizations.
               </p>
               <a
-                href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20my%20orders."
+                href="https://wa.me/919599084873?text=Hello%20Slate%20Clothing%2C%20I%20have%20an%20inquiry%20regarding%20my%20orders."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-2.5 rounded-lg bg-[#00ff87] hover:bg-[#00f0ff] text-[#06080e] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-cyan"
@@ -837,7 +837,7 @@ export default function UserDashboardView() {
                       Need custom monogram embroidery, specific fabric formulations, or private label drops? Reach out directly via our personalization desk.
                     </p>
                     <a
-                      href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20a%20custom%20personalization%20request."
+                      href="https://wa.me/919599084873?text=Hello%20Slate%20Clothing%2C%20I%20have%20a%20custom%20personalization%20request."
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 mt-2 px-6 py-2.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold uppercase transition-all shadow-neon"
@@ -901,7 +901,7 @@ export default function UserDashboardView() {
                             Production Desk Status: Verified by New Delhi Production Unit
                           </span>
                           <a
-                            href={`https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20following%20up%20on%20my%20inquiry%20${inq.id}`}
+                            href={`https://wa.me/919599084873?text=Hello%20Slate%20Clothing%2C%20following%20up%20on%20my%20inquiry%20${inq.id}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-white hover:bg-[#00ff87] hover:text-[#06080e] text-xs font-mono font-bold transition-all flex items-center gap-1.5"
@@ -1019,7 +1019,7 @@ export default function UserDashboardView() {
                   ORIGINAL RETAIL TAX INVOICE
                 </span>
                 <h3 className="text-xl font-bold font-mono text-white uppercase">
-                  SLATE APPARELS NEW DELHI
+                  SLATE CLOTHING NEW DELHI
                 </h3>
                 <p className="text-xs font-mono text-slate-400 mt-0.5">
                   GSTIN: 07AAACS1429K1Z5 • IEC: 0514088921 • UDYAM-DL-08-0024891

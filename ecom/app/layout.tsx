@@ -9,7 +9,7 @@ import CartDrawer from '@/components/store/CartDrawer';
 import ToastContainer from '@/components/ui/ToastContainer';
 
 export const metadata: Metadata = {
-  title: 'SLATE APPARELS | Luxury Retail Streetwear Store & Online Drops',
+  title: 'SLATE CLOTHING | Luxury Retail Streetwear Store & Online Drops',
   description: 'Pure cotton heavyweight fleece hoodies, drop shoulder t-shirts, selvedge denim jackets, and tailored joggers. Direct retail purchasing with free express home delivery across India.',
   icons: {
     icon: '/favicon.ico',

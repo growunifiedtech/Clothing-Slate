@@ -105,7 +105,7 @@ export default function WholesaleBanner() {
 
               <div className="space-y-3 pt-2">
                 <a
-                  href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20retail%20products%20and%20sizing."
+                  href="https://wa.me/919599084873?text=Hello%20Slate%20Clothing%2C%20I%20have%20an%20inquiry%20regarding%20retail%20products%20and%20sizing."
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3.5 rounded-xl bg-[#00ff87] text-[#06080e] hover:bg-[#00f0ff] hover:text-black font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon hover:shadow-neon-cyan"
@@ -142,7 +142,7 @@ export default function WholesaleBanner() {
                 <h3 className="text-lg font-bold text-white font-mono uppercase">
                   CUSTOM PERSONALIZATION DESK
                 </h3>
-                <span className="text-xs text-[#00f0ff] font-mono">SLATE APPARELS NEW DELHI</span>
+                <span className="text-xs text-[#00f0ff] font-mono">SLATE CLOTHING NEW DELHI</span>
               </div>
               <button
                 onClick={() => setShowInquiryModal(false)}

@@ -137,7 +137,7 @@ export default function AuthModal({
                 S
               </div>
               <span className="text-xs font-mono font-extrabold uppercase tracking-wider text-white">
-                SLATE APPARELS
+                SLATE CLOTHING
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] shadow-neon-sm animate-pulse" />
             </div>

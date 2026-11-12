@@ -93,7 +93,7 @@ export default function RegisterPage() {
               S
             </div>
             <span className="font-black text-sm tracking-wider text-white uppercase font-sans">
-              SLATE APPARELS
+              SLATE CLOTHING
             </span>
           </Link>
           <h1 className="text-3xl font-black text-white uppercase tracking-tight font-sans">

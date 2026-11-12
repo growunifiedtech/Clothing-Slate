@@ -92,7 +92,7 @@ export default function Footer() {
                 <span className="w-1 h-1 rounded-full bg-[#ff007f] ml-0.5 animate-pulse" />
               </div>
               <span className="font-extrabold text-lg tracking-wider text-white uppercase font-sans">
-                SLATE APPARELS
+                SLATE CLOTHING
               </span>
             </div>
             <p className="text-xs text-slate-400 leading-relaxed font-sans">
@@ -228,10 +228,10 @@ export default function Footer() {
               <div>
                 <span className="text-slate-500 block text-[10px]">OFFICIAL EMAIL:</span>
                 <a
-                  href="mailto:slateapparels@gmail.com"
+                  href="mailto:slateclothing@gmail.com"
                   className="text-white hover:text-[#ff007f] font-semibold transition-colors"
                 >
-                  slateapparels@gmail.com
+                  slateclothing@gmail.com
                 </a>
               </div>
             </div>
@@ -242,7 +242,7 @@ export default function Footer() {
       {/* Copyright Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-slate-500">
         <div>
-          © {new Date().getFullYear()} SLATE APPARELS. ALL RIGHTS RESERVED. RETAIL & DIRECT EXPORT.
+          © {new Date().getFullYear()} SLATE CLOTHING. ALL RIGHTS RESERVED. RETAIL & DIRECT EXPORT.
         </div>
         <div className="flex items-center gap-4">
           <Link href="/shop" className="hover:text-[#00f0ff] transition-colors">

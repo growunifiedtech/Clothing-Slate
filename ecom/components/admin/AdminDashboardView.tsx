@@ -262,7 +262,7 @@ export default function AdminDashboardView() {
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-xl sm:text-2xl font-bold font-mono tracking-wider uppercase text-white">
-                  SLATE APPARELS OPERATIONS CONSOLE
+                  SLATE CLOTHING OPERATIONS CONSOLE
                 </h1>
                 <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-ping" />
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-[#00f0ff]">
@@ -1047,7 +1047,7 @@ export default function AdminDashboardView() {
                         <a
                           href={`https://wa.me/${inq.phone.replace(/[^0-9]/g, '')}?text=Hello%20${encodeURIComponent(
                             inq.contactName
-                          )}%2C%20Slate%20Apparels%20New%20Delhi%20is%20contacting%20you%20regarding%20inquiry%20${inq.id}`}
+                          )}%2C%20Slate%20Clothing%20New%20Delhi%20is%20contacting%20you%20regarding%20inquiry%20${inq.id}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="px-3 py-1.5 rounded-lg bg-[#00ff87] text-[#06080e] hover:bg-[#05f26c] font-mono text-xs font-extrabold transition-all flex items-center gap-1.5 shadow-neon-sm"
@@ -1254,7 +1254,7 @@ export default function AdminDashboardView() {
                   ORIGINAL RETAIL TAX INVOICE
                 </span>
                 <h3 className="text-xl font-bold font-mono text-white uppercase">
-                  SLATE APPARELS NEW DELHI
+                  SLATE CLOTHING NEW DELHI
                 </h3>
                 <p className="text-xs font-mono text-slate-400 mt-0.5">
                   GSTIN: 07AAACS1429K1Z5 • IEC: 0514088921 • UDYAM-DL-08-0024891

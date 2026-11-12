@@ -421,7 +421,7 @@ export default function CheckoutPage() {
                     </div>
                     <div className="text-xs font-mono space-y-1">
                       <span className="text-[#00ff87] font-bold block">VERIFIED SLATE BUSINESS VPA:</span>
-                      <strong className="text-white block font-mono text-sm">slateapparels@icici</strong>
+                      <strong className="text-white block font-mono text-sm">slateclothing@icici</strong>
                       <span className="text-slate-400 text-[11px] block">
                         Scan with GPay / PhonePe / Paytm or click Place Order below for instant confirmation simulation.
                       </span>
