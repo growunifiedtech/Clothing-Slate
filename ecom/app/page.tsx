@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { useAuth } from '@/lib/auth-context';
-import { Product } from '@/lib/products-data';
+import { CATEGORIES_LIST, Product } from '@/lib/products-data';
 import { formatPrice } from '@/lib/utils';
 import ProductQuickViewModal from '@/components/store/ProductQuickViewModal';
 import AuthModal from '@/components/auth/AuthModal';
@@ -24,299 +24,144 @@ import {
   Truck,
   Ruler,
   Layers,
-  ChevronRight,
+  X,
+  SlidersHorizontal,
   Flame,
   MessageSquare,
-  RefreshCw,
-  Box,
+  ChevronDown,
+  ExternalLink,
+  ChevronRight,
+  Maximize2,
 } from 'lucide-react';
 
-interface FlagshipDrop {
-  id: string;
-  dropNumber: string;
-  title: string;
-  subtitle: string;
+interface ModelHotspot {
+  id: string; // product id in store
+  modelLabel: string;
+  name: string;
   category: string;
   price: number;
   compareAtPrice: number;
-  gsm: number;
-  gsmLabel: string;
-  fiber: string;
-  fit: string;
-  badge: string;
-  badgeColor: string; // solid neon hex
-  solidNeonColor: string; // main solid neon
+  specs: string;
+  position: {
+    left: string; // percentage across 0-100%
+    top: string;  // percentage from top 0-100%
+  };
+  solidNeonColor: string; // hex
   solidNeonName: string;
   bgSolid: string;
-  textSolid: string;
   borderSolid: string;
+  textSolid: string;
   shadowSolid: string;
-  secondarySolid: {
-    hex: string;
-    text: string;
-    border: string;
-    bg: string;
-  };
-  images: string[];
+  image: string;
   sizes: string[];
-  colors: { name: string; hex: string }[];
-  batchCode: string;
-  stockLeft: number;
-  temperatureRange: string;
 }
 
-const FLAGSHIP_DROPS: FlagshipDrop[] = [
+const MODEL_HOTSPOTS: ModelHotspot[] = [
   {
     id: 'oversized-hoodies',
-    dropNumber: 'DROP // 01',
-    title: 'OVERSIZED HEAVY HOODIE',
-    subtitle: 'Brushed Heavyweight Fleece with Architectural Double-Layered Hood',
+    modelLabel: 'MODEL 01 // FEMALE',
+    name: 'OVERSIZED HEAVY HOODIE',
     category: 'HOODIES',
     price: 1499,
     compareAtPrice: 2299,
-    gsm: 380,
-    gsmLabel: '380 GSM // EXTRA DENSE FLEECE',
-    fiber: '100% COMBED RINGSPUN COTTON',
-    fit: 'DRAMATIC BOXY // DROPPED SHOULDERS',
-    badge: 'HOT RETAIL DROP',
-    badgeColor: '#ff007f', // Solid Neon Pink
-    solidNeonColor: '#ff007f',
+    specs: '380 GSM // Brushed Heavy Fleece // Dropped Shoulders',
+    position: { left: '16%', top: '38%' },
+    solidNeonColor: '#ff007f', // Solid Neon Pink
     solidNeonName: 'pink',
     bgSolid: 'bg-[#ff007f]',
-    textSolid: 'text-[#ff007f]',
     borderSolid: 'border-[#ff007f]',
+    textSolid: 'text-[#ff007f]',
     shadowSolid: 'shadow-neon-pink',
-    secondarySolid: {
-      hex: '#00ff87', // Solid Neon Lime
-      text: 'text-[#00ff87]',
-      border: 'border-[#00ff87]',
-      bg: 'bg-[#00ff87]',
-    },
-    images: [
-      '/images/products/oversized-hoodies-1.jpg',
-      '/images/products/oversized-hoodies-2.jpg',
-      '/images/products/hoodies-regular-fit-1.jpg',
-    ],
+    image: '/images/products/oversized-hoodies-1.jpg',
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    colors: [
-      { name: 'Onyx Black', hex: '#0f1115' },
-      { name: 'Heather Gray', hex: '#6b7280' },
-      { name: 'Dusty Rose', hex: '#9d6b7b' },
-      { name: 'Sage Green', hex: '#4a5d4e' },
-    ],
-    batchCode: 'DL-HD-380',
-    stockLeft: 14,
-    temperatureRange: '8°C — 18°C WINTER',
   },
   {
     id: 'denim-jackets',
-    dropNumber: 'DROP // 02',
-    title: 'SELVEDGE DENIM TRUCKER',
-    subtitle: '14 Oz Rigid Selvedge Twill with Antiqued Solid Brass Hardware',
+    modelLabel: 'MODEL 02 // MALE',
+    name: 'SELVEDGE DENIM TRUCKER',
     category: 'JACKETS',
     price: 1699,
     compareAtPrice: 2899,
-    gsm: 420,
-    gsmLabel: '14 OZ // 420 GSM RIGID TWILL',
-    fiber: '100% PURE INDIGO RINGSPUN COTTON',
-    fit: 'TAILORED INDUSTRIAL RELAXED',
-    badge: 'WINTER SELVEDGE',
-    badgeColor: '#00f0ff', // Solid Neon Cyan
-    solidNeonColor: '#00f0ff',
+    specs: '14 Oz Rigid Twill // Solid Brass Hardware // Selvedge ID',
+    position: { left: '38%', top: '34%' },
+    solidNeonColor: '#00f0ff', // Solid Neon Cyan
     solidNeonName: 'cyan',
     bgSolid: 'bg-[#00f0ff]',
-    textSolid: 'text-[#00f0ff]',
     borderSolid: 'border-[#00f0ff]',
+    textSolid: 'text-[#00f0ff]',
     shadowSolid: 'shadow-neon-cyan',
-    secondarySolid: {
-      hex: '#faff00', // Solid Neon Yellow
-      text: 'text-[#faff00]',
-      border: 'border-[#faff00]',
-      bg: 'bg-[#faff00]',
-    },
-    images: [
-      '/images/products/denim-jackets-1.jpg',
-      '/images/products/denim-jackets-2.jpg',
-      '/images/products/denim-jackets-3.jpg',
-    ],
+    image: '/images/products/denim-jackets-1.jpg',
     sizes: ['M', 'L', 'XL', '2XL'],
-    colors: [
-      { name: 'Deep Indigo', hex: '#1e293b' },
-      { name: 'Washed Stone', hex: '#475569' },
-      { name: 'Raw Black', hex: '#0a0a0a' },
-    ],
-    batchCode: 'DL-DM-14OZ',
-    stockLeft: 9,
-    temperatureRange: '10°C — 22°C ALL SEASON',
   },
   {
     id: 'puffer-jackets',
-    dropNumber: 'DROP // 03',
-    title: 'THERMAL DOWN PUFFER',
-    subtitle: 'Sub-Zero Micro-Fil Insulation with Matte Water-Repellent Ripstop',
+    modelLabel: 'MODEL 03 // FEMALE',
+    name: 'THERMAL MATTE PUFFER',
     category: 'JACKETS',
     price: 2199,
     compareAtPrice: 3499,
-    gsm: 450,
-    gsmLabel: '450 GSM // EXTREME SUB-ZERO',
-    fiber: 'MATTE HYDROPHOBIC DWR RIPSTOP',
-    fit: 'STRUCTURED CROPPED PUFF',
-    badge: 'SUB-ZERO SHIELD',
-    badgeColor: '#ff6b00', // Solid Neon Orange
-    solidNeonColor: '#ff6b00',
+    specs: '450 GSM Micro-Fil // Hydrophobic Ripstop // Storm Hood',
+    position: { left: '62%', top: '36%' },
+    solidNeonColor: '#ff6b00', // Solid Neon Orange
     solidNeonName: 'orange',
     bgSolid: 'bg-[#ff6b00]',
-    textSolid: 'text-[#ff6b00]',
     borderSolid: 'border-[#ff6b00]',
-    shadowSolid: 'shadow-[0_0_25px_rgba(255,107,0,0.5)]',
-    secondarySolid: {
-      hex: '#00f0ff', // Solid Neon Cyan
-      text: 'text-[#00f0ff]',
-      border: 'border-[#00f0ff]',
-      bg: 'bg-[#00f0ff]',
-    },
-    images: [
-      '/images/products/puffer-jackets-1.jpg',
-      '/images/products/puffer-jackets-2.jpg',
-      '/images/products/puffer-jackets-3.jpg',
-    ],
+    textSolid: 'text-[#ff6b00]',
+    shadowSolid: 'shadow-[0_0_20px_rgba(255,107,0,0.6)]',
+    image: '/images/products/puffer-jackets-1.jpg',
     sizes: ['S', 'M', 'L', 'XL'],
-    colors: [
-      { name: 'Matte Obsidian', hex: '#0f172a' },
-      { name: 'Arctic Ice', hex: '#94a3b8' },
-      { name: 'Earth Clay', hex: '#78350f' },
-    ],
-    batchCode: 'DL-PF-450',
-    stockLeft: 7,
-    temperatureRange: '2°C — 14°C WINTER PEAK',
   },
   {
     id: 'oversized-t-shirt-drop-shoulder',
-    dropNumber: 'DROP // 04',
-    title: 'DROP SHOULDER T-SHIRT',
-    subtitle: '240 GSM Heavy Bio-Wash Cotton with 1.25" Lycra Ribbed High Collar',
+    modelLabel: 'MODEL 04 // MALE',
+    name: 'DROP SHOULDER T-SHIRT',
     category: 'T-SHIRTS',
     price: 699,
     compareAtPrice: 1199,
-    gsm: 240,
-    gsmLabel: '240 GSM // HEAVYWEIGHT JERSEY',
-    fiber: '100% COMBED COMPACT COTTON',
-    fit: 'ARCHITECTURAL BOX CUT',
-    badge: 'CORE ESSENTIAL',
-    badgeColor: '#00ff87', // Solid Neon Lime
-    solidNeonColor: '#00ff87',
+    specs: '240 GSM Pure Combed Cotton // 1.25" Lycra Ribbed Collar',
+    position: { left: '84%', top: '42%' },
+    solidNeonColor: '#00ff87', // Solid Neon Lime
     solidNeonName: 'lime',
     bgSolid: 'bg-[#00ff87]',
-    textSolid: 'text-[#00ff87]',
     borderSolid: 'border-[#00ff87]',
+    textSolid: 'text-[#00ff87]',
     shadowSolid: 'shadow-neon',
-    secondarySolid: {
-      hex: '#b026ff', // Solid Neon Purple
-      text: 'text-[#b026ff]',
-      border: 'border-[#b026ff]',
-      bg: 'bg-[#b026ff]',
-    },
-    images: [
-      '/images/products/oversized-t-shirt-drop-shoulder-1.jpg',
-      '/images/products/oversized-t-shirt-drop-shoulder-2.jpg',
-      '/images/products/biowash-t-shirt-1.jpg',
-    ],
+    image: '/images/products/oversized-t-shirt-drop-shoulder-1.jpg',
     sizes: ['S', 'M', 'L', 'XL', '2XL'],
-    colors: [
-      { name: 'Sage Olive', hex: '#63705d' },
-      { name: 'Pitch Black', hex: '#111317' },
-      { name: 'Slate Smoke', hex: '#718096' },
-      { name: 'Chalk White', hex: '#f7fafc' },
-    ],
-    batchCode: 'DL-TS-240',
-    stockLeft: 28,
-    temperatureRange: '18°C — 36°C ALL SEASON',
-  },
-  {
-    id: 'omniheat-tracksuits',
-    dropNumber: 'DROP // 05',
-    title: 'OMNIHEAT THERMAL SET',
-    subtitle: 'Thermal Metallic Lining with Double-Knit High-Neck Wind Protection',
-    category: 'TRACKSUITS',
-    price: 2299,
-    compareAtPrice: 3599,
-    gsm: 340,
-    gsmLabel: '340 GSM // REFLECTIVE THERMAL',
-    fiber: 'INTERLOCK THERMAL COMPOSITE',
-    fit: 'STREET ATHLETIC TAPER',
-    badge: 'THERMAL MATRIX',
-    badgeColor: '#b026ff', // Solid Neon Purple
-    solidNeonColor: '#b026ff',
-    solidNeonName: 'purple',
-    bgSolid: 'bg-[#b026ff]',
-    textSolid: 'text-[#b026ff]',
-    borderSolid: 'border-[#b026ff]',
-    shadowSolid: 'shadow-neon-purple',
-    secondarySolid: {
-      hex: '#ff007f', // Solid Neon Pink
-      text: 'text-[#ff007f]',
-      border: 'border-[#ff007f]',
-      bg: 'bg-[#ff007f]',
-    },
-    images: [
-      '/images/products/omniheat-tracksuits-1.jpg',
-      '/images/products/omniheat-tracksuits-2.jpg',
-      '/images/products/omniheat-tracksuits-3.jpg',
-    ],
-    sizes: ['M', 'L', 'XL', '2XL'],
-    colors: [
-      { name: 'Stealth Black', hex: '#0a0a0a' },
-      { name: 'Silver Charcoal', hex: '#374151' },
-      { name: 'Navy Cobalt', hex: '#1e3a8a' },
-    ],
-    batchCode: 'DL-TK-340',
-    stockLeft: 11,
-    temperatureRange: '5°C — 16°C WINTER RUN',
   },
 ];
 
 export default function SingleFullScreenLandingPage() {
   const router = useRouter();
-  const { products, addToCart, isInWishlist, toggleWishlist, openCart, showToast } = useStore();
+  const { products, addToCart, isInWishlist, toggleWishlist, openCart, showToast, cartTotalCount } = useStore();
   const { user } = useAuth();
 
-  // Active Drop state
-  const [activeDropIndex, setActiveDropIndex] = useState(0);
-  const activeDrop = FLAGSHIP_DROPS[activeDropIndex];
+  // Active Hotspot Pin state (for mobile / desktop tap)
+  const [activeHotspotId, setActiveHotspotId] = useState<string | null>('oversized-hoodies');
+  const [selectedSize, setSelectedSize] = useState<{ [key: string]: string }>({
+    'oversized-hoodies': 'M',
+    'denim-jackets': 'L',
+    'puffer-jackets': 'M',
+    'oversized-t-shirt-drop-shoulder': 'L',
+  });
 
-  // Active angle image index
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
-
-  // Selected options for purchasing
-  const [selectedSize, setSelectedSize] = useState<string>(activeDrop.sizes[0] || 'M');
-  const [selectedColor, setSelectedColor] = useState<string>(activeDrop.colors[0]?.name || '');
+  // 3D Perspective Tilt State
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Sound effects toggle
   const [soundEnabled, setSoundEnabled] = useState(true);
 
+  // Section Panels / Flyout Drawers
+  const [activeSection, setActiveSection] = useState<'COLLECTIONS' | 'LOOKBOOK' | 'ATELIER' | 'WINTER' | null>(null);
+
   // Modals
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
+  const [addedHotspotId, setAddedHotspotId] = useState<string | null>(null);
 
-  // Feedback animation state
-  const [justAdded, setJustAdded] = useState(false);
-
-  // Reset selected options when switching drops
-  useEffect(() => {
-    setActiveImageIdx(0);
-    setSelectedSize(activeDrop.sizes[0] || 'M');
-    setSelectedColor(activeDrop.colors[0]?.name || '');
-  }, [activeDropIndex, activeDrop]);
-
-  // Find linked product in store data
-  const storeProduct = useMemo(() => {
-    return products.find((p) => p.id === activeDrop.id) || products[0];
-  }, [products, activeDrop.id]);
-
-  const isFavorite = isInWishlist(storeProduct?.id || activeDrop.id);
-
-  // Web Audio click synthesizer (Zero external dependencies)
-  const playClickSound = (pitch = 440) => {
+  // Web Audio click synthesizer
+  const playClickSound = (pitch = 480) => {
     if (!soundEnabled || typeof window === 'undefined') return;
     try {
       const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
@@ -327,7 +172,7 @@ export default function SingleFullScreenLandingPage() {
 
       osc.type = 'triangle';
       osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(pitch * 1.5, audioCtx.currentTime + 0.04);
+      osc.frequency.exponentialRampToValueAtTime(pitch * 1.4, audioCtx.currentTime + 0.04);
 
       gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
@@ -337,44 +182,52 @@ export default function SingleFullScreenLandingPage() {
 
       osc.start();
       osc.stop(audioCtx.currentTime + 0.04);
-    } catch (e) {
-      // Audio autoplay policy catch
-    }
+    } catch (e) {}
   };
 
-  const handleSelectDrop = (index: number) => {
+  // Mouse move 3D tilt calculation
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 to 0.5
+    setTilt({
+      x: Math.max(-10, Math.min(10, x * 14)), // tilt degree
+      y: Math.max(-10, Math.min(10, -y * 14)),
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
+  const handleSelectHotspot = (id: string) => {
     playClickSound(520);
-    setActiveDropIndex(index);
+    setActiveHotspotId(activeHotspotId === id ? null : id);
   };
 
-  const handleSelectAngle = (idx: number) => {
-    playClickSound(480);
-    setActiveImageIdx(idx);
+  const handleSelectSize = (hotspotId: string, size: string) => {
+    playClickSound(600);
+    setSelectedSize((prev) => ({ ...prev, [hotspotId]: size }));
   };
 
-  const handleSelectSize = (s: string) => {
-    playClickSound(580);
-    setSelectedSize(s);
-  };
-
-  const handleSelectColor = (c: string) => {
-    playClickSound(540);
-    setSelectedColor(c);
-  };
-
-  const handleAddToCart = () => {
-    playClickSound(640);
-    if (storeProduct) {
-      addToCart(storeProduct, selectedSize, selectedColor, 1);
+  const handleAddToCart = (hotspot: ModelHotspot) => {
+    playClickSound(660);
+    const prod = products.find((p) => p.id === hotspot.id);
+    if (prod) {
+      const size = selectedSize[hotspot.id] || hotspot.sizes[0];
+      addToCart(prod, size, prod.colors[0]?.name || 'Standard', 1);
     }
-    setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1600);
+    setAddedHotspotId(hotspot.id);
+    setTimeout(() => setAddedHotspotId(null), 1500);
   };
 
-  const handleBuyNow = () => {
-    playClickSound(720);
-    if (storeProduct) {
-      addToCart(storeProduct, selectedSize, selectedColor, 1);
+  const handleBuyNow = (hotspot: ModelHotspot) => {
+    playClickSound(740);
+    const prod = products.find((p) => p.id === hotspot.id);
+    if (prod) {
+      const size = selectedSize[hotspot.id] || hotspot.sizes[0];
+      addToCart(prod, size, prod.colors[0]?.name || 'Standard', 1);
     }
     if (!user) {
       setShowAuthModal(true);
@@ -383,433 +236,592 @@ export default function SingleFullScreenLandingPage() {
     }
   };
 
-  const handleToggleFavorite = () => {
-    playClickSound(600);
-    toggleWishlist(storeProduct?.id || activeDrop.id);
+  const handleOpenSection = (section: 'COLLECTIONS' | 'LOOKBOOK' | 'ATELIER' | 'WINTER') => {
+    playClickSound(560);
+    setActiveSection(activeSection === section ? null : section);
   };
 
-  const discountPercent = Math.round(
-    ((activeDrop.compareAtPrice - activeDrop.price) / activeDrop.compareAtPrice) * 100
-  );
-
   return (
-    <div className="relative w-full min-h-[calc(100dvh-5.5rem)] lg:h-[calc(100dvh-5.5rem)] lg:overflow-hidden bg-[#05070c] text-slate-100 flex flex-col justify-between select-none">
-      
-      {/* 1. TOP SOLID NEON COMMAND STRIP */}
-      <div className="border-b border-slate-850 bg-[#080c14] px-3 sm:px-6 py-2 flex items-center justify-between text-xs font-mono">
-        <div className="flex items-center gap-3 overflow-x-auto scrollbar-none">
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded bg-[#ff007f] text-[#05070c] font-black text-[10px] tracking-wider flex-shrink-0">
-            <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-            FLAGSHIP DROP {activeDropIndex + 1}/5
-          </span>
-          <span className="hidden sm:inline text-slate-400 text-[11px]">
-            ATELIER // <strong className="text-white">OKHLA, NEW DELHI</strong>
-          </span>
-          <span className="text-slate-600 hidden md:inline">•</span>
-          <span className="hidden md:inline text-[11px] text-[#00ff87] font-bold">
-            100% COMBED COTTON DIRECT RETAIL
-          </span>
-          <span className="text-slate-600 hidden lg:inline">•</span>
-          <span className="hidden lg:inline text-[11px] text-[#00f0ff]">
-            DISPATCH VIA BLUEDART AIR (₹0 OVER ₹999)
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative w-full h-[100dvh] min-h-[640px] overflow-hidden bg-[#05070c] text-slate-100 select-none flex flex-col justify-between"
+      style={{ perspective: '1200px' }}
+    >
+      {/* ======================================================== */}
+      {/* 1. INTERACTIVE FULL-SCREEN 3D IMAGE CANVAS (THE 4 MODELS) */}
+      {/* ======================================================== */}
+      <div
+        className="absolute inset-0 w-full h-full transition-transform duration-200 ease-out will-change-transform"
+        style={{
+          transform: `rotateY(${tilt.x}deg) rotateX(${tilt.y}deg) scale3d(1.04, 1.04, 1.04)`,
+        }}
+      >
+        {/* The Massive Photographic Campaign Lineup */}
+        <Image
+          src="/images/hero-models-crew.jpg"
+          alt="Slate Apparels - 4 Models Streetwear Lineup (2 Women, 2 Men)"
+          fill
+          priority
+          unoptimized
+          className="object-cover object-center"
+        />
+
+        {/* Cinematic Vignette & Edge Scrim (Allows solid neon typography & pins to pop) */}
+        <div className="absolute inset-0 bg-[#05070c]/30 pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-[#05070c]/90 via-[#05070c]/40 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#05070c] via-[#05070c]/60 to-transparent pointer-events-none" />
+
+        {/* Floating Architectural Background Watermark */}
+        <div className="absolute top-1/4 inset-x-0 flex items-center justify-center pointer-events-none opacity-25">
+          <span className="font-sans font-black text-6xl sm:text-9xl xl:text-[14rem] tracking-tighter text-white uppercase select-none">
+            SLATE
           </span>
         </div>
 
-        {/* Audio Toggle & Quick Telemetry */}
-        <div className="flex items-center gap-3 flex-shrink-0">
-          <button
-            onClick={() => {
-              const next = !soundEnabled;
-              setSoundEnabled(next);
-              if (next) playClickSound(600);
-            }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-mono font-bold uppercase transition-all ${
-              soundEnabled
-                ? 'bg-[#faff00] text-[#05070c] shadow-neon-yellow'
-                : 'bg-slate-900 text-slate-400 border border-slate-700'
-            }`}
-            title="Toggle Tactile Terminal Audio"
-          >
-            {soundEnabled ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-            <span className="hidden xs:inline">{soundEnabled ? 'SFX ON' : 'SFX MUTED'}</span>
-          </button>
-
-          <Link
-            href="/shop"
-            className="flex items-center gap-1.5 text-[11px] font-mono font-bold text-white hover:text-[#00ff87] transition-colors"
-          >
-            <span>CATALOG (18)</span>
-            <ArrowRight className="w-3.5 h-3.5 text-[#00ff87]" />
-          </Link>
-        </div>
-      </div>
-
-      {/* 2. MAIN FULL-SCREEN SHOWCASE GRID (3-COLUMN LUXURY TERMINAL) */}
-      <div className="flex-1 max-w-[1600px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-3 sm:py-4 grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center">
-        
         {/* ======================================================== */}
-        {/* LEFT COLUMN: DROP NAVIGATOR & TEXTILE MATRIX (3.5 COLS) */}
+        {/* 2. THE 4 3D INTERACTIVE MODEL HOTSPOTS                   */}
         {/* ======================================================== */}
-        <div className="lg:col-span-4 xl:col-span-3 space-y-3.5 lg:space-y-4">
-          
-          {/* Drop Navigation Tabs (5 Solid Neon Badges) */}
-          <div className="space-y-1.5">
-            <div className="flex items-center justify-between text-[10px] font-mono font-bold tracking-widest text-slate-400 uppercase">
-              <span>SELECT FLAGSHIP SILHOUETTE</span>
-              <span className="text-[#00f0ff]">5 RELEASES</span>
-            </div>
+        {MODEL_HOTSPOTS.map((hotspot) => {
+          const isSelected = activeHotspotId === hotspot.id;
+          const isAdded = addedHotspotId === hotspot.id;
+          const currentSize = selectedSize[hotspot.id] || hotspot.sizes[0];
 
-            <div className="grid grid-cols-5 lg:grid-cols-1 gap-1.5">
-              {FLAGSHIP_DROPS.map((drop, idx) => {
-                const isActive = activeDropIndex === idx;
-                return (
-                  <button
-                    key={drop.id}
-                    onClick={() => handleSelectDrop(idx)}
-                    className={`text-left p-2 sm:p-2.5 rounded-xl border transition-all flex items-center justify-between gap-2 ${
-                      isActive
-                        ? `${drop.bgSolid} text-[#05070c] ${drop.borderSolid} shadow-md font-black`
-                        : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
-                    }`}
-                  >
-                    <div className="flex items-center gap-2 truncate">
-                      <span className={`font-mono text-[10px] px-1.5 py-0.5 rounded font-black ${
-                        isActive ? 'bg-[#05070c] text-white' : 'bg-slate-800 text-slate-300'
-                      }`}>
-                        0{idx + 1}
-                      </span>
-                      <span className="font-mono text-xs uppercase tracking-wide truncate hidden lg:inline">
-                        {drop.title}
-                      </span>
-                    </div>
-
-                    <span className="hidden lg:inline text-[9px] font-mono px-1.5 py-0.5 rounded uppercase font-bold"
-                          style={{
-                            backgroundColor: isActive ? '#05070c' : drop.solidNeonColor,
-                            color: isActive ? drop.solidNeonColor : '#05070c',
-                          }}>
-                      {drop.category}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Active Silhouette Identity & Price */}
-          <div className="p-4 rounded-2xl bg-[#090d16] border border-slate-800 space-y-3 shadow-xl">
-            <div className="flex items-center justify-between">
-              <span
-                className="text-[10px] font-mono font-black uppercase px-2.5 py-0.5 rounded shadow-sm"
-                style={{ backgroundColor: activeDrop.solidNeonColor, color: '#05070c' }}
-              >
-                {activeDrop.badge}
-              </span>
-              <span className="text-[10px] font-mono text-slate-400">
-                BATCH: <strong className="text-white">{activeDrop.batchCode}</strong>
-              </span>
-            </div>
-
-            <div>
-              <h1 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white font-sans leading-tight">
-                {activeDrop.title}
-              </h1>
-              <p className="text-xs text-slate-300 font-sans mt-1 line-clamp-2">
-                {activeDrop.subtitle}
-              </p>
-            </div>
-
-            {/* Price Tag with Strikethrough & Solid Discount Pill */}
-            <div className="flex items-baseline gap-2 pt-1 border-t border-slate-800">
-              <span className="text-2xl sm:text-3xl font-mono font-black text-white">
-                {formatPrice(activeDrop.price)}
-              </span>
-              <span className="text-xs font-mono text-slate-500 line-through">
-                {formatPrice(activeDrop.compareAtPrice)}
-              </span>
-              <span
-                className="text-[10px] font-mono font-black px-2 py-0.5 rounded uppercase ml-auto"
-                style={{ backgroundColor: activeDrop.secondarySolid.hex, color: '#05070c' }}
-              >
-                SAVE {discountPercent}%
-              </span>
-            </div>
-          </div>
-
-          {/* Industrial Textile Matrix Gauge */}
-          <div className="p-3.5 sm:p-4 rounded-2xl bg-[#090d16] border border-slate-800 space-y-2.5 text-xs font-mono">
-            <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase pb-1 border-b border-slate-800">
-              <span className="flex items-center gap-1.5 text-white">
-                <Layers className="w-3.5 h-3.5 text-[#00f0ff]" />
-                TEXTILE SPEC MATRIX
-              </span>
-              <span className="text-[#00ff87]">OKHLA LOOMS</span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 text-[11px]">
-              <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                <span className="text-[9px] text-slate-400 uppercase block">DENSITY</span>
-                <span className="font-bold text-white block mt-0.5 truncate">{activeDrop.gsmLabel}</span>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                <span className="text-[9px] text-slate-400 uppercase block">FIBER</span>
-                <span className="font-bold text-[#faff00] block mt-0.5 truncate">{activeDrop.fiber}</span>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                <span className="text-[9px] text-slate-400 uppercase block">SILHOUETTE</span>
-                <span className="font-bold text-[#00f0ff] block mt-0.5 truncate">{activeDrop.fit}</span>
-              </div>
-              <div className="p-2 rounded-lg bg-slate-900 border border-slate-800">
-                <span className="text-[9px] text-slate-400 uppercase block">CLIMATE RATING</span>
-                <span className="font-bold text-[#00ff87] block mt-0.5 truncate">{activeDrop.temperatureRange}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ======================================================== */}
-        {/* CENTER COLUMN: MASSIVE HIGH-FASHION HERO MEDIA (5 COLS)  */}
-        {/* ======================================================== */}
-        <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center justify-center relative">
-          
-          {/* Main Visual Showcase Frame */}
-          <div
-            className="relative w-full max-w-md aspect-[4/5] sm:aspect-[4/5] rounded-3xl overflow-hidden bg-slate-900 border-2 transition-all duration-300 shadow-2xl group"
-            style={{ borderColor: activeDrop.solidNeonColor }}
-          >
-            {/* The High-Resolution Photography */}
-            <Image
-              src={activeDrop.images[activeImageIdx] || activeDrop.images[0]}
-              alt={activeDrop.title}
-              fill
-              priority
-              unoptimized
-              className="object-cover object-center transition-all duration-500 group-hover:scale-105"
-            />
-
-            {/* Subtle bottom contrast scrim */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#05070c] via-transparent to-transparent opacity-80 pointer-events-none" />
-
-            {/* Top Badges */}
-            <div className="absolute top-3.5 inset-x-3.5 flex items-center justify-between pointer-events-none z-10">
-              <span
-                className="px-2.5 py-1 rounded text-[10px] font-mono font-black uppercase tracking-wider shadow-md"
-                style={{ backgroundColor: activeDrop.solidNeonColor, color: '#05070c' }}
-              >
-                {activeDrop.dropNumber}
-              </span>
-
+          return (
+            <div
+              key={hotspot.id}
+              className="absolute z-30 transition-all duration-300"
+              style={{
+                left: hotspot.position.left,
+                top: hotspot.position.top,
+                transform: 'translate(-50%, -50%)',
+              }}
+            >
+              {/* Pulsing Solid Neon Pin Target */}
               <button
-                onClick={handleToggleFavorite}
-                className="pointer-events-auto w-9 h-9 rounded-full bg-[#05070c]/80 backdrop-blur-md border border-slate-700 hover:border-[#ff007f] flex items-center justify-center transition-all shadow-md group/btn"
-                title="Save to Wishlist"
+                onClick={() => handleSelectHotspot(hotspot.id)}
+                className={`relative group p-2.5 rounded-full backdrop-blur-md border-2 transition-all flex items-center justify-center ${
+                  isSelected
+                    ? `${hotspot.bgSolid} text-[#05070c] ${hotspot.borderSolid} scale-125 shadow-lg`
+                    : 'bg-[#05070c]/80 text-white border-slate-750 hover:scale-110'
+                }`}
+                style={{
+                  boxShadow: isSelected ? `0 0 25px ${hotspot.solidNeonColor}` : undefined,
+                }}
+                title={`Inspect ${hotspot.name}`}
               >
-                <Heart
-                  className={`w-4 h-4 transition-transform active:scale-125 ${
-                    isFavorite ? 'fill-[#ff007f] text-[#ff007f]' : 'text-slate-300 group-hover/btn:text-[#ff007f]'
-                  }`}
+                {/* Ping pulse wave around button */}
+                <span
+                  className="absolute inset-0 rounded-full animate-ping opacity-60"
+                  style={{ backgroundColor: hotspot.solidNeonColor }}
                 />
+                <span className="relative font-mono font-black text-xs leading-none">
+                  {isSelected ? '✕' : '+'}
+                </span>
               </button>
-            </div>
 
-            {/* Floating Live Stock Velocity Pill (Bottom Left) */}
-            <div className="absolute bottom-4 left-4 z-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#05070c]/90 border border-slate-700 text-[10px] font-mono font-bold text-white shadow-lg backdrop-blur-md">
-                <span className="w-2 h-2 rounded-full bg-[#ff007f] animate-ping" />
-                <span>ONLY {activeDrop.stockLeft} PIECES IN ATELIER</span>
-              </span>
-            </div>
-
-            {/* Quick Look Inspect Button (Bottom Right) */}
-            <div className="absolute bottom-4 right-4 z-10">
-              <button
-                onClick={() => setQuickViewProduct(storeProduct)}
-                className="p-2.5 rounded-xl bg-[#05070c]/90 border border-slate-700 hover:border-[#00f0ff] text-slate-200 hover:text-[#00f0ff] transition-all shadow-lg backdrop-blur-md flex items-center gap-1 text-[11px] font-mono font-bold"
-                title="Full Technical View"
-              >
-                <Eye className="w-4 h-4" />
-                <span className="hidden sm:inline">SPECS</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Interactive Multi-Angle Angle Switcher Under Photo */}
-          <div className="flex items-center gap-2 mt-3 z-10">
-            {activeDrop.images.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSelectAngle(idx)}
-                className={`px-3 py-1 rounded-lg text-[10px] font-mono font-bold uppercase transition-all flex items-center gap-1.5 ${
-                  activeImageIdx === idx
-                    ? 'bg-white text-[#05070c] font-black shadow-md'
-                    : 'bg-[#090d16] text-slate-400 hover:text-white border border-slate-800'
+              {/* Floating Solid Neon Mini Tag above Pin */}
+              <div
+                onClick={() => handleSelectHotspot(hotspot.id)}
+                className={`cursor-pointer mt-1.5 px-2 py-0.5 rounded font-mono text-[9px] font-black uppercase tracking-wider shadow-md transition-all whitespace-nowrap ${
+                  isSelected
+                    ? `${hotspot.bgSolid} text-[#05070c]`
+                    : 'bg-[#05070c]/90 text-white border border-slate-700 hover:border-white'
                 }`}
               >
-                <span className="w-1.5 h-1.5 rounded-full"
-                      style={{ backgroundColor: activeImageIdx === idx ? activeDrop.solidNeonColor : '#64748b' }} />
-                <span>ANGLE 0{idx + 1}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* ======================================================== */}
-        {/* RIGHT COLUMN: PURCHASING TERMINAL & FIT ACTIONS (3.5 C)   */}
-        {/* ======================================================== */}
-        <div className="lg:col-span-3 xl:col-span-4 space-y-3.5 lg:space-y-4">
-          
-          {/* 1. Size Selector */}
-          <div className="p-4 rounded-2xl bg-[#090d16] border border-slate-800 space-y-3 shadow-xl">
-            <div className="flex items-center justify-between text-xs font-mono font-bold uppercase">
-              <span className="text-white flex items-center gap-1.5">
-                <Ruler className="w-3.5 h-3.5 text-[#00ff87]" />
-                SELECT SILHOUETTE SIZE
-              </span>
-              <span className="text-slate-400 text-[10px]">RETAIL PRE-SHRUNK</span>
-            </div>
-
-            <div className="grid grid-cols-5 gap-1.5">
-              {activeDrop.sizes.map((s) => {
-                const isSelected = selectedSize === s;
-                return (
-                  <button
-                    key={s}
-                    onClick={() => handleSelectSize(s)}
-                    className={`py-2 rounded-xl text-xs font-mono font-black uppercase transition-all border ${
-                      isSelected
-                        ? `${activeDrop.bgSolid} text-[#05070c] ${activeDrop.borderSolid} shadow-md`
-                        : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
-                    }`}
-                  >
-                    {s}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* 2. Colorway Swatches */}
-            <div className="pt-2 border-t border-slate-800 space-y-1.5">
-              <span className="text-[10px] font-mono text-slate-400 uppercase font-bold block">
-                FACTORY DYE: <strong className="text-white">{selectedColor}</strong>
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {activeDrop.colors.map((c) => (
-                  <button
-                    key={c.name}
-                    onClick={() => handleSelectColor(c.name)}
-                    className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-[11px] font-mono transition-all ${
-                      selectedColor === c.name
-                        ? 'border-white bg-slate-800 text-white font-bold'
-                        : 'border-slate-800 bg-slate-900/80 text-slate-400 hover:border-slate-700'
-                    }`}
-                  >
-                    <span
-                      className="w-3 h-3 rounded-full border border-white/40 flex-shrink-0"
-                      style={{ backgroundColor: c.hex }}
-                    />
-                    <span className="text-[10px]">{c.name}</span>
-                  </button>
-                ))}
+                {hotspot.name} // {formatPrice(hotspot.price)}
               </div>
-            </div>
-          </div>
 
-          {/* 3. Primary Purchasing CTA Actions */}
-          <div className="space-y-2.5">
-            {/* Express Buy Button (Triggers Firebase Auth modal or Checkout directly) */}
-            <button
-              onClick={handleBuyNow}
-              className="w-full py-4 rounded-xl bg-[#00ff87] hover:bg-[#00f0ff] text-[#05070c] hover:text-black font-mono text-xs sm:text-sm font-black uppercase tracking-wider flex items-center justify-center gap-2.5 transition-all shadow-neon hover:shadow-neon-cyan active:scale-98"
-            >
-              <Zap className="w-4 h-4 fill-[#05070c]" />
-              <span>⚡ BUY THIS PIECE (EXPRESS)</span>
-            </button>
+              {/* 3D FLOATING PRODUCT CARD (EMERGES ON PIN CLICK) */}
+              {isSelected && (
+                <div
+                  className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-64 sm:w-72 p-4 rounded-2xl bg-[#090d16]/95 backdrop-blur-xl border-2 text-white shadow-2xl z-40 animate-in fade-in zoom-in-95 duration-200"
+                  style={{ borderColor: hotspot.solidNeonColor }}
+                >
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-800">
+                    <span
+                      className="text-[9px] font-mono font-black px-2 py-0.5 rounded uppercase"
+                      style={{ backgroundColor: hotspot.solidNeonColor, color: '#05070c' }}
+                    >
+                      {hotspot.modelLabel}
+                    </span>
+                    <button
+                      onClick={() => setActiveHotspotId(null)}
+                      className="text-slate-400 hover:text-white text-xs font-mono"
+                    >
+                      ✕
+                    </button>
+                  </div>
 
-            {/* Add to Bag Button */}
-            <button
-              onClick={handleAddToCart}
-              className={`w-full py-3.5 rounded-xl border-2 font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all active:scale-98 ${
-                justAdded
-                  ? 'bg-[#ff007f] text-white border-[#ff007f] shadow-neon-pink'
-                  : 'bg-slate-900 hover:bg-[#ff007f] border-[#ff007f] text-[#ff007f] hover:text-white shadow-neon-pink-sm'
-              }`}
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>{justAdded ? '✓ ADDED TO BAG!' : `+ ADD TO BAG (${selectedSize})`}</span>
-            </button>
-          </div>
+                  <div className="mt-2.5">
+                    <h3 className="font-mono font-black text-sm uppercase text-white leading-tight">
+                      {hotspot.name}
+                    </h3>
+                    <p className="text-[10px] font-mono text-slate-300 mt-1 leading-snug">
+                      {hotspot.specs}
+                    </p>
+                  </div>
 
-          {/* 4. Atelier Guarantee & Logistics Terminal */}
-          <div className="p-3.5 rounded-2xl bg-[#090d16] border border-slate-800 space-y-2 text-[11px] font-mono text-slate-300">
-            <div className="flex items-center gap-2 text-[#00f0ff]">
-              <Truck className="w-4 h-4 flex-shrink-0 text-[#00f0ff]" />
-              <span className="font-bold">FREE EXPRESS AIR FREIGHT OVER ₹999</span>
-            </div>
-            <div className="flex items-center gap-2 text-[#00ff87]">
-              <CheckCircle2 className="w-4 h-4 flex-shrink-0 text-[#00ff87]" />
-              <span>7-Day Doorstep Size Replacement</span>
-            </div>
-            <div className="flex items-center gap-2 text-slate-400">
-              <ShieldCheck className="w-4 h-4 flex-shrink-0 text-[#faff00]" />
-              <span>GSTIN & IEC Verified Factory Invoice Included</span>
-            </div>
-          </div>
+                  {/* Price Row */}
+                  <div className="flex items-baseline gap-2 mt-2 pt-2 border-t border-slate-800">
+                    <span className="text-xl font-mono font-black text-white">
+                      {formatPrice(hotspot.price)}
+                    </span>
+                    <span className="text-xs font-mono text-slate-500 line-through">
+                      {formatPrice(hotspot.compareAtPrice)}
+                    </span>
+                    <span className="text-[9px] font-mono font-bold text-[#00ff87] ml-auto">
+                      IN STOCK
+                    </span>
+                  </div>
 
-          {/* Quick WhatsApp Concierge Button */}
-          <a
-            href={`https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20am%20inquiring%20about%20the%20${encodeURIComponent(
-              activeDrop.title
-            )}%20in%20size%20${encodeURIComponent(selectedSize)}.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full py-2.5 rounded-xl bg-slate-900/90 hover:bg-[#00ff87]/15 border border-[#00ff87]/50 text-[#00ff87] font-mono text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-neon-sm"
-          >
-            <MessageSquare className="w-3.5 h-3.5 text-[#00ff87]" />
-            <span>WHATSAPP VIP CONCIERGE</span>
-          </a>
-        </div>
+                  {/* Size Selector */}
+                  <div className="mt-2.5">
+                    <span className="text-[9px] font-mono text-slate-400 uppercase font-bold block mb-1">
+                      SELECT SIZE:
+                    </span>
+                    <div className="grid grid-cols-5 gap-1 text-[11px] font-mono">
+                      {hotspot.sizes.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => handleSelectSize(hotspot.id, s)}
+                          className={`py-1 rounded-lg border font-bold transition-all ${
+                            currentSize === s
+                              ? `${hotspot.bgSolid} text-[#05070c] ${hotspot.borderSolid}`
+                              : 'bg-slate-900 text-slate-300 border-slate-800 hover:border-slate-700'
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="mt-3 space-y-1.5">
+                    <button
+                      onClick={() => handleBuyNow(hotspot)}
+                      className="w-full py-2.5 rounded-xl bg-[#00ff87] hover:bg-[#00f0ff] text-[#05070c] font-mono text-xs font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all shadow-neon"
+                    >
+                      <Zap className="w-3.5 h-3.5 fill-[#05070c]" />
+                      <span>⚡ BUY NOW ({currentSize})</span>
+                    </button>
+
+                    <div className="grid grid-cols-2 gap-1.5">
+                      <button
+                        onClick={() => handleAddToCart(hotspot)}
+                        className={`py-2 rounded-xl border text-[11px] font-mono font-bold uppercase transition-all ${
+                          isAdded
+                            ? 'bg-[#ff007f] text-white border-[#ff007f]'
+                            : 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-200'
+                        }`}
+                      >
+                        {isAdded ? '✓ IN BAG' : '+ ADD TO BAG'}
+                      </button>
+
+                      <Link
+                        href={`/product/${hotspot.id}`}
+                        className="py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 hover:text-[#00f0ff] text-[11px] font-mono font-bold uppercase text-center flex items-center justify-center gap-1"
+                      >
+                        <span>DETAILS</span>
+                        <ChevronRight className="w-3 h-3 text-[#00f0ff]" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* ======================================================== */}
-      {/* 3. BOTTOM COMMAND BAR DOCK (DIRECT CATALOG PORTAL)       */}
+      {/* 3. TOP INTERACTIVE NAVBAR WHERE EACH SECTION OPENS       */}
       {/* ======================================================== */}
-      <div className="border-t border-slate-850 bg-[#080c14] px-3 sm:px-6 py-2.5 z-20">
-        <div className="max-w-[1600px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+      <div className="relative z-40 px-3 sm:px-6 lg:px-8 pt-3">
+        <header className="max-w-7xl mx-auto rounded-2xl bg-[#090d16]/90 backdrop-blur-xl border border-slate-800 px-4 sm:px-6 py-2.5 sm:py-3 shadow-2xl flex items-center justify-between gap-4">
           
-          {/* Quick Category Jump Pills (Solid Neons) */}
-          <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto scrollbar-none pb-1 sm:pb-0">
-            <span className="text-[10px] text-slate-500 uppercase mr-1 hidden md:inline">QUICK JUMP:</span>
-            {[
-              { name: 'HOODIES', color: 'hover:border-[#ff007f] hover:text-[#ff007f]' },
-              { name: 'JACKETS', color: 'hover:border-[#00f0ff] hover:text-[#00f0ff]' },
-              { name: 'T-SHIRTS', color: 'hover:border-[#00ff87] hover:text-[#00ff87]' },
-              { name: 'TRACKSUITS', color: 'hover:border-[#b026ff] hover:text-[#b026ff]' },
-              { name: 'TRACKPANTS', color: 'hover:border-[#ff6b00] hover:text-[#ff6b00]' },
-              { name: 'SWEATERS', color: 'hover:border-[#faff00] hover:text-[#faff00]' },
-            ].map((cat) => (
-              <Link
-                key={cat.name}
-                href={`/shop?category=${cat.name}`}
-                className={`px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-[10px] font-bold text-slate-300 ${cat.color} transition-all flex-shrink-0`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-
-          {/* Primary View Catalog Button */}
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
-            <div className="hidden lg:flex items-center gap-2 text-[10px] text-slate-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00ff87] animate-ping" />
-              <span>LOOMS ACTIVE • OKHLA PHASE-1 NEW DELHI</span>
+          {/* Brand Mark */}
+          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+            <div className="w-8 h-8 rounded-xl bg-slate-900 border border-slate-700 flex items-center justify-center font-mono font-black text-white group-hover:border-[#00ff87] group-hover:shadow-neon transition-all">
+              S
             </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-sm sm:text-base tracking-wider text-white uppercase font-sans leading-none">
+                SLATE APPARELS
+              </span>
+              <span className="text-[8px] font-mono text-slate-400 uppercase mt-0.5">
+                NEW DELHI // 100% COMBED COTTON
+              </span>
+            </div>
+          </Link>
+
+          {/* Center Navigation Links (Where each section opens) */}
+          <nav className="hidden md:flex items-center gap-2 lg:gap-3 text-xs font-mono uppercase font-bold">
+            <button
+              onClick={() => handleOpenSection('COLLECTIONS')}
+              className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                activeSection === 'COLLECTIONS'
+                  ? 'bg-[#00f0ff] text-[#05070c] border-[#00f0ff] shadow-neon-cyan'
+                  : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+              }`}
+            >
+              <span>COLLECTIONS</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeSection === 'COLLECTIONS' ? 'rotate-180' : ''}`} />
+            </button>
+
+            <button
+              onClick={() => handleOpenSection('WINTER')}
+              className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                activeSection === 'WINTER'
+                  ? 'bg-[#ff007f] text-white border-[#ff007f] shadow-neon-pink'
+                  : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+              }`}
+            >
+              <span>WINTER DROPS</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeSection === 'WINTER' ? 'rotate-180' : ''}`} />
+            </button>
+
+            <button
+              onClick={() => handleOpenSection('LOOKBOOK')}
+              className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                activeSection === 'LOOKBOOK'
+                  ? 'bg-[#b026ff] text-white border-[#b026ff] shadow-neon-purple'
+                  : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+              }`}
+            >
+              <span>3D LOOKBOOK</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeSection === 'LOOKBOOK' ? 'rotate-180' : ''}`} />
+            </button>
+
+            <button
+              onClick={() => handleOpenSection('ATELIER')}
+              className={`px-3 py-1.5 rounded-xl border transition-all flex items-center gap-1.5 ${
+                activeSection === 'ATELIER'
+                  ? 'bg-[#00ff87] text-[#05070c] border-[#00ff87] shadow-neon'
+                  : 'bg-slate-900/80 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white'
+              }`}
+            >
+              <span>ATELIER SPECS</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${activeSection === 'ATELIER' ? 'rotate-180' : ''}`} />
+            </button>
 
             <Link
               href="/shop"
-              className="w-full sm:w-auto px-5 py-2 rounded-xl bg-white hover:bg-[#00ff87] text-[#05070c] font-black uppercase text-xs tracking-wider transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-neon"
+              className="px-3 py-1.5 rounded-xl bg-slate-900/80 text-slate-300 border border-slate-800 hover:border-[#faff00] hover:text-[#faff00] transition-all"
             >
-              <span>BROWSE ALL 18 STYLES CATALOG</span>
-              <ArrowRight className="w-4 h-4" />
+              CATALOG (18)
+            </Link>
+          </nav>
+
+          {/* Right Action Icons */}
+          <div className="flex items-center gap-2">
+            {/* Audio Toggle */}
+            <button
+              onClick={() => {
+                const next = !soundEnabled;
+                setSoundEnabled(next);
+                if (next) playClickSound(600);
+              }}
+              className={`p-2 rounded-xl border transition-all ${
+                soundEnabled
+                  ? 'bg-[#faff00] text-[#05070c] border-[#faff00] shadow-neon-yellow'
+                  : 'bg-slate-900 text-slate-400 border-slate-800'
+              }`}
+              title="Toggle Audio Feedback"
+            >
+              {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+            </button>
+
+            {/* User Profile / Firebase Auth Button */}
+            {user ? (
+              <Link
+                href="/dashboard"
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-[#ff007f] text-white font-mono text-xs font-bold transition-all flex items-center gap-1.5"
+                title="Account Dashboard"
+              >
+                <div className="w-4 h-4 rounded-full bg-[#ff007f] text-[#05070c] text-[9px] font-black flex items-center justify-center">
+                  {(user.displayName || user.email || 'U').slice(0, 1).toUpperCase()}
+                </div>
+                <span className="hidden lg:inline">{user.displayName || user.email?.split('@')[0]}</span>
+              </Link>
+            ) : (
+              <button
+                onClick={() => setShowAuthModal(true)}
+                className="px-2.5 sm:px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700 hover:border-[#00f0ff] text-slate-300 hover:text-[#00f0ff] font-mono text-xs font-bold transition-all"
+              >
+                LOGIN
+              </button>
+            )}
+
+            {/* Shopping Bag Trigger */}
+            <button
+              onClick={openCart}
+              className="relative px-3 py-1.5 sm:py-2 rounded-xl bg-[#00ff87] text-[#05070c] hover:bg-[#00f0ff] hover:text-black font-mono font-black text-xs uppercase flex items-center gap-1.5 transition-all shadow-neon hover:shadow-neon-cyan"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span className="hidden sm:inline">BAG</span>
+              {cartTotalCount > 0 && (
+                <span className="w-4 h-4 rounded-full bg-[#ff007f] text-white text-[9px] font-black flex items-center justify-center ml-0.5 shadow-neon-pink-sm">
+                  {cartTotalCount}
+                </span>
+              )}
+            </button>
+          </div>
+        </header>
+      </div>
+
+      {/* ======================================================== */}
+      {/* 4. EXPANDABLE SECTION DRAWERS OVER THE 3D STAGE          */}
+      {/* ======================================================== */}
+      {activeSection && (
+        <div className="absolute inset-x-3 sm:inset-x-6 lg:inset-x-8 top-20 z-50 animate-in fade-in slide-in-from-top-4 duration-200">
+          <div className="max-w-7xl mx-auto rounded-3xl bg-[#090d16]/98 backdrop-blur-2xl border-2 border-slate-700 shadow-2xl p-5 sm:p-7 relative text-slate-100">
+            {/* Close Button */}
+            <button
+              onClick={() => setActiveSection(null)}
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-900 border border-slate-700 text-slate-300 hover:text-white"
+            >
+              <X className="w-4 h-4" />
+            </button>
+
+            {/* SECTION: COLLECTIONS */}
+            {activeSection === 'COLLECTIONS' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase text-[#00f0ff] block">
+                      FACTORY SILHOUETTES
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase text-white font-sans">
+                      CURATED APPAREL COLLECTIONS
+                    </h2>
+                  </div>
+                  <Link
+                    href="/shop"
+                    onClick={() => setActiveSection(null)}
+                    className="text-xs font-mono font-bold text-[#00f0ff] hover:underline flex items-center gap-1"
+                  >
+                    <span>VIEW ALL 18 STYLES</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+                  {[
+                    { name: 'HOODIES', count: '4 Styles', color: 'border-[#ff007f] hover:bg-[#ff007f]/10 text-[#ff007f]', img: '/images/products/oversized-hoodies-1.jpg' },
+                    { name: 'JACKETS', count: '4 Styles', color: 'border-[#00f0ff] hover:bg-[#00f0ff]/10 text-[#00f0ff]', img: '/images/products/denim-jackets-1.jpg' },
+                    { name: 'T-SHIRTS', count: '3 Styles', color: 'border-[#00ff87] hover:bg-[#00ff87]/10 text-[#00ff87]', img: '/images/products/oversized-t-shirt-drop-shoulder-1.jpg' },
+                    { name: 'TRACKSUITS', count: '2 Styles', color: 'border-[#b026ff] hover:bg-[#b026ff]/10 text-[#b026ff]', img: '/images/products/omniheat-tracksuits-1.jpg' },
+                    { name: 'TRACKPANTS', count: '3 Styles', color: 'border-[#ff6b00] hover:bg-[#ff6b00]/10 text-[#ff6b00]', img: '/images/products/balloon-fit-trackpants-1.jpg' },
+                    { name: 'SWEATERS', count: '1 Style', color: 'border-[#faff00] hover:bg-[#faff00]/10 text-[#faff00]', img: '/images/products/sweaters-1.jpg' },
+                  ].map((cat) => (
+                    <Link
+                      key={cat.name}
+                      href={`/shop?category=${cat.name}`}
+                      onClick={() => setActiveSection(null)}
+                      className={`group p-3 rounded-2xl bg-slate-900 border transition-all ${cat.color}`}
+                    >
+                      <div className="relative aspect-square rounded-xl overflow-hidden mb-2 bg-slate-800">
+                        <Image
+                          src={cat.img}
+                          alt={cat.name}
+                          fill
+                          unoptimized
+                          className="object-cover group-hover:scale-105 transition-transform"
+                        />
+                      </div>
+                      <div className="font-mono font-bold text-xs uppercase text-white group-hover:text-inherit">
+                        {cat.name}
+                      </div>
+                      <div className="text-[10px] font-mono text-slate-400 mt-0.5">
+                        {cat.count}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* SECTION: WINTER DROPS */}
+            {activeSection === 'WINTER' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase text-[#ff007f] block">
+                      AUTUMN/WINTER MATRIX
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase text-white font-sans">
+                      HEAVYWEIGHT FLEECE & OUTERWEAR
+                    </h2>
+                  </div>
+                  <Link
+                    href="/shop?category=HOODIES"
+                    onClick={() => setActiveSection(null)}
+                    className="text-xs font-mono font-bold text-[#ff007f] hover:underline"
+                  >
+                    EXPLORE FLEECE →
+                  </Link>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono">
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-[#ff007f]/50">
+                    <span className="text-[10px] font-bold text-[#ff007f] uppercase block">DENSE FLEECE</span>
+                    <h4 className="text-base font-black text-white mt-1">380 GSM OVERSIZED HOODIE</h4>
+                    <p className="text-xs text-slate-300 font-sans mt-1">Double-knit cotton with kangaroo pocket and tailored dropped shoulder.</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-lg font-black text-[#00ff87]">₹1,499</span>
+                      <Link href="/product/oversized-hoodies" onClick={() => setActiveSection(null)} className="text-xs text-[#ff007f] hover:underline">
+                        BUY NOW →
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-[#00f0ff]/50">
+                    <span className="text-[10px] font-bold text-[#00f0ff] uppercase block">SELVEDGE TWILL</span>
+                    <h4 className="text-base font-black text-white mt-1">14 OZ DENIM TRUCKER</h4>
+                    <p className="text-xs text-slate-300 font-sans mt-1">Industrial heavy twill with antiqued solid brass hardware.</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-lg font-black text-[#00ff87]">₹1,699</span>
+                      <Link href="/product/denim-jackets" onClick={() => setActiveSection(null)} className="text-xs text-[#00f0ff] hover:underline">
+                        BUY NOW →
+                      </Link>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-[#ff6b00]/50">
+                    <span className="text-[10px] font-bold text-[#ff6b00] uppercase block">INSULATION</span>
+                    <h4 className="text-base font-black text-white mt-1">450 GSM PUFFER JACKET</h4>
+                    <p className="text-xs text-slate-300 font-sans mt-1">Down alternative sub-zero protection with matte ripstop.</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <span className="text-lg font-black text-[#00ff87]">₹2,199</span>
+                      <Link href="/product/puffer-jackets" onClick={() => setActiveSection(null)} className="text-xs text-[#ff6b00] hover:underline">
+                        BUY NOW →
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* SECTION: 3D LOOKBOOK */}
+            {activeSection === 'LOOKBOOK' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase text-[#b026ff] block">
+                      CAMPAIGN VISUALS
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase text-white font-sans">
+                      2026 EDITORIAL LOOKBOOK
+                    </h2>
+                  </div>
+                  <span className="text-xs font-mono text-slate-400">4 MODELS // OKHLA STUDIO</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  {MODEL_HOTSPOTS.map((h) => (
+                    <div key={h.id} className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 group">
+                      <Image
+                        src={h.image}
+                        alt={h.name}
+                        fill
+                        unoptimized
+                        className="object-cover group-hover:scale-105 transition-transform"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#05070c] via-transparent to-transparent" />
+                      <div className="absolute bottom-3 inset-x-3">
+                        <span className="text-[9px] font-mono font-black uppercase text-[#00f0ff] block">
+                          {h.modelLabel}
+                        </span>
+                        <h4 className="text-xs font-mono font-black text-white truncate">{h.name}</h4>
+                        <span className="text-xs font-mono text-[#00ff87] font-bold">{formatPrice(h.price)}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* SECTION: ATELIER SPECS */}
+            {activeSection === 'ATELIER' && (
+              <div>
+                <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-800">
+                  <div>
+                    <span className="text-[10px] font-mono font-bold uppercase text-[#00ff87] block">
+                      MANUFACTURING TELEMETRY
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase text-white font-sans">
+                      NEW DELHI ATELIER SPECIFICATIONS
+                    </h2>
+                  </div>
+                  <span className="text-xs font-mono text-[#00ff87] font-bold">100% COMBED COTTON</span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 font-mono text-xs">
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase block">COTTON ORIGIN</span>
+                    <h4 className="font-bold text-white text-sm mt-1">100% COMBED RINGSPUN</h4>
+                    <p className="text-[11px] text-slate-400 mt-1">Long-staple fibers, pre-shrunk with silicon bio-wash for zero pilling.</p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase block">GSM SPECTRUM</span>
+                    <h4 className="font-bold text-[#00f0ff] text-sm mt-1">220 GSM TO 450 GSM</h4>
+                    <p className="text-[11px] text-slate-400 mt-1">From heavyweight boxy tees to dense brushed fleece outerwear.</p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase block">DISPATCH PROMISE</span>
+                    <h4 className="font-bold text-[#00ff87] text-sm mt-1">BLUEDART EXPRESS AIR</h4>
+                    <p className="text-[11px] text-slate-400 mt-1">Free express delivery across India on all orders over ₹999.</p>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-slate-900 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 uppercase block">LEGAL COMPLIANCE</span>
+                    <h4 className="font-bold text-[#faff00] text-sm mt-1">GST & IEC CERTIFIED</h4>
+                    <p className="text-[11px] text-slate-400 mt-1">Plot 27, Okhla Phase 1, New Delhi - 110025. Official tax invoice included.</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ======================================================== */}
+      {/* 5. BOTTOM COMMAND TELEMETRY BAR                          */}
+      {/* ======================================================== */}
+      <div className="relative z-30 px-3 sm:px-6 lg:px-8 pb-3">
+        <div className="max-w-7xl mx-auto rounded-2xl bg-[#090d16]/90 backdrop-blur-xl border border-slate-800 px-4 sm:px-6 py-2.5 sm:py-3 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+          
+          {/* Left: Model Guide Helper */}
+          <div className="flex items-center gap-2 text-slate-300">
+            <span className="w-2 h-2 rounded-full bg-[#00ff87] animate-ping" />
+            <span className="text-[11px]">
+              INTERACTIVE 3D CAMPAIGN: <strong className="text-white">TAP ANY [+] PIN ON THE 4 MODELS TO SHOP THEIR FIT</strong>
+            </span>
+          </div>
+
+          {/* Right: Actions */}
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            <a
+              href="https://wa.me/919599084873?text=Hello%20Slate%20Apparels%2C%20I%20have%20an%20inquiry%20regarding%20retail%20products."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-slate-300 hover:text-[#00ff87] transition-colors"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-[#00ff87]" />
+              <span className="text-[11px]">WHATSAPP (+91 9599084873)</span>
+            </a>
+
+            <Link
+              href="/shop"
+              className="px-4 py-2 rounded-xl bg-white hover:bg-[#00ff87] text-[#05070c] font-black uppercase text-xs tracking-wider transition-all flex items-center gap-1.5 shadow-md hover:shadow-neon"
+            >
+              <span>BROWSE ALL 18 STYLES</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
         </div>
@@ -821,7 +833,7 @@ export default function SingleFullScreenLandingPage() {
         onClose={() => setQuickViewProduct(null)}
       />
 
-      {/* FIREBASE AUTH MODAL (TRIGGERED ON EXPRESS BUY IF UNLOGGED) */}
+      {/* FIREBASE AUTH MODAL */}
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}

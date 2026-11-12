@@ -67,6 +67,11 @@ export default function Navbar() {
 
   const categories = CATEGORIES_LIST.filter((c) => c !== 'ALL');
 
+  // Root landing page has its own dedicated 3D full-screen navigation bar where sections open
+  if (pathname === '/') {
+    return null;
+  }
+
   return (
     <>
       <header className="sticky top-0 z-40 bg-[#090d16]/95 backdrop-blur-md border-b border-slate-800 text-slate-100 shadow-xl select-none">

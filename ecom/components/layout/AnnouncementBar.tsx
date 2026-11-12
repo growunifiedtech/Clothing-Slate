@@ -2,9 +2,17 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Truck, ShieldCheck, Phone } from 'lucide-react';
 
 export default function AnnouncementBar() {
+  const pathname = usePathname();
+
+  // Hide on root full-screen landing page so the big campaign image has full bleed
+  if (pathname === '/') {
+    return null;
+  }
+
   return (
     <div className="bg-[#06080e] text-slate-300 text-xs py-2 px-4 border-b border-slate-800/80 select-none overflow-hidden">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
