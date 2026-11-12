@@ -2,12 +2,19 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ArrowUpRight, ShieldCheck, Mail, Phone, MapPin, Truck, RefreshCw, Lock, MessageSquare } from 'lucide-react';
 import { useStore } from '@/lib/store';
 
 export default function Footer() {
+  const pathname = usePathname();
   const { showToast } = useStore();
   const [email, setEmail] = useState('');
+
+  // Keep root landing page strictly single full screen without pushing down into footer
+  if (pathname === '/') {
+    return null;
+  }
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
