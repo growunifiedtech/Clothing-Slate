@@ -33,18 +33,32 @@ export default function SingleFullScreenLandingPage() {
       {/* ======================================================== */}
       {/* 1. BIG FULL-SCREEN HD LANDING PAGE IMAGE (WELL ALIGNED)   */}
       {/* ======================================================== */}
-      <div className="absolute inset-0 w-full h-full bg-[#05070c]">
-        <Image
-          src="/images/hero-models-crew-hd.jpg"
-          alt="Slate Apparels - 4 Streetwear Models (2 Women, 2 Men)"
-          fill
-          priority
-          unoptimized
-          className="object-cover object-top sm:object-[center_top]"
-        />
+      <div className="absolute inset-0 w-full h-full bg-[#05070c] overflow-hidden">
+        {/* Ambient atmospheric background layer to guarantee seamless studio edges on any display */}
+        <div className="absolute inset-0 w-full h-full scale-105 blur-2xl opacity-35 pointer-events-none">
+          <Image
+            src="/images/hero-models-crew-wide-fullbody.jpg"
+            alt=""
+            fill
+            unoptimized
+            className="object-cover object-center"
+          />
+        </div>
+
+        {/* High-Definition 4K Editorial Hero Image (Heads & Shoes 100% visible) */}
+        <div className="relative w-full h-full">
+          <Image
+            src="/images/hero-models-crew-wide-fullbody.jpg"
+            alt="Slate Apparels - 4 Streetwear Models (2 Women, 2 Men)"
+            fill
+            priority
+            unoptimized
+            className="object-cover object-[50%_58%]"
+          />
+        </div>
 
         {/* Subtle top vignette to ensure navbar text is razor-sharp */}
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#05070c]/80 via-[#05070c]/30 to-transparent pointer-events-none" />
+        <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#05070c]/85 via-[#05070c]/25 to-transparent pointer-events-none z-10" />
       </div>
 
       {/* ======================================================== */}
