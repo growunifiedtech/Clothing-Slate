@@ -310,16 +310,7 @@ export default function GenZLandingPage() {
         <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-[#05070c]/70 to-transparent pointer-events-none z-10" />
 
         {/* Bottom Hero Control Bar: Gen Z Quick Navigation */}
-        <div className="relative z-20 mt-auto px-4 sm:px-8 pb-6 sm:pb-8 w-full max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#090d16]/85 backdrop-blur-md border border-slate-800 text-[11px] font-mono text-slate-300">
-            <span className="w-2 h-2 rounded-full bg-[#00ff87] shadow-neon animate-pulse" />
-            <span className="font-bold text-white">AW26 RUNWAY LINEUP</span>
-            <span className="text-slate-500">//</span>
-            <span className="text-[#00f0ff] hidden xs:inline">100% COMBED COTTON</span>
-            <span className="text-slate-500 hidden xs:inline">//</span>
-            <span className="text-[#ff007f] hidden sm:inline">ZERO SHRINKAGE</span>
-          </div>
-
+        <div className="relative z-20 mt-auto px-4 sm:px-8 pb-6 sm:pb-8 w-full max-w-7xl mx-auto flex items-center justify-center sm:justify-end">
           <button
             onClick={() => scrollToSection('collections')}
             className="group px-5 py-2.5 rounded-xl bg-slate-900/90 hover:bg-[#00f0ff] text-white hover:text-[#05070c] border border-slate-700 hover:border-[#00f0ff] font-mono font-black text-xs uppercase flex items-center gap-2 transition-all shadow-xl hover:shadow-neon-cyan"
