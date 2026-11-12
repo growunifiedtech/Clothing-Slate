@@ -345,9 +345,6 @@ export default function GenZLandingPage() {
               <h2 className="text-3xl sm:text-5xl font-black uppercase text-white font-sans tracking-tight">
                 CURATED APPAREL COLLECTIONS
               </h2>
-              <p className="text-slate-400 font-mono text-xs sm:text-sm mt-2">
-                ENGINEERED IN NEW DELHI // HEAVYWEIGHT 100% COMBED COTTON CUTS
-              </p>
             </div>
 
             <button
@@ -365,24 +362,26 @@ export default function GenZLandingPage() {
             {/* 1. HOODIES (Solid Neon Pink) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#ff007f] hover:shadow-neon-pink p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/oversized-hoodies-1.jpg"
-                    alt="Heavyweight Fleece Hoodies"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#ff007f] text-white font-mono font-black text-[10px] uppercase shadow-neon-pink-sm">
-                    380 GSM FLEECE
+                <Link href="/shop?category=HOODIES" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/oversized-hoodies-1.jpg"
+                      alt="Heavyweight Fleece Hoodies"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#ff007f] text-white font-mono font-black text-[10px] uppercase shadow-neon-pink-sm">
+                      380 GSM FLEECE
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹1,499
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹1,499
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#ff007f] transition-colors">
-                  OVERSIZED HOODIES
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#ff007f] group-hover/link:text-[#ff007f] transition-colors">
+                    OVERSIZED HOODIES
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   Double-knit brushed combed cotton with seamless kangaroo pouch, dropped shoulder seam, and zero-pilling bio-wash.
                 </p>
@@ -402,24 +401,26 @@ export default function GenZLandingPage() {
             {/* 2. JACKETS & DENIM (Solid Neon Cyan) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#00f0ff] hover:shadow-neon-cyan p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/denim-jackets-1.jpg"
-                    alt="14 Oz Selvedge Denim Jackets"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#00f0ff] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-cyan-sm">
-                    14 OZ SELVEDGE
+                <Link href="/shop?category=JACKETS" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/denim-jackets-1.jpg"
+                      alt="14 Oz Selvedge Denim Jackets"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#00f0ff] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-cyan-sm">
+                      14 OZ SELVEDGE
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹1,699
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹1,699
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#00f0ff] transition-colors">
-                  DENIM & BOMBER JACKETS
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#00f0ff] group-hover/link:text-[#00f0ff] transition-colors">
+                    DENIM & BOMBER JACKETS
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   Rigid selvedge cotton denim with antique brass shanks, reinforced chest flaps, and boxy silhouette.
                 </p>
@@ -439,24 +440,26 @@ export default function GenZLandingPage() {
             {/* 3. T-SHIRTS (Solid Neon Lime) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#00ff87] hover:shadow-neon p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/oversized-t-shirt-drop-shoulder-1.jpg"
-                    alt="240 GSM Drop Shoulder Tees"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#00ff87] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-sm">
-                    240 GSM JERSEY
+                <Link href="/shop?category=T-SHIRTS" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/oversized-t-shirt-drop-shoulder-1.jpg"
+                      alt="240 GSM Drop Shoulder Tees"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#00ff87] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-sm">
+                      240 GSM JERSEY
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹699
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹699
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#00ff87] transition-colors">
-                  OVERSIZED TEES
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#00ff87] group-hover/link:text-[#00ff87] transition-colors">
+                    OVERSIZED TEES
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   100% combed ringspun cotton with high-density 1.25" rib collar and relaxed drape designed to retain shape.
                 </p>
@@ -476,24 +479,26 @@ export default function GenZLandingPage() {
             {/* 4. TRACKSUITS (Solid Neon Electric Purple) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#b026ff] hover:shadow-neon-purple p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/omniheat-tracksuits-1.jpg"
-                    alt="Omniheat Tech Tracksuits"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#b026ff] text-white font-mono font-black text-[10px] uppercase shadow-neon-purple-sm">
-                    OMNIHEAT TECH
+                <Link href="/shop?category=TRACKSUITS" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/omniheat-tracksuits-1.jpg"
+                      alt="Omniheat Tech Tracksuits"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#b026ff] text-white font-mono font-black text-[10px] uppercase shadow-neon-purple-sm">
+                      OMNIHEAT TECH
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹2,499
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹2,499
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#b026ff] transition-colors">
-                  PERFORMANCE TRACKSUITS
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#b026ff] group-hover/link:text-[#b026ff] transition-colors">
+                    PERFORMANCE TRACKSUITS
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   Thermal composite fleece jacket + matching articulated trackpants engineered for sub-zero street movement.
                 </p>
@@ -513,24 +518,26 @@ export default function GenZLandingPage() {
             {/* 5. BALLOON TRACKPANTS (Solid Neon Safety Orange) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#ff6b00] hover:shadow-neon-orange p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/balloon-fit-trackpants-1.jpg"
-                    alt="Balloon Fit Streetwear Trackpants"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#ff6b00] text-white font-mono font-black text-[10px] uppercase shadow-neon-orange">
-                    340 GSM BRUSHED
+                <Link href="/shop?category=TRACKPANTS" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/balloon-fit-trackpants-1.jpg"
+                      alt="Balloon Fit Streetwear Trackpants"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#ff6b00] text-white font-mono font-black text-[10px] uppercase shadow-neon-orange">
+                      340 GSM BRUSHED
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹1,199
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹1,199
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#ff6b00] transition-colors">
-                  BALLOON TRACKPANTS
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#ff6b00] group-hover/link:text-[#ff6b00] transition-colors">
+                    BALLOON TRACKPANTS
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   Relaxed balloon leg with tailored ankle cinch, extra deep pockets, and thick cotton elastic waistband.
                 </p>
@@ -550,24 +557,26 @@ export default function GenZLandingPage() {
             {/* 6. SWEATERS (Solid Neon Electric Yellow) */}
             <div className="group relative rounded-3xl bg-slate-900/90 border-2 border-slate-800 hover:border-[#faff00] hover:shadow-neon-yellow p-5 transition-all flex flex-col justify-between">
               <div>
-                <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
-                  <Image
-                    src="/images/products/sweaters-1.jpg"
-                    alt="Brushed Cotton Knit Sweaters"
-                    fill
-                    unoptimized
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#faff00] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-yellow">
-                    WAFFLE KNIT
+                <Link href="/shop?category=SWEATERS" className="block cursor-pointer group/link">
+                  <div className="relative aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-slate-800">
+                    <Image
+                      src="/images/products/sweaters-1.jpg"
+                      alt="Brushed Cotton Knit Sweaters"
+                      fill
+                      unoptimized
+                      className="object-cover group-hover:scale-105 group-hover/link:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-[#faff00] text-[#05070c] font-mono font-black text-[10px] uppercase shadow-neon-yellow">
+                      WAFFLE KNIT
+                    </div>
+                    <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
+                      FROM ₹1,599
+                    </div>
                   </div>
-                  <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-black/80 backdrop-blur-md font-mono text-xs font-bold text-[#00ff87]">
-                    FROM ₹1,599
-                  </div>
-                </div>
-                <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#faff00] transition-colors">
-                  KNIT SWEATERS
-                </h3>
+                  <h3 className="text-xl font-black uppercase text-white font-sans group-hover:text-[#faff00] group-hover/link:text-[#faff00] transition-colors">
+                    KNIT SWEATERS
+                  </h3>
+                </Link>
                 <p className="text-xs text-slate-400 font-sans mt-1">
                   Thermal waffle-weave knit structure crafted with combed cotton yarns for lightweight warmth and durability.
                 </p>
@@ -625,27 +634,29 @@ export default function GenZLandingPage() {
                   className="rounded-3xl bg-[#090d16] border-2 border-slate-800 hover:border-[#ff007f] transition-all p-5 flex flex-col justify-between shadow-2xl group"
                 >
                   <div>
-                    {/* Image with Tag */}
-                    <div className="relative aspect-square rounded-2xl overflow-hidden mb-4 bg-slate-900">
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        unoptimized
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-[#ff007f] text-white font-mono font-black text-[9px] uppercase shadow-neon-pink-sm">
-                        {product.specifications.gsm || '380 GSM'}
+                    {/* Image with Tag & Title (Clicking image opens product) */}
+                    <Link href={`/product/${product.id}`} className="block cursor-pointer group/item">
+                      <div className="relative aspect-square rounded-2xl overflow-hidden mb-4 bg-slate-900">
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          fill
+                          unoptimized
+                          className="object-cover group-hover:scale-105 group-hover/item:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-[#ff007f] text-white font-mono font-black text-[9px] uppercase shadow-neon-pink-sm">
+                          {product.specifications.gsm || '380 GSM'}
+                        </div>
+                        <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 font-mono text-[10px] text-slate-300">
+                          {product.colors[0]?.name || 'Pitch Black'}
+                        </div>
                       </div>
-                      <div className="absolute bottom-2.5 right-2.5 px-2 py-0.5 rounded-md bg-black/80 font-mono text-[10px] text-slate-300">
-                        {product.colors[0]?.name || 'Pitch Black'}
-                      </div>
-                    </div>
 
-                    {/* Title & Description */}
-                    <h3 className="font-extrabold text-base text-white uppercase font-sans line-clamp-1 group-hover:text-[#ff007f] transition-colors">
-                      {product.name}
-                    </h3>
+                      {/* Title */}
+                      <h3 className="font-extrabold text-base text-white uppercase font-sans line-clamp-1 group-hover:text-[#ff007f] group-hover/item:text-[#ff007f] transition-colors">
+                        {product.name}
+                      </h3>
+                    </Link>
                     <p className="text-xs text-slate-400 font-sans mt-1 line-clamp-2">
                       {product.description}
                     </p>
